@@ -1,20 +1,15 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Mycroft.Cmd;
+using Mycroft.Cmd.Sys;
 
-namespace Mycroft.Tests.Cmd
+namespace Mycroft.Tests.Cmd.Sys
 {
     [TestClass]
-    public class TestCommand
+    public class TestSysCommand
     {
         [TestMethod]
         public void TestMethod1()
         {
         }
     }
-
-    class BaseCommand : Command 
-    { 
-    }
-
 }
