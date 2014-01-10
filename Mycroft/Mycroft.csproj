@@ -53,6 +53,7 @@
     <Compile Include="Cmd\Msg\MessageArchive.cs" />
     <Compile Include="Cmd\Msg\MsgCmd.cs" />
     <Compile Include="Cmd\Sys\SysCmd.cs" />
+    <Compile Include="Dispatcher.cs" />
     <Compile Include="Manifest\Validator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
