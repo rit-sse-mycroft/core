@@ -50,13 +50,23 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="App\Connection\TestActiveState.cs" />
+    <Compile Include="App\Connection\TestConnectedState.cs" />
+    <Compile Include="App\Connection\TestRegisteredState.cs" />
+    <Compile Include="App\Connection\UnitTest1.cs" />
+    <Compile Include="App\TestAppInstance.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App\Connection\" />
     <Folder Include="Cmd\" />
     <Folder Include="Manifest\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mycroft\Mycroft.csproj">
+      <Project>{d72071e2-b7a3-45eb-aefa-94c135547608}</Project>
+      <Name>Mycroft</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

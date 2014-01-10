@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mycroft.Cmd.Msg
 {
-    class MsgCmd : Cmd
+    class MsgCommand : Command
     {
         /// <summary>
         /// Parses JSON into message command objects
@@ -14,7 +14,7 @@ namespace Mycroft.Cmd.Msg
         /// <param name="messageType">The message type that determines the command to create</param>
         /// <param name="json">The JSON body of the message</param>
         /// <returns>Returns a command object for the parsed message</returns>
-        public static Cmd Parse(String messageType, String json)
+        public static Command Parse(String messageType, String json)
         {
             return null;
         }
