@@ -14,6 +14,9 @@ namespace Mycroft.Cmd
         /// <returns>
         /// Returns the Command object that needs to be routed through the system
         /// </returns>
-        public static Cmd Parse();
+        public static Cmd Parse()
+        {
+            return null;
+        }
     }
 }
