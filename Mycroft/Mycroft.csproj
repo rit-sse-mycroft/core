@@ -49,6 +49,7 @@
     <Compile Include="App\Connection\RegisteredState.cs" />
     <Compile Include="Cmd\App\AppCmd.cs" />
     <Compile Include="Cmd\Cmd.cs" />
+    <Compile Include="Cmd\Msg\MessageArchive.cs" />
     <Compile Include="Cmd\Msg\MsgCmd.cs" />
     <Compile Include="Cmd\Sys\SysCmd.cs" />
     <Compile Include="Manifest\Validator.cs" />
