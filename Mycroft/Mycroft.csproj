@@ -41,12 +41,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App\Connection\ActiveState.cs" />
+    <Compile Include="App\AppInstance.cs" />
+    <Compile Include="App\Capability.cs" />
+    <Compile Include="App\Connection\ConnectedState.cs" />
+    <Compile Include="App\Connection\State.cs" />
+    <Compile Include="App\Connection\RegisteredState.cs" />
+    <Compile Include="Cmd\AppCmd.cs" />
+    <Compile Include="Cmd\Cmd.cs" />
+    <Compile Include="Cmd\MsgCmd.cs" />
+    <Compile Include="Cmd\SysCmd.cs" />
+    <Compile Include="Manifest\Validator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="App\Version.cs" />
+    <Compile Include="Server.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

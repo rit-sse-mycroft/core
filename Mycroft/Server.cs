@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mycroft
 {
-    class Program
+    class Server
     {
-        static void Main(string[] args)
-        {
-            /// Create and start the main server
-        }
     }
 }
