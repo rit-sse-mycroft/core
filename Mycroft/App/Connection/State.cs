@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mycroft.App.Connection
 {
-    public abstract class State
+    abstract class State
     {
     }
 }
