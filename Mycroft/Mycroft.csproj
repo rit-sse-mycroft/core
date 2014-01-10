@@ -48,11 +48,11 @@
     <Compile Include="App\Connection\State.cs" />
     <Compile Include="App\Connection\RegisteredState.cs" />
     <Compile Include="App\Status.cs" />
-    <Compile Include="Cmd\App\AppCmd.cs" />
-    <Compile Include="Cmd\Cmd.cs" />
+    <Compile Include="Cmd\App\AppCommand.cs" />
+    <Compile Include="Cmd\Command.cs" />
     <Compile Include="Cmd\Msg\MessageArchive.cs" />
-    <Compile Include="Cmd\Msg\MsgCmd.cs" />
-    <Compile Include="Cmd\Sys\SysCmd.cs" />
+    <Compile Include="Cmd\Msg\MsgCommand.cs" />
+    <Compile Include="Cmd\Sys\SysCommand.cs" />
     <Compile Include="Dispatcher.cs" />
     <Compile Include="Manifest\Validator.cs" />
     <Compile Include="Program.cs" />
