@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mycroft.Cmd
 {
-    public abstract class Command
+    abstract class Command
     {
         /// <summary>
         /// Parses a Mycroft command from a JSON object
