@@ -14,8 +14,10 @@ namespace Mycroft.Cmd
         /// <returns>
         /// Returns the Command object that needs to be routed through the system
         /// </returns>
-        public static Cmd Parse()
+        public static Cmd Parse(String input)
         {
+            // Break the message body into the type token and the JSON blob,
+            // then delegate to the specific command parser (MsgCmd.Parse(), AppCmd.Parse(), etc.)
             return null;
         }
     }
