@@ -53,13 +53,19 @@
     <Compile Include="App\Connection\TestActiveState.cs" />
     <Compile Include="App\Connection\TestConnectedState.cs" />
     <Compile Include="App\Connection\TestRegisteredState.cs" />
-    <Compile Include="App\Connection\UnitTest1.cs" />
+    <Compile Include="App\Connection\TestState.cs" />
     <Compile Include="App\TestAppInstance.cs" />
+    <Compile Include="App\TestCapability.cs" />
+    <Compile Include="App\TestStatus.cs" />
+    <Compile Include="App\TestVersion.cs" />
+    <Compile Include="Cmd\TestCommand.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Cmd\" />
+    <Folder Include="Cmd\App\" />
+    <Folder Include="Cmd\Msg\" />
+    <Folder Include="Cmd\Sys\" />
     <Folder Include="Manifest\" />
   </ItemGroup>
   <ItemGroup>
