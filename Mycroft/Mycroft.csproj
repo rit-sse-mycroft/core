@@ -47,6 +47,7 @@
     <Compile Include="App\Connection\ConnectedState.cs" />
     <Compile Include="App\Connection\State.cs" />
     <Compile Include="App\Connection\RegisteredState.cs" />
+    <Compile Include="App\Status.cs" />
     <Compile Include="Cmd\App\AppCmd.cs" />
     <Compile Include="Cmd\Cmd.cs" />
     <Compile Include="Cmd\Msg\MessageArchive.cs" />
