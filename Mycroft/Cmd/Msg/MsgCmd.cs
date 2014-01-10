@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mycroft.Cmd
+namespace Mycroft.Cmd.Msg
 {
-    class AppCmd : Cmd
+    class MsgCmd : Cmd
     {
     }
 }

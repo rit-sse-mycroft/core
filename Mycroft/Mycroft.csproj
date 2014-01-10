@@ -47,10 +47,10 @@
     <Compile Include="App\Connection\ConnectedState.cs" />
     <Compile Include="App\Connection\State.cs" />
     <Compile Include="App\Connection\RegisteredState.cs" />
-    <Compile Include="Cmd\AppCmd.cs" />
+    <Compile Include="Cmd\App\AppCmd.cs" />
     <Compile Include="Cmd\Cmd.cs" />
-    <Compile Include="Cmd\MsgCmd.cs" />
-    <Compile Include="Cmd\SysCmd.cs" />
+    <Compile Include="Cmd\Msg\MsgCmd.cs" />
+    <Compile Include="Cmd\Sys\SysCmd.cs" />
     <Compile Include="Manifest\Validator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
