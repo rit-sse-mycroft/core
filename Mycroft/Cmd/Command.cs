@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Mycroft.Cmd
 {
-    abstract class Cmd
+    public abstract class Command
     {
         /// <summary>
         /// Parses a Mycroft command from a JSON object
@@ -16,7 +16,7 @@ namespace Mycroft.Cmd
         /// <returns>
         /// Returns the Command object that needs to be routed through the system
         /// </returns>
-        public static Cmd Parse(String input)
+        public static Command Parse(String input)
         {
             DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Dictionary<String, Object>)); 
             int index = input.IndexOf('{');
