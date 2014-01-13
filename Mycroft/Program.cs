@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -20,7 +21,7 @@ namespace Mycroft
             // Use the settings file to figure out which certificate to use
             var collection = store.Certificates.Find(
                 X509FindType.FindByThumbprint,
-                Settings.Default.CertThumbprint,
+                ConfigurationManager.AppSettings["CertThumbprint"],
                 false
             );
 
