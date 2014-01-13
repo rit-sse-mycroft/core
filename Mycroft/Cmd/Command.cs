@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
+using Mycroft.Cmd;
 
 namespace Mycroft.Cmd
 {
@@ -19,27 +20,40 @@ namespace Mycroft.Cmd
         public static Command Parse(String input)
         {
             DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Dictionary<String, Object>)); 
-            int index = input.IndexOf('{');
-            String type;
-            Object data;
-            if (index >= 0)
+            String type = getType(input);
+            Object data;           
+            String rawData = input.Substring(input.IndexOf('{') + 1);
+            if (type != null)
             {
-                type = input.Substring(0, index);
-                String rawData = input.Substring(index + 1);
-                var memoryStream = new MemoryStream(Encoding.Unicode.GetBytes(rawData));
-                data = ser.ReadObject(memoryStream);
-            }
-            else
+                
+            var memoryStream = new MemoryStream(Encoding.Unicode.GetBytes(rawData));
+            data = ser.ReadObject(memoryStream);
+            if (type == "MsgCmd")
             {
-                type = input; /// no body was supplied
+                return Msg.MsgCommand.Parse(type, rawData);
             }
-            if(type == "") /// malformed message
-                           /// TODO alert client
+            else if (type == "AppCmd")
             {
-
+                return App.AppCommand.Parse(type, rawData);
             }
+            else if (type == "SysCmd")
+            {
+                return Sys.SysCommand.Parse(type, rawData);
+            }
+            }
+            return null;
+        }
             // Break the message body into the type token and the JSON blob,
             // then delegate to the specific command parser (MsgCmd.Parse(), AppCmd.Parse(), etc.)
+         
+        public static String getType(String input)
+        {
+            // get type is in a new method for testing purposes
+            if (input.Length >= 2)
+            {
+                return input.Substring(0, 2);
+            }
+            //malformed json
             return null;
         }
     }
