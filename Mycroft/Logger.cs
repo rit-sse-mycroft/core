@@ -41,9 +41,13 @@ namespace Mycroft
                     fs.Close();
                 }
                 this.date = DateTime.Today;
-                this.filename = System.IO.Path.Combine(path, "log-", DateTime.Now.ToString("[yyyy-MM-dd]"));
+
+                Directory.CreateDirectory(path);
+                this.filename = System.IO.Path.Combine(path, "log-" + DateTime.Now.ToString("yyyy-MM-dd"));
+
                 fs = new FileStream(filename, FileMode.Append);
                 os = new StreamWriter(fs);
+                os.AutoFlush = true;
             }
         }
 
@@ -76,8 +80,7 @@ namespace Mycroft
         /// <returns></returns>
         public bool logMessage(string message)
         {
-            log(message);
-            return true;
+            return log(message);
         }
 
         /// <summary>
@@ -89,8 +92,7 @@ namespace Mycroft
         public bool logCommand(Command command)
         {
             ///TODO - format appropriatly
-            log(command.ToString());
-            return true;
+            return log(command.ToString());
         }
     }
 }
