@@ -19,27 +19,24 @@ namespace Mycroft.Cmd
         /// </returns>
         public static Command Parse(String input)
         {
-            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Dictionary<String, Object>)); 
             String type = getType(input);
             Object data;           
             String rawData = input.Substring(input.IndexOf('{') + 1);
             if (type != null)
             {
-                
-            var memoryStream = new MemoryStream(Encoding.Unicode.GetBytes(rawData));
-            data = ser.ReadObject(memoryStream);
-            if (type == "MsgCmd")
-            {
-                return Msg.MsgCommand.Parse(type, rawData);
-            }
-            else if (type == "AppCmd")
-            {
-                return App.AppCommand.Parse(type, rawData);
-            }
-            else if (type == "SysCmd")
-            {
-                return Sys.SysCommand.Parse(type, rawData);
-            }
+                data = getData(rawData);
+                if (type == "MsgCmd")
+                {
+                    return Msg.MsgCommand.Parse(type, data);
+                }
+                else if (type == "AppCmd")
+                {
+                    return App.AppCommand.Parse(type, data);
+                }
+                else if (type == "SysCmd")
+                {
+                    return Sys.SysCommand.Parse(type, data);
+                }
             }
             return null;
         }
@@ -51,10 +48,17 @@ namespace Mycroft.Cmd
             // get type is in a new method for testing purposes
             if (input.Length >= 2)
             {
-                return input.Substring(0, 2);
+                return input.Substring(0, 3);
             }
             //malformed json
             return null;
+        }
+        public static Object getData(String rawData)
+        {
+             DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Dictionary<String, Object>)); 
+             var memoryStream = new MemoryStream(Encoding.Unicode.GetBytes(rawData));
+             return ser.ReadObject(memoryStream);
+            
         }
     }
 }

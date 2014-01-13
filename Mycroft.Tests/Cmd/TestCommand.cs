@@ -16,7 +16,9 @@ namespace Mycroft.Tests.Cmd
             Assert.AreEqual(null, nullReturned, "Should return null");
 
             // JSON of "MSG_QUERY" should return "MSG"
-            String msg_query = Command.getType("MSG_BROADCAST { foo : foobar }");
+            String msgQuery = Command.getType("MSG_BROADCAST { foo : foobar }");
+            Assert.AreEqual(msgQuery, "MSG", "Get type should return 'MSG' ");
+    
 
             // More tests should be added once we have a better idea how we are doing the Parse method
         }
