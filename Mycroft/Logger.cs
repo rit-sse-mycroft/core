@@ -21,9 +21,18 @@ namespace Mycroft
         private StreamWriter os;
         private FileStream fs;
 
-        public Logger()
+        static private Logger instance = null;
+
+        private Logger()
         {
             checkFile();
+        }
+
+        public static Logger getInstance()
+        {
+            if (instance == null)
+                instance = new Logger();
+            return instance;
         }
 
         /// <summary>
