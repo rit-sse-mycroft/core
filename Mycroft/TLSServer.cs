@@ -50,6 +50,7 @@ namespace Mycroft
                 clientThread.Start(tlsClient);
             }
         }
+
         private async void HandleClientComm(object client)
         {
             TlsClientStream tlsClient = (TlsClientStream)client;

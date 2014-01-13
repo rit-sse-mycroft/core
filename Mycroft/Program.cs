@@ -13,7 +13,27 @@ namespace Mycroft
     {
         static void Main(string[] args)
         {
-            var myServ = new TlsServer(IPAddress.Any, 1847, new X509Certificate2(X509Certificate2.CreateFromCertFile("mycroft.crt")));
+            X509Store store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+            store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
+            Debug.WriteLine(store.Certificates.Count);
+
+            // Use the settings file to figure out which certificate to use
+            var collection = store.Certificates.Find(
+                X509FindType.FindByThumbprint,
+                Settings.Default.CertThumbprint,
+                false
+            );
+
+            foreach(var c in collection)
+            {
+                Debug.Write(c.Subject);
+                Debug.Write(" ");
+                Debug.WriteLine(c.Thumbprint);
+            }
+
+            X509Certificate2 cert = collection[0];
+            
+            var myServ = new TlsServer(IPAddress.Any, 1847, cert);
             myServ.ClientConnected += myServ_ClientConnected;
             myServ.Start();
         }
