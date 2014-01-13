@@ -17,6 +17,8 @@ namespace Mycroft.Tests.Cmd
 
             // JSON of "MSG_QUERY" should return "MSG"
             String msg_query = Command.getType("MSG_BROADCAST { foo : foobar }");
+
+            // More tests should be added once we have a better idea how we are doing the Parse method
         }
     }
     class BaseCommand : Command
