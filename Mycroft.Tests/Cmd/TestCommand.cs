@@ -15,12 +15,26 @@ namespace Mycroft.Tests.Cmd
             Command nullReturned = Command.Parse("");    
             Assert.AreEqual(null, nullReturned, "Should return null");
 
+            
+            var input = @"MSG_QUERY : {
+                ""id"": ""uuid"",
+                ""capability"": ""weather"",
+                ""remoteProcedure"": ""get_temperature"",
+                ""args"" : [""farenheit""],
+                ""instanceId"":[""xxxx""],
+                ""priority"": 30           
+            }}";
             // JSON of "MSG_QUERY" should return "MSG"
-            String msgQuery = Command.getType("MSG_BROADCAST { foo : foobar }");
+            String msgQuery = Command.getType(input);
             Assert.AreEqual(msgQuery, "MSG", "Get type should return 'MSG' ");
-    
-
-            // More tests should be added once we have a better idea how we are doing the Parse method
+            try
+            {
+                Command.Parse(input);
+            }
+            catch (System.Runtime.Serialization.SerializationException)
+            {
+                throw new Exception("JSON could not be parsed into an object");
+            }
         }
     }
     class BaseCommand : Command

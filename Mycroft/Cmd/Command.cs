@@ -22,9 +22,11 @@ namespace Mycroft.Cmd
             // Break the message body into the type token and the JSON blob,
             // then delegate to the specific command parser (MsgCmd.Parse(), AppCmd.Parse(), etc.)
             String type = getType(input);
-            String rawData = input.Substring(input.IndexOf('{') + 1);
+
             if (type != null)
             {
+                String rawData = input.Substring(input.IndexOf('{'));
+                Console.Write(rawData);
                 Object data = getData(rawData);
                 if (type == "MSG")
                 {
@@ -56,9 +58,13 @@ namespace Mycroft.Cmd
         }
         public static Object getData(String rawData)
         {
-             DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Dictionary<String, Object>)); 
-             var memoryStream = new MemoryStream(Encoding.Unicode.GetBytes(rawData));
-             return ser.ReadObject(memoryStream); 
+             var settings = new DataContractJsonSerializerSettings();
+             settings.UseSimpleDictionaryFormat = true;
+             var serializer = new DataContractJsonSerializer(typeof(Object), settings);
+             Object data;
+             var memStream = new MemoryStream(Encoding.UTF8.GetBytes(rawData));
+             data = serializer.ReadObject(memStream) as Object;
+             return data;
         }
     }
 }
