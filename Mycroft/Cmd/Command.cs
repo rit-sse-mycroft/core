@@ -19,29 +19,29 @@ namespace Mycroft.Cmd
         /// </returns>
         public static Command Parse(String input)
         {
+            // Break the message body into the type token and the JSON blob,
+            // then delegate to the specific command parser (MsgCmd.Parse(), AppCmd.Parse(), etc.)
             String type = getType(input);
-            Object data;           
             String rawData = input.Substring(input.IndexOf('{') + 1);
             if (type != null)
             {
-                data = getData(rawData);
-                if (type == "MsgCmd")
+                Object data = getData(rawData);
+                if (type == "MSG")
                 {
                     return Msg.MsgCommand.Parse(type, data);
                 }
-                else if (type == "AppCmd")
+                else if (type == "APP")
                 {
                     return App.AppCommand.Parse(type, data);
                 }
-                else if (type == "SysCmd")
+                else if (type == "SYS")
                 {
                     return Sys.SysCommand.Parse(type, data);
                 }
             }
+            //TODO standardize
             return null;
         }
-            // Break the message body into the type token and the JSON blob,
-            // then delegate to the specific command parser (MsgCmd.Parse(), AppCmd.Parse(), etc.)
          
         public static String getType(String input)
         {
@@ -51,14 +51,14 @@ namespace Mycroft.Cmd
                 return input.Substring(0, 3);
             }
             //malformed json
+            //TODO standardize
             return null;
         }
         public static Object getData(String rawData)
         {
              DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Dictionary<String, Object>)); 
              var memoryStream = new MemoryStream(Encoding.Unicode.GetBytes(rawData));
-             return ser.ReadObject(memoryStream);
-            
+             return ser.ReadObject(memoryStream); 
         }
     }
 }
