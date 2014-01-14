@@ -46,5 +46,43 @@ namespace Mycroft.Tests.Manifest
             }
             throw new Exception("Missing values not caught");
         }
+
+        [TestMethod]
+        public void TestNonSemanticVersions()
+        {
+            var input = @"{
+                ""version"": ""s0.0.1"",
+                ""name"": ""test-service"",
+                ""displayName"": ""Mycroft test service"",
+                ""instanceId"" : ""instance1"",
+                ""capabilities"": {
+                    ""microphone"" : "".0.2"",
+                    ""speaker""    : ""4.2.1.3""
+                },
+                ""API"": 0,
+                ""description"": ""It does odd stuff like testing or things"",
+                ""dependencies"": {
+                    ""logging"": ""HEY!"",
+                    ""*"": ""*""
+            }}";
+
+            try
+            {
+                Mycroft.Manifest.Manifest.Parse(input);
+            }
+            catch (Mycroft.Manifest.ManifestValidationException err)
+            {
+                if (!err.Fields.ContainsKey("version"))
+                    throw new Exception("Validator failed to catch app version error");
+                if (!err.Fields.ContainsKey("capabilities") || err.Fields["capabilities"].Count != 2)
+                    throw new Exception("Validator failed to catch semantic version errors in capabilities");
+                if (!err.Fields.ContainsKey("dependencies") || err.Fields["dependencies"].Count != 1)
+                    throw new Exception("Validator failed to catch semantic version errors in dependencies");
+                return;
+            }
+
+            throw new Exception("Oh god, we didn't catch anything!");
+
+        }
     }
 }
