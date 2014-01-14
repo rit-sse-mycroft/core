@@ -14,7 +14,7 @@ namespace Mycroft.Cmd.Sys
         /// <param name="messageType">The message type that determines the command to create</param>
         /// <param name="json">The JSON body of the message</param>
         /// <returns>Returns a command object for the parsed message</returns>
-        public static Command Parse(String messageType, String json)
+        public static Command Parse(String messageType, Object data)
         {
             return null;
         }
