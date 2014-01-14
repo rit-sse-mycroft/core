@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Mycroft
@@ -15,28 +16,30 @@ namespace Mycroft
     /// </summary>
     public abstract class Server
     {
+        private ReaderWriterLockSlim serverLock = new ReaderWriterLockSlim();
+
         /// <summary>
         /// The App instances that are running
         /// </summary>
-        private ConcurrentDictionary<string, AppInstance> instances;
-        private ConcurrentDictionary<string, Capability> capabilities;
+        private IDictionary<string, AppInstance> instances;
+        private IDictionary<string, Capability> capabilities;
 
         /// <summary>
-        /// Event handler for client connections
+        /// Connections that aren't yet initialized and don't have instanceIds
         /// </summary>
-        public event EventHandler<Stream> ClientConnected;
+        private List<AppInstance> startedConnections;
 
         public Server()
         {
-            instances = new ConcurrentDictionary<string, AppInstance>();
-            capabilities = new ConcurrentDictionary<string, Capability>();
+            instances = new Dictionary<string, AppInstance>();
+            capabilities = new Dictionary<string, Capability>();
+            // TODO Need to track the null AppInstances before they actually get connected
         }
 
         /// <summary>
         /// Starts the server listening for network connections
         /// </summary>
-        public abstract void Start();
-
+        public abstract Task Start();
 
         /// <summary>
         /// Handle clients connecting to the server by creating an AppInstance for the connection

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mycroft.App.Connection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,6 +41,17 @@ namespace Mycroft.App
         /// The version of the app
         /// </summary>
         public Version Version { get; set; }
+
+        /// <summary>
+        /// Connection, managed through the State pattern
+        /// </summary>
+        private State connectionState;
+
+
+        public AppInstance()
+        {
+            connectionState = new ConnectedState();
+        }
 
     }
 }

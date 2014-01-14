@@ -26,7 +26,7 @@ namespace Mycroft
             this.tcpListener = listener;
         }
 
-        public override async void Start()
+        public override async Task Start()
         {
             tcpListener.Start();
 
