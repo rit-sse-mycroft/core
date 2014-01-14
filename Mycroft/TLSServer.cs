@@ -11,17 +11,14 @@ using System.Threading.Tasks;
 
 namespace Mycroft
 {
-    class TlsServer
+    class TlsServer : Server
     {
         private X509Certificate2 cert;
         private TcpListener tcpListener;
-        private Thread listenThread;
 
         public TlsServer (IPAddress addr, Int32 port, X509Certificate2 cert)
-        {
-           this.cert = cert;
-           this.tcpListener = new TcpListener(addr, port);
-        }
+            : this(new TcpListener(addr, port), cert)
+        { }
 
         public TlsServer(TcpListener listener, X509Certificate2 cert)
         {
@@ -29,44 +26,27 @@ namespace Mycroft
             this.tcpListener = listener;
         }
 
-        public void Start()
+        public override async void Start()
         {
-            this.listenThread = new Thread(new ThreadStart(ListenForClients));
-            this.listenThread.Start();
-        }
-
-        private void ListenForClients()
-        {
-            this.tcpListener.Start();
+            tcpListener.Start();
 
             while (true)
             {
                 //blocks until a client has connected to the server
-                TcpClient tcpClient = this.tcpListener.AcceptTcpClient();
-                TlsClientStream tlsClient = new TlsClientStream(tcpClient);
-                //create a thread to handle communication 
-                //with connected client
-                Thread clientThread = new Thread(new ParameterizedThreadStart(HandleClientComm));
+                var tcpClient = await tcpListener.AcceptTcpClientAsync();
+                var tlsClient = new TlsClientStream(tcpClient);
+
+                //create a thread to handle communication with connected client
+                var clientThread = new Thread(new ParameterizedThreadStart(HandleClientComm));
                 clientThread.Start(tlsClient);
             }
         }
 
         private async void HandleClientComm(object client)
         {
-            TlsClientStream tlsClient = (TlsClientStream)client;
+            var tlsClient = (TlsClientStream) client;
             await tlsClient.AuthenticateAsServerAsync(cert);
-            OnClientConnected(tlsClient);
+            HandleClientConnected(tlsClient);
         }
-
-        protected virtual void OnClientConnected(TlsClientStream conn)
-        {
-            EventHandler<TlsClientStream> handler = ClientConnected;
-            if (handler != null)
-            {
-                handler(this, conn);
-            }
-        }
-
-        public event EventHandler<TlsClientStream> ClientConnected;
     }
 }

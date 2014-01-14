@@ -39,7 +39,7 @@ namespace Mycroft.App
         /// <summary>
         /// The version of the app
         /// </summary>
-        public Version version { get; set; }
+        public Version Version { get; set; }
 
     }
 }

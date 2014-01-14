@@ -35,13 +35,7 @@ namespace Mycroft
             X509Certificate2 cert = collection[0];
             
             var myServ = new TlsServer(IPAddress.Any, 1847, cert);
-            myServ.ClientConnected += myServ_ClientConnected;
             myServ.Start();
-        }
-
-        static void myServ_ClientConnected(object sender, TlsClientStream e)
-        {
-            Debug.Write("Hey World");
         }
     }
 }

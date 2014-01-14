@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Mycroft
 {
-    class TlsClientStream : SslStream
+    public class TlsClientStream : SslStream
     {
         private TcpClient tcpClient;
         public TlsClientStream(TcpClient client)
