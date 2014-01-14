@@ -28,7 +28,7 @@ namespace Mycroft.Tests.Manifest
                     ""*"": """"
             }}";
 
-            Mycroft.Manifest.Manifest.parse(input);
+            Mycroft.Manifest.Manifest.Parse(input);
         }
         [TestMethod]
         public void TestParseMissingVals()
@@ -36,7 +36,7 @@ namespace Mycroft.Tests.Manifest
             var input = "{}";
             try
             {
-                Mycroft.Manifest.Manifest.parse(input);
+                Mycroft.Manifest.Manifest.Parse(input);
             }
             catch (SerializationException e)
             {

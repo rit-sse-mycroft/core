@@ -29,7 +29,7 @@ namespace Mycroft.Manifest
         [DataMember(Name = "dependencies")]
         public Dictionary<string, string> Dependencies { get; set; }
 
-        public static Manifest parse(string manifestJson)
+        public static Manifest Parse(string manifestJson)
         {
             var serializer = new DataContractJsonSerializer(typeof(Manifest));
             Manifest manifest;
