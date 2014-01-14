@@ -35,6 +35,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,10 +49,13 @@
     <Compile Include="App\Connection\ConnectedState.cs" />
     <Compile Include="App\Connection\State.cs" />
     <Compile Include="App\Connection\RegisteredState.cs" />
-    <Compile Include="Cmd\AppCmd.cs" />
-    <Compile Include="Cmd\Cmd.cs" />
-    <Compile Include="Cmd\MsgCmd.cs" />
-    <Compile Include="Cmd\SysCmd.cs" />
+    <Compile Include="App\Status.cs" />
+    <Compile Include="Cmd\App\AppCommand.cs" />
+    <Compile Include="Cmd\Command.cs" />
+    <Compile Include="Cmd\Msg\MessageArchive.cs" />
+    <Compile Include="Cmd\Msg\MsgCommand.cs" />
+    <Compile Include="Cmd\Sys\SysCommand.cs" />
+    <Compile Include="Dispatcher.cs" />
     <Compile Include="Manifest\Validator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

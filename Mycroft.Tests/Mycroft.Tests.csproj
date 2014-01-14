@@ -50,13 +50,30 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="App\Connection\TestActiveState.cs" />
+    <Compile Include="App\Connection\TestConnectedState.cs" />
+    <Compile Include="App\Connection\TestRegisteredState.cs" />
+    <Compile Include="App\Connection\TestState.cs" />
+    <Compile Include="App\TestAppInstance.cs" />
+    <Compile Include="App\TestCapability.cs" />
+    <Compile Include="App\TestStatus.cs" />
+    <Compile Include="App\TestVersion.cs" />
+    <Compile Include="Cmd\App\TestAppCommand.cs" />
+    <Compile Include="Cmd\Msg\TestMsgCommand.cs" />
+    <Compile Include="Cmd\Msg\TestMessageArchive.cs" />
+    <Compile Include="Cmd\Sys\TestSysCommand.cs" />
+    <Compile Include="Cmd\TestCommand.cs" />
+    <Compile Include="Manifest\TestValidator.cs" />
+    <Compile Include="TestDispatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestServer.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="App\Connection\" />
-    <Folder Include="Cmd\" />
-    <Folder Include="Manifest\" />
+    <ProjectReference Include="..\Mycroft\Mycroft.csproj">
+      <Project>{d72071e2-b7a3-45eb-aefa-94c135547608}</Project>
+      <Name>Mycroft</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

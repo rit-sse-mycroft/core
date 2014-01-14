@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mycroft.App
+namespace Mycroft.App.Connection
 {
     abstract class State
     {

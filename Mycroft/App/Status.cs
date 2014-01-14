@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mycroft.Cmd
+namespace Mycroft.App
 {
-    class AppCmd : Cmd
+    enum Status
     {
     }
 }
