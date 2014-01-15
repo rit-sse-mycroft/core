@@ -25,11 +25,6 @@ namespace Mycroft
         private IDictionary<string, Capability> capabilities;
 
         /// <summary>
-        /// Connections that aren't yet initialized and don't have instanceIds
-        /// </summary>
-        private List<AppInstance> startedConnections;
-
-        /// <summary>
         /// Routes messages through the rest of the system
         /// </summary>
         private Dispatcher dispatcher;
