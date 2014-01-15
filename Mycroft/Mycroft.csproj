@@ -63,6 +63,10 @@
     <Compile Include="Cmd\Msg\MsgCommand.cs" />
     <Compile Include="Cmd\Msg\Reply.cs" />
     <Compile Include="Cmd\Msg\Request.cs" />
+    <Compile Include="Cmd\Sys\Unlock.cs" />
+    <Compile Include="Cmd\Sys\Lockdown.cs" />
+    <Compile Include="Cmd\Sys\ShutOff.cs" />
+    <Compile Include="Cmd\Sys\KillAll.cs" />
     <Compile Include="Cmd\Sys\SysCommand.cs" />
     <Compile Include="CommandConnection.cs" />
     <Compile Include="Dispatcher.cs" />

@@ -21,15 +21,19 @@ namespace Mycroft.Cmd.Sys
             {
                 case "SYS_KILLAPP":
                     //do kill app stuff
+                    KillAll.SysKillAll.killAll();
                     break;
                 case "SYS_SHUTDOWN":
                     //do shutdown stuff
+                    ShutOff.SysShutOff.shutOff();
                     break;
                 case "SYS_LOCKDOWN":
                     //do lockdown stuff
+                    Lockdown.SysLockdown.lockdown();
                     break;
                 case "SYS_UNLOCK":
                     //do unlock stuff
+                    Unlock.SysUnlock.unlock();
                     break;
                 default:
                     //data is incorrect - can't do anything with it
