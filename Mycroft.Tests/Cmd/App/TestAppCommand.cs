@@ -15,7 +15,7 @@ namespace Mycroft.Tests.Cmd.App
             String fooString = "";
             AppCommand.Parse(fooString, fooData);
 
-            //base case - shouldn't break with blank data
+            //command for app up should be called
             String appUpString = @"APP_UP {""foo""";
             AppCommand.Parse(appUpString, fooData);
         }
