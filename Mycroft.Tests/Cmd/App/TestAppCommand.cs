@@ -8,8 +8,16 @@ namespace Mycroft.Tests.Cmd.App
     public class TestAppCommand
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestAppCommandParse()
         {
+            //base case - shouldn't break with blank data
+            Object fooData = null;
+            String fooString = "";
+            AppCommand.Parse(fooString, fooData);
+
+            //command for app up should be called
+            String appUpString = @"APP_UP {""foo""";
+            AppCommand.Parse(appUpString, fooData);
         }
     }
 }
