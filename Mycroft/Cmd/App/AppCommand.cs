@@ -33,9 +33,9 @@ namespace Mycroft.Cmd.App
                     case "APP_DESTROY":
                         //do app destroy stuff
                         break;
-                   // default:
+                    default:
                         //data is incorrect - can't do anything with it
-                     //   break;
+                        break;
                 }
             }
             else
