@@ -17,7 +17,7 @@ namespace Mycroft.Tests
         public async Task TestBodylessMessage(){
             var s = new MemoryStream(Encoding.UTF8.GetBytes("6\nAPP_UP"));
             var cmd = new CommandConnection(s);
-            var msg = await cmd.getCommandAsync();
+            var msg = await cmd.GetCommandAsync();
             Trace.WriteLine(msg);
             if (msg != "APP_UP")
                 throw new Exception("Incorrect message!");
@@ -29,7 +29,7 @@ namespace Mycroft.Tests
             var input = "30\nMSG_BROADCAST {\"key\": \"value\"}";
             var s = new MemoryStream(Encoding.UTF8.GetBytes(input));
             var cmd = new CommandConnection(s);
-            var msg = await cmd.getCommandAsync();
+            var msg = await cmd.GetCommandAsync();
             Trace.WriteLine(msg);
             Trace.WriteLine(input.Substring(3));
             if (msg != input.Substring(3))
