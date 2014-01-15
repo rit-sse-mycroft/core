@@ -18,5 +18,7 @@ namespace Mycroft.Cmd.Msg
         {
             return null;
         }
+
+        public String guid { get; set; }
     }
 }

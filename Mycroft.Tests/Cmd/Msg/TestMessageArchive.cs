@@ -7,9 +7,25 @@ namespace Mycroft.Tests.Cmd.Msg
     [TestClass]
     public class TestMessageArchive
     {
-        [TestMethod]
-        public void TestMethod1()
+        MessageArchive archive;
+
+        [TestInitialize]
+        public void setup()
         {
+            archive = new MessageArchive();
+        }
+
+
+        [TestMethod]
+        public void TestIO()
+        {
+
+            //M
+
+            //archive.PostMessage();
+
+
+
         }
     }
 }
