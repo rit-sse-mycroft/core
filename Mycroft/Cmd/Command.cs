@@ -22,7 +22,6 @@ namespace Mycroft.Cmd
             // Break the message body into the type token and the JSON blob,
             // then delegate to the specific command parser (MsgCmd.Parse(), AppCmd.Parse(), etc.)
             String type = getType(input);
-
             if (type != null)
             {
                 String rawData = input.Substring(input.IndexOf('{'));

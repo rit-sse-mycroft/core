@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Mycroft.Cmd;
 using Mycroft.Cmd.App;
 
 namespace Mycroft.Tests.Cmd.App
@@ -18,6 +19,7 @@ namespace Mycroft.Tests.Cmd.App
             //command for app up should be called
             String appUpString = @"APP_UP {""foo""";
             AppCommand.Parse(fooString, appUpString, fooData);
+
         }
     }
 }

@@ -16,39 +16,35 @@ namespace Mycroft.Cmd.Msg
         /// <returns>Returns a command object for the parsed message</returns>
         public static Command Parse(String type, String rawData, Object data)
         {
-            if (rawData.Contains("{"))
+
+            switch (type)
             {
-                switch (type)
-                {
-                    case "MSG_BROADCAST":
-                        //do message broadcast stuff
-                        Broadcast.MsgBroadcast.broadcast();
-                        break;
-                    case "MSG_QUERY":
-                        //do message query stuff
-                        Query.MsgQuery.query();
-                        break;
-                    case "MSG_DIRECTQUERY":
-                        //do message direct query stuff
-                        DirectQuery.MsgDirectQuery.directQuery();
-                        break;
-                    case "MSG_REPLY":
-                        //do message reply stuff
-                        Reply.MsgReply.reply();
-                        break;
-                    case "MSG_REQUEST":
-                        //do message request stuff
-                        Request.MsgRequest.request();
-                        break;
-                     default:
-                    //data is incorrect - can't do anything with it
-                       break;
-                }
+                case "MSG_BROADCAST":
+                    //do message broadcast stuff
+                    Broadcast.MsgBroadcast.broadcast();
+                    break;
+                case "MSG_QUERY":
+                    //do message query stuff
+                    Query.MsgQuery.query();
+                    break;
+                case "MSG_DIRECTQUERY":
+                    //do message direct query stuff
+                    DirectQuery.MsgDirectQuery.directQuery();
+                    break;
+                case "MSG_REPLY":
+                    //do message reply stuff
+                    Reply.MsgReply.reply();
+                    break;
+                case "MSG_REQUEST":
+                    //do message request stuff
+                    Request.MsgRequest.request();
+                    break;
+                    default:
+                //data is incorrect - can't do anything with it
+                    break;
             }
-            else
-            {
-                //notify that data cannot be used
-            }
+        
+ 
             return null;
         }
     }
