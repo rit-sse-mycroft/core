@@ -29,11 +29,15 @@ namespace Mycroft
         /// </summary>
         private List<AppInstance> startedConnections;
 
+        /// <summary>
+        /// Routes messages through the rest of the system
+        /// </summary>
+        private Dispatcher dispatcher;
+
         public Server()
         {
             instances = new Dictionary<string, AppInstance>();
             capabilities = new Dictionary<string, Capability>();
-            // TODO Need to track the null AppInstances before they actually get connected
         }
 
         /// <summary>
@@ -47,7 +51,19 @@ namespace Mycroft
         /// <param name="stream">The stream over which the app is sending information</param>
         protected void HandleClientConnected(Stream stream)
         {
-            // TODO - create an AppInstance manages the connection
+            try
+            {
+                serverLock.EnterWriteLock();
+                
+                //  Create a new AppInstance and add it to the instances collection
+                var instance = new AppInstance(stream, dispatcher);
+                instances.Add(instance.InstanceId, instance);
+            }
+            finally
+            {
+                serverLock.ExitWriteLock();
+            }
+            
         }
 
         /// <summary>

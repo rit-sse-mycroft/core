@@ -1,6 +1,7 @@
 ﻿using Mycroft.App.Connection;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,10 +48,26 @@ namespace Mycroft.App
         /// </summary>
         private State connectionState;
 
+        /// <summary>
+        /// Dispatches messages through the system once received
+        /// </summary>
+        private Dispatcher dispatcher;
 
-        public AppInstance()
+        /// <summary>
+        /// Input stream that receives messages from the app instance
+        /// </summary>
+        private Stream stream;
+
+        /// <summary>
+        /// Set up a null AppInstance. An InstanceId is assigned to a new GUID, which
+        /// will be reset if the instance sends a different ID in its manifest.
+        /// </summary>
+        public AppInstance(Stream stream, Dispatcher dispatcher)
         {
+            this.stream = stream;
+            this.dispatcher = dispatcher;
             connectionState = new ConnectedState();
+            InstanceId = new Guid().ToString();
         }
 
     }
