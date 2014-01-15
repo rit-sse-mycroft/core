@@ -12,7 +12,7 @@ namespace Mycroft
         /// <summary>
         /// Source of all commands
         /// </summary>
-        private Stream input;
+        public Stream input {get; private set;}
         /// <summary>
         /// Wrap a command connection around a generic input stream
         /// </summary>
@@ -22,9 +22,9 @@ namespace Mycroft
             this.input = input;
         }
 
-        public async Task<string> getCommandAsync()
+        public async Task<string> GetCommandAsync()
         {
-            int msgLen = await Task.Run<int>((Func<int>)(getMsgLen));
+            int msgLen = await Task.Run<int>((Func<int>)(GetMsgLen));
 
             byte[] buff = new byte[msgLen];
             input.Read(buff, 0, buff.Length);
@@ -33,7 +33,7 @@ namespace Mycroft
             return msg;
         }
 
-        private int getMsgLen()
+        private int GetMsgLen()
         {
             byte[] smallBuf = new byte[100];
             string soFar = "";
