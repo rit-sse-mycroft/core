@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mycroft.Cmd;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,9 @@ namespace Mycroft
 {
     class Dispatcher
     {
+        public void Enqueue(Command cmd)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

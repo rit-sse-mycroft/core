@@ -1,4 +1,5 @@
 ﻿using Mycroft.App.Connection;
+using Mycroft.Cmd;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,7 +27,7 @@ namespace Mycroft.App
         /// <summary>
         /// The unique instance ID of the app
         /// </summary>
-        public String InstanceId { get; private set; }
+        public String InstanceId { get; internal set; }
 
         /// <summary>
         /// The Mycroft API version the app expects
@@ -41,12 +42,17 @@ namespace Mycroft.App
         /// <summary>
         /// The version of the app
         /// </summary>
-        public Version Version { get; set; }
+        public Version Version { get; private set; }
 
         /// <summary>
-        /// Connection, managed through the State pattern
+        /// Current status in being registered with the system
         /// </summary>
         private State connectionState;
+
+        /// <summary>
+        /// The connection object that reads messages
+        /// </summary>
+        private CommandConnection connection;
 
         /// <summary>
         /// Dispatches messages through the system once received
@@ -68,6 +74,22 @@ namespace Mycroft.App
             this.dispatcher = dispatcher;
             connectionState = new ConnectedState();
             InstanceId = new Guid().ToString();
+        }
+
+        /// <summary>
+        /// Starts the AppInstance listening to things
+        /// </summary>
+        public void Listen()
+        {
+            while (true)
+            {
+                Task<string> messageTask = connection.GetCommandAsync();
+                messageTask.Wait();
+                var message = messageTask.Result;
+
+                var command = Command.Parse(message, InstanceId);
+                dispatcher.Enqueue(command);
+            }
         }
 
     }

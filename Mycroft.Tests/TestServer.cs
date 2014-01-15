@@ -1,12 +1,22 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mycroft;
+using System.Threading.Tasks;
+using System.Reflection;
 
 namespace Mycroft.Tests
 {
     [TestClass]
     public class TestServer
     {
+        class FakeServer : Server
+        {
+            public override Task Start()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         /// <summary>
         /// Tests that the OpenSSL format is stripped correctly - colons are removed
         /// and case is preserved
@@ -41,6 +51,43 @@ namespace Mycroft.Tests
             var original = "‎1731F27B313549DE04CA1987F9EBC2C787420B75";
             string thumbprint = Server.FormatCertificateThumbprint(original);
             Assert.AreEqual("1731F27B313549DE04CA1987F9EBC2C787420B75", thumbprint);
+        }
+
+        /// <summary>
+        /// Tests that an instance ID can be successfully changed
+        /// </summary>
+        public void TestChangeInstanceId_NoDuplicate()
+        {
+            Server server = new FakeServer();
+            server.HandleClientConnected(null);
+            var result = server.ChangeInstanceId("", "theNewId");
+            Assert.IsTrue(result);
+        }
+
+        /// <summary>
+        /// Tests that an instance ID is not changed if the new ID already exists
+        /// </summary>
+        public void TestChangeInstanceId_Duplicate()
+        {
+            
+        }
+
+        /// <summary>
+        /// Tests that false is returned when the old ID doesn't exist
+        /// </summary>
+        public void TestChangeInstanceId_DoesntExist()
+        {
+            var handleClientConnected = typeof(Server).GetMethod(
+                "HandleClientConnected",
+                BindingFlags.Instance | BindingFlags.NonPublic,
+                Type.DefaultBinder,
+                new[] { typeof(string) },
+                null
+            );
+
+            Server server = new FakeServer();
+            var result = server.ChangeInstanceId("missingId", "theNewId");
+            Assert.IsFalse(result);
         }
     }
 }
