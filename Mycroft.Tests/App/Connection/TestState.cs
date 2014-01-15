@@ -14,9 +14,4 @@ namespace Mycroft.Tests.App.Connection
         {
         }
     }
-
-    class TestStateClass : State
-    {
-    }
-
 }

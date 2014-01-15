@@ -14,6 +14,7 @@ namespace Mycroft
     {
         static void Main(string[] args)
         {
+            // Accessing certificates may need to be abstracted for Mono
             X509Store store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
             store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
             Debug.WriteLine(store.Certificates.Count);

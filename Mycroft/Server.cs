@@ -16,8 +16,6 @@ namespace Mycroft
     /// </summary>
     public abstract class Server
     {
-        private ReaderWriterLockSlim serverLock = new ReaderWriterLockSlim();
-
         /// <summary>
         /// The App instances that are running
         /// </summary>
@@ -44,21 +42,36 @@ namespace Mycroft
         /// Handle clients connecting to the server by creating an AppInstance for the connection
         /// </summary>
         /// <param name="stream">The stream over which the app is sending information</param>
-        protected void HandleClientConnected(Stream stream)
+        public void HandleClientConnected(Stream stream)
         {
-            try
+            //  Create a new AppInstance and add it to the instances collection
+            var instance = new AppInstance(stream, dispatcher);
+            instances.Add(instance.InstanceId, instance);
+            instance.Listen();
+        }
+
+        /// <summary>
+        /// Changes the instance ID of an AppInstance
+        /// </summary>
+        /// <param name="oldId">The old ID of the instance</param>
+        /// <param name="newId">The new ID used to handle the instance</param>
+        /// <returns>Returns true if the instance ID was successfully changed,
+        /// false if the ID was in use</returns>
+        internal bool ChangeInstanceId(string oldId, string newId)
+        {
+            // Make sure we don't have duplicates
+            if (instances.Keys.Contains(newId))
             {
-                serverLock.EnterWriteLock();
-                
-                //  Create a new AppInstance and add it to the instances collection
-                var instance = new AppInstance(stream, dispatcher);
-                instances.Add(instance.InstanceId, instance);
+                return false;
             }
-            finally
-            {
-                serverLock.ExitWriteLock();
-            }
-            
+
+            // Swap the ID
+            var instance = instances[oldId];
+            instance.InstanceId = newId;
+            instances.Remove(oldId);
+            instances[newId] = instance;
+
+            return true;
         }
 
         /// <summary>
