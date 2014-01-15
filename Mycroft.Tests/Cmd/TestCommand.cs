@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mycroft.Cmd;
 using System.IO;
+using System.Diagnostics;
 
 namespace Mycroft.Tests.Cmd
 {
@@ -15,7 +16,7 @@ namespace Mycroft.Tests.Cmd
             Command nullReturned = Command.Parse("", "");    
             Assert.AreEqual(null, nullReturned, "Should return null");
 
-            
+            // sample input taken from the wiki
             var input = @"MSG_QUERY : {
                 ""id"": ""uuid"",
                 ""capability"": ""weather"",
@@ -35,10 +36,14 @@ namespace Mycroft.Tests.Cmd
             }
             catch (System.Runtime.Serialization.SerializationException)
             {
-                throw new Exception("JSON could not be parsed into an object");
+                throw new Exception("JSON could not be parsed into an object - serialization error");
+            }
+            catch (Exception e )
+            {
+                throw new Exception("Unexpected error");
             }
             
-            //random input should return null
+            //random input should return null because objects name is incorrect
             var input1 = @"CTL_FOOBAR : {
                 ""id"": ""uuid"",
                 ""capability"": ""weather"",
@@ -48,7 +53,7 @@ namespace Mycroft.Tests.Cmd
                 ""priority"": 30           
             }}";
             Command returned = Command.Parse(input1, "1234");
-            Assert.AreEqual(null, returned, "A random input should return a null value");
+            Assert.AreEqual(null, returned, "An incorrect class name should return a null value");
         }
     }
     class BaseCommand : Command

@@ -15,32 +15,26 @@ namespace Mycroft.Cmd.Sys
         /// <param name="json">The JSON body of the message</param>
         /// <returns>Returns a command object for the parsed message</returns>
         public static Command Parse(String type, String rawData, Object data, String instanceId)
-        {
-          
+        { 
             switch (type)
             {
                 case "SYS_KILLAPP":
-                    //do kill app stuff
                     KillAll.SysKillAll.killAll(instanceId);
                     break;
                 case "SYS_SHUTDOWN":
-                    //do shutdown stuff
                     ShutOff.SysShutOff.shutOff(instanceId);
                     break;
                 case "SYS_LOCKDOWN":
-                    //do lockdown stuff
                     Lockdown.SysLockdown.lockdown(instanceId);
                     break;
                 case "SYS_UNLOCK":
-                    //do unlock stuff
                     Unlock.SysUnlock.unlock(instanceId);
                     break;
                 default:
-                    //data is incorrect - can't do anything with it
+                    //TODO: notify if data does not conform
                     break;
             }
-            
-        return null;
+            return null;
         }
     }
 }

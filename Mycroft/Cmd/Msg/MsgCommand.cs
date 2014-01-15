@@ -16,35 +16,27 @@ namespace Mycroft.Cmd.Msg
         /// <returns>Returns a command object for the parsed message</returns>
         public static Command Parse(String type, String rawData, Object data, String instanceId)
         {
-
             switch (type)
             {
                 case "MSG_BROADCAST":
-                    //do message broadcast stuff
                     Broadcast.MsgBroadcast.broadcast(instanceId);
                     break;
                 case "MSG_QUERY":
-                    //do message query stuff
                     Query.MsgQuery.query(instanceId);
                     break;
                 case "MSG_DIRECTQUERY":
-                    //do message direct query stuff
                     DirectQuery.MsgDirectQuery.directQuery(instanceId);
                     break;
                 case "MSG_REPLY":
-                    //do message reply stuff
                     Reply.MsgReply.reply(instanceId);
                     break;
                 case "MSG_REQUEST":
-                    //do message request stuff
                     Request.MsgRequest.request(instanceId);
                     break;
-                    default:
-                //data is incorrect - can't do anything with it
-                    break;
+                default:
+                    //TODO: notify if data does not meet format
+                break;
             }
-        
- 
             return null;
         }
     }

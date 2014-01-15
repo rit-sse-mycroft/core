@@ -19,7 +19,6 @@ namespace Mycroft.Tests.Cmd.App
             //command for app up should be called
             String appUpString = @"APP_UP {""foo""";
             AppCommand.Parse(fooString, appUpString, fooData, fooString);
-
         }
     }
 }
