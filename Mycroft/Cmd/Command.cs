@@ -34,7 +34,7 @@ namespace Mycroft.Cmd
                 }
                 else if (type == "APP")
                 {
-                    return App.AppCommand.Parse(type, data);
+                    return App.AppCommand.Parse(rawData, data);
                 }
                 else if (type == "SYS")
                 {
