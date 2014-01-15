@@ -5,7 +5,7 @@ namespace Mycroft.Cmd.App.Down
 {
     class AppDown : AppCommand
     {
-        public static void down()
+        public static void down(String instanceId)
         {
 
         }

@@ -8,7 +8,7 @@ namespace Mycroft.Cmd.Msg.Request
 {
     class MsgRequest : MsgCommand
     {
-        public static void request()
+        public static void request(String instanceId)
         {
 
         }

@@ -8,7 +8,7 @@ namespace Mycroft.Cmd.Sys.Unlock
 {
     class SysUnlock : SysCommand
     {
-        public static void unlock()
+        public static void unlock(String instanceId)
         {
 
         }

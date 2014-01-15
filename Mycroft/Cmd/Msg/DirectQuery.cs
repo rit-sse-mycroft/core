@@ -8,7 +8,7 @@ namespace Mycroft.Cmd.Msg.DirectQuery
 {
     class MsgDirectQuery : MsgCommand
     {
-        public static void directQuery()
+        public static void directQuery(String instanceId)
         {
 
         }

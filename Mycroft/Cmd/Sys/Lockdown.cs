@@ -8,7 +8,7 @@ namespace Mycroft.Cmd.Sys.Lockdown
 {
     class SysLockdown : SysCommand
     {
-        public static void lockdown()
+        public static void lockdown(String instanceId)
         {
 
         }

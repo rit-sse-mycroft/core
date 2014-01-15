@@ -8,7 +8,7 @@ namespace Mycroft.Cmd.Msg.Broadcast
 {
     class MsgBroadcast : MsgCommand
     {
-        public static void broadcast()
+        public static void broadcast(String instanceId)
         {
 
         }

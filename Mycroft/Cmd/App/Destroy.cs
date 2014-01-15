@@ -5,7 +5,7 @@ namespace Mycroft.Cmd.App.Destroy
 {
     class AppDestroy : AppCommand
     {
-        public static void destroy()
+        public static void destroy(String instanceId)
         {
 
         }

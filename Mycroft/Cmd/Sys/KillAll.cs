@@ -8,7 +8,7 @@ namespace Mycroft.Cmd.Sys.KillAll
 {
     class SysKillAll : SysCommand
     {
-        public static void killAll()
+        public static void killAll(String instanceId)
         {
 
         }

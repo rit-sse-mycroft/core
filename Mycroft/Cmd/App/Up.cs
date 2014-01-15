@@ -5,7 +5,7 @@ namespace Mycroft.Cmd.App.Up
 {
     class AppUp : AppCommand
     {
-        public static void up()
+        public static void up(String instanceId)
         {
 
         }

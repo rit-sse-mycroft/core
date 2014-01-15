@@ -12,7 +12,7 @@ namespace Mycroft.Tests.Cmd
         public void TestParse()
         {
             // Blank manifest should return null
-            Command nullReturned = Command.Parse("");    
+            Command nullReturned = Command.Parse("", "");    
             Assert.AreEqual(null, nullReturned, "Should return null");
 
             
@@ -31,7 +31,7 @@ namespace Mycroft.Tests.Cmd
             try
             {
                 // if this breaks, errors could lie in MSG command etc
-                Command.Parse(input);
+                Command.Parse(input, "1234");
             }
             catch (System.Runtime.Serialization.SerializationException)
             {
@@ -47,7 +47,7 @@ namespace Mycroft.Tests.Cmd
                 ""instanceId"":[""xxxx""],
                 ""priority"": 30           
             }}";
-            Command returned = Command.Parse(input1);
+            Command returned = Command.Parse(input1, "1234");
             Assert.AreEqual(null, returned, "A random input should return a null value");
         }
     }

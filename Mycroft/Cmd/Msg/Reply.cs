@@ -8,7 +8,7 @@ namespace Mycroft.Cmd.Msg.Reply
 {
     class MsgReply : MsgCommand
     {
-        public static void reply()
+        public static void reply(String instanceId)
         {
 
         }

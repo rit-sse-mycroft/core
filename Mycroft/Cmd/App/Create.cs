@@ -5,7 +5,7 @@ namespace Mycroft.Cmd.App.Create
 {
     class AppCreate : AppCommand
     {
-        public static void create()
+        public static void create(String instanceId)
         {
 
         }

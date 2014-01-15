@@ -8,7 +8,7 @@ namespace Mycroft.Cmd.Sys.ShutOff
 {
     class SysShutOff : SysCommand
     {
-        public static void shutOff()
+        public static void shutOff(String instanceId)
         {
 
         }

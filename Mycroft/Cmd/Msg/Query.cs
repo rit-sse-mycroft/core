@@ -8,7 +8,7 @@ namespace Mycroft.Cmd.Msg.Query
 {
     class MsgQuery : MsgCommand
     {
-        public static void query()
+        public static void query(String instanceId)
         {
 
         }

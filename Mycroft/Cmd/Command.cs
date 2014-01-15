@@ -17,7 +17,7 @@ namespace Mycroft.Cmd
         /// <returns>
         /// Returns the Command object that needs to be routed through the system
         /// </returns>
-        public static Command Parse(String input)
+        public static Command Parse(String input, String instanceId)
         {
             // Break the message body into the type token and the JSON blob,
             // then delegate to the specific command parser (MsgCmd.Parse(), AppCmd.Parse(), etc.)
@@ -29,15 +29,15 @@ namespace Mycroft.Cmd
                 Object data = getData(rawData);
                 if (type == "MSG")
                 {
-                    return Msg.MsgCommand.Parse(type, rawData, data);
+                    return Msg.MsgCommand.Parse(type, rawData, data, instanceId);
                 }
                 else if (type == "APP")
                 {
-                    return App.AppCommand.Parse(type, rawData, data);
+                    return App.AppCommand.Parse(type, rawData, data, instanceId);
                 }
                 else if (type == "SYS")
                 {
-                    return Sys.SysCommand.Parse(type, rawData, data);
+                    return Sys.SysCommand.Parse(type, rawData, data, instanceId);
                 }
             }
             //TODO standardize
