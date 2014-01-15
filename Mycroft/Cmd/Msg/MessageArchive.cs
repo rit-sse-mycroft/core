@@ -11,19 +11,22 @@ namespace Mycroft.Cmd.Msg
     class MessageArchive
     {
         static ReaderWriterLockSlim rwl = new ReaderWriterLockSlim();
-        TimeSpan timeToLive;
 
-        MemoryCache archive2;
+        MemoryCache archive;
+
+        TimeSpan timeToLive { get; set; }
 
 
         public MessageArchive(Int32 hours = 0, Int32 minutes = 30, Int32 seconds = 0)
         {
 
-            archive2 = new MemoryCache("ArchiveCache");
-
+            archive = new MemoryCache("ArchiveCache");// <- name is arbatrary 
             timeToLive = new TimeSpan(hours, minutes, seconds);
 
         }
+
+
+
 
         public MsgCommand this[String guid]
         {
@@ -32,7 +35,9 @@ namespace Mycroft.Cmd.Msg
                 rwl.EnterReadLock();
                 try
                 {
-                    return (MsgCommand) archive2.Get(guid);
+
+                    return (MsgCommand)archive.Get(guid);
+
                 }
                 finally
                 {
@@ -48,7 +53,7 @@ namespace Mycroft.Cmd.Msg
             try
             {
                 var timeCanDie = DateTime.Now + timeToLive;
-                archive2.Add(mc.guid, mc, timeCanDie); 
+                archive.Add(mc.guid, mc, timeCanDie);
             }
             finally
             {
