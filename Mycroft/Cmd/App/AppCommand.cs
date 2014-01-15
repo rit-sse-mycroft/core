@@ -14,12 +14,11 @@ namespace Mycroft.Cmd.App
         /// <param name="messageType">The message type that determines the command to create</param>
         /// <param name="json">The JSON body of the message</param>
         /// <returns>Returns a command object for the parsed message</returns>
-        public static Command Parse(String rawData, Object data)
+        public static Command Parse(String type, String rawData, Object data)
         {
             if(rawData.Contains("{"))
             {
-                String appCommandType = rawData.Substring(0, rawData.IndexOf("{") - 1);
-                switch(appCommandType)
+                switch(type)
                 {
                     case "APP_UP":
                         //do app up stuff

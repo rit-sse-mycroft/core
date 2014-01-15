@@ -30,15 +30,15 @@ namespace Mycroft.Cmd
                 Object data = getData(rawData);
                 if (type == "MSG")
                 {
-                    return Msg.MsgCommand.Parse(rawData, data);
+                    return Msg.MsgCommand.Parse(type, rawData, data);
                 }
                 else if (type == "APP")
                 {
-                    return App.AppCommand.Parse(rawData, data);
+                    return App.AppCommand.Parse(type, rawData, data);
                 }
                 else if (type == "SYS")
                 {
-                    return Sys.SysCommand.Parse(rawData, data);
+                    return Sys.SysCommand.Parse(type, rawData, data);
                 }
             }
             //TODO standardize
