@@ -23,15 +23,19 @@ namespace Mycroft.Cmd.App
                 {
                     case "APP_UP":
                         //do app up stuff
+                        Up.AppUp.up();
                         break;
                     case "APP_DOWN":
                         //do app down stuff
+                        Down.AppDown.down();
                         break;
                     case "APP_CREATE":
                         //do app create stuff
+                        Create.AppCreate.create();
                         break;
                     case "APP_DESTROY":
                         //do app destroy stuff
+                        Destroy.AppDestroy.destroy();
                         break;
                     default:
                         //data is incorrect - can't do anything with it
