@@ -24,11 +24,22 @@ namespace Mycroft.Tests.Manifest
                 ""API"": 0,
                 ""description"": ""It does odd stuff like testing or things"",
                 ""dependencies"": {
-                    ""logging"": "">=1.2"",
-                    ""*"": """"
+                    ""logging"": ""1.2"",
+                    ""*"": ""*""
             }}";
-
-            Mycroft.Manifest.Manifest.Parse(input);
+            try
+            {
+                Mycroft.Manifest.Manifest.Parse(input);
+            }
+            catch (Mycroft.Manifest.ManifestValidationException e)
+            {
+                foreach (var item in e.Fields)
+                {
+                    foreach(var err in item.Value)
+                        Trace.WriteLine(err);
+                }
+                throw e;
+            }
         }
         [TestMethod]
         public void TestParseMissingVals()

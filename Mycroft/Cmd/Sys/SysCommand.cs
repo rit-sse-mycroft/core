@@ -14,29 +14,25 @@ namespace Mycroft.Cmd.Sys
         /// <param name="messageType">The message type that determines the command to create</param>
         /// <param name="json">The JSON body of the message</param>
         /// <returns>Returns a command object for the parsed message</returns>
-        public static Command Parse(String rawData, Object data)
-        {
-            if (rawData.Contains("{"))
+        public static Command Parse(String type, String rawData, Object data, String instanceId)
+        { 
+            switch (type)
             {
-                String appCommandType = rawData.Substring(0, rawData.IndexOf("{") - 1);
-                switch (appCommandType)
-                {
-                    case "SYS_KILLAPP":
-                        //do kill app stuff
-                        break;
-                    case "SYS_SHUTDOWN":
-                        //do shutdown stuff
-                        break;
-                    case "SYS_LOCKDOWN":
-                        //do lockdown stuff
-                        break;
-                    case "SYS_UNLOCK":
-                        //do unlock stuff
-                        break;
-                    default:
-                        //data is incorrect - can't do anything with it
-                        break;
-                }
+                case "SYS_KILLAPP":
+                    KillAll.SysKillAll.killAll(instanceId);
+                    break;
+                case "SYS_SHUTDOWN":
+                    ShutOff.SysShutOff.shutOff(instanceId);
+                    break;
+                case "SYS_LOCKDOWN":
+                    Lockdown.SysLockdown.lockdown(instanceId);
+                    break;
+                case "SYS_UNLOCK":
+                    Unlock.SysUnlock.unlock(instanceId);
+                    break;
+                default:
+                    //TODO: notify if data does not conform
+                    break;
             }
             return null;
         }

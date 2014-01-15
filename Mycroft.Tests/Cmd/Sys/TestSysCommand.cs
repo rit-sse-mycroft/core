@@ -13,11 +13,11 @@ namespace Mycroft.Tests.Cmd.Sys
             //base case - shouldn't break with blank data
             Object fooData = null;
             String fooString = "";
-            SysCommand.Parse(fooString, fooData);
+            SysCommand.Parse(fooString, fooString, fooData, fooString);
 
             //command for message command should be called
             String appUpString = @"SYS_KILLAPP {""foo""";
-            SysCommand.Parse(appUpString, fooData);
+            SysCommand.Parse(fooString, appUpString, fooData, fooString);
         }
     }
 }

@@ -14,36 +14,28 @@ namespace Mycroft.Cmd.Msg
         /// <param name="messageType">The message type that determines the command to create</param>
         /// <param name="json">The JSON body of the message</param>
         /// <returns>Returns a command object for the parsed message</returns>
-        public static Command Parse(String rawData, Object data)
+        public static Command Parse(String type, String rawData, Object data, String instanceId)
         {
-            if (rawData.Contains("{"))
+            switch (type)
             {
-                String appCommandType = rawData.Substring(0, rawData.IndexOf("{") - 1);
-                switch (appCommandType)
-                {
-                    case "MSG_BROADCAST":
-                        //do message broadcast stuff
-                        break;
-                    case "MSG_QUERY":
-                        //do message query stuff
-                        break;
-                    case "MSG_DIRECTQUERY":
-                        //do message direct query stuff
-                        break;
-                    case "MSG_REPLY":
-                        //do message reply stuff
-                        break;
-                    case "MSG_REQUEST":
-                        //do message request stuff
-                        break;
-                     default:
-                    //data is incorrect - can't do anything with it
-                       break;
-                }
-            }
-            else
-            {
-                //notify that data cannot be used
+                case "MSG_BROADCAST":
+                    Broadcast.MsgBroadcast.broadcast(instanceId);
+                    break;
+                case "MSG_QUERY":
+                    Query.MsgQuery.query(instanceId);
+                    break;
+                case "MSG_DIRECTQUERY":
+                    DirectQuery.MsgDirectQuery.directQuery(instanceId);
+                    break;
+                case "MSG_REPLY":
+                    Reply.MsgReply.reply(instanceId);
+                    break;
+                case "MSG_REQUEST":
+                    Request.MsgRequest.request(instanceId);
+                    break;
+                default:
+                    //TODO: notify if data does not meet format
+                break;
             }
             return null;
         }
