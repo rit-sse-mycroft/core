@@ -79,17 +79,5 @@ namespace Mycroft
 
             return true;
         }
-
-        /// <summary>
-        /// Formats a SHA-1 hash of the certificate (thumbprint) to be used for searching 
-        /// in the user's certificate store
-        /// </summary>
-        /// <returns>
-        /// Returns the thumbprint, stripped of non-alphanumeric characters and capitalized
-        /// </returns>
-        internal static string FormatCertificateThumbprint(string thumbprint)
-        {
-            return Regex.Replace(thumbprint, @"[^a-zA-Z0-9]","", RegexOptions.IgnoreCase).ToUpper();
-        }
     }
 }

@@ -19,10 +19,12 @@ namespace Mycroft
             store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
             Debug.WriteLine(store.Certificates.Count);
 
+            var thumbprint = ConfigurationManager.AppSettings["CertThumbprint"];
+
             // Use the settings file to figure out which certificate to use
             var collection = store.Certificates.Find(
                 X509FindType.FindByThumbprint,
-                ConfigurationManager.AppSettings["CertThumbprint"],
+                TlsServer.FormatCertificateThumbprint(thumbprint),
                 false
             );
 
