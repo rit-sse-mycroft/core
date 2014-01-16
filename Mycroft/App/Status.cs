@@ -8,5 +8,6 @@ namespace Mycroft.App
 {
     public enum Status
     {
+        Connected, Active, Inactive, InUse
     }
 }

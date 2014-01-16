@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace Mycroft.Server
 {
 
-    public delegate void HandleClientConnected(TcpClient client);
+    public delegate void HandleClientConnected(TcpConnection client);
     /// <summary>
     /// Starts Mycroft's network communications and owns resources in the server
     /// </summary>
@@ -56,9 +56,9 @@ namespace Mycroft.Server
             listeningThread.Join();
         }
 
-        protected virtual TcpClient PrepClient(TcpClient client)
+        protected virtual TcpConnection PrepClient(TcpClient client)
         {
-            return client;
+            return new TcpConnection(client);
         }
 
         /// <summary>

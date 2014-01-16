@@ -1,4 +1,5 @@
 ﻿using Mycroft.Cmd;
+using Mycroft.Cmd.App;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,17 +37,12 @@ namespace Mycroft.App
         /// <summary>
         /// The current status of the app
         /// </summary>
-        public Status Status { get; private set; }
+        public Status AppStatus { get; private set; }
 
         /// <summary>
         /// The version of the app
         /// </summary>
         public Version Version { get; private set; }
-
-        /// <summary>
-        /// Current status in being registered with the system
-        /// </summary>
-        private State connectionState;
 
         /// <summary>
         /// The connection object that reads messages
@@ -72,8 +68,8 @@ namespace Mycroft.App
             this.stream = stream;
             this.dispatcher = dispatcher;
             connection = new CommandConnection(stream);
-            connectionState = new ConnectedState();
             InstanceId = new Guid().ToString();
+            AppStatus = Status.Connected;
         }
 
         /// <summary>
@@ -89,11 +85,12 @@ namespace Mycroft.App
 
                 // Make this command visit this instance before doing anything else
                 var command = Command.Parse(message, this);
-                dispatcher.Enqueue(command);
+                if(CanUse(command))
+                {
+                    dispatcher.Enqueue(command);
+                }
             }
         }
-
-
 
         /// <summary>
         /// Allow the AppInstance to be visited by commands
@@ -104,5 +101,24 @@ namespace Mycroft.App
             command.visitAppInstance(this);
         }
 
+        /// <summary>
+        /// Checks if a command is valid to have received in the app's current state
+        /// </summary>
+        /// <param name="cmd">The command that was received </param>
+        /// <returns>Returns true if the command is valid for the current state, false otherwise</returns>
+        private bool CanUse(Command cmd)
+        {
+            switch(AppStatus)
+            {
+                case Status.Connected:
+                    return (cmd is Manifest);
+
+                case Status.Active:
+                case Status.Inactive:
+                case Status.InUse:
+                    return true;
+            }
+            return true;
+        }
     }
 }

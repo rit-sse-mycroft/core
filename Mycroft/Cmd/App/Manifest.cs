@@ -9,10 +9,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Mycroft.Manifest
+namespace Mycroft.Cmd.App
 {
     [DataContract]
-    public class Manifest
+    public class Manifest : Command
     {
         [DataMember(Name = "version", IsRequired = true )]
         public string Version { get; set;  }

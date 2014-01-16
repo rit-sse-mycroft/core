@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mycroft.Server;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
@@ -36,7 +37,7 @@ namespace Mycroft
             X509Certificate2 cert = collection[0];
             
             var myServ = new TlsServer(IPAddress.Any, 1847, cert);
-            myServ.Start().Wait();
+            //myServ.Start().Wait();
         }
     }
 }

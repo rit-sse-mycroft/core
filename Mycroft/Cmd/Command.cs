@@ -24,6 +24,9 @@ namespace Mycroft.Cmd
         /// </returns>
         public static Command Parse(String input, AppInstance instance)
         {
+            // TODO error handling - catch exceptions, then create a new Command
+            // that contains the error to send back
+
             // Break the message body into the type token and the JSON blob,
             // then delegate to the specific command parser (MsgCmd.Parse(), AppCmd.Parse(), etc.)
             String type = getType(input);

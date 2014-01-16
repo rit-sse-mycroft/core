@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Mycroft.Manifest;
 using System.Diagnostics;
 using System.Runtime.Serialization;
+using Mycroft.Cmd.App;
 
-namespace Mycroft.Tests.Manifest
+namespace Mycroft.Tests.Cmd.App
 {
     [TestClass]
     public class TestManifest
@@ -29,9 +29,9 @@ namespace Mycroft.Tests.Manifest
             }}";
             try
             {
-                Mycroft.Manifest.Manifest.Parse(input);
+                Manifest.Parse(input);
             }
-            catch (Mycroft.Manifest.ManifestValidationException e)
+            catch (ManifestValidationException e)
             {
                 foreach (var item in e.Fields)
                 {
@@ -47,7 +47,7 @@ namespace Mycroft.Tests.Manifest
             var input = "{}";
             try
             {
-                Mycroft.Manifest.Manifest.Parse(input);
+                Manifest.Parse(input);
             }
             catch (SerializationException e)
             {
@@ -79,9 +79,9 @@ namespace Mycroft.Tests.Manifest
 
             try
             {
-                Mycroft.Manifest.Manifest.Parse(input);
+                Manifest.Parse(input);
             }
-            catch (Mycroft.Manifest.ManifestValidationException err)
+            catch (ManifestValidationException err)
             {
                 if (!err.Fields.ContainsKey("version"))
                     throw new Exception("Validator failed to catch app version error");
