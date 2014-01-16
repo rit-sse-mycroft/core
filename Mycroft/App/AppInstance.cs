@@ -98,8 +98,6 @@ namespace Mycroft.App
             }
         }
 
-
-
         /// <summary>
         /// Allow the AppInstance to be visited by commands
         /// </summary>
@@ -107,6 +105,15 @@ namespace Mycroft.App
         public void Issue(Command command)
         {
             command.visitAppInstance(this);
+        }
+
+        /// <summary>
+        /// Changes the State object used by the app instance
+        /// </summary>
+        /// <param name="newState">The new state that will be used</param>
+        public void TransitionState(State newState)
+        {
+            state = newState;
         }
 
     }
