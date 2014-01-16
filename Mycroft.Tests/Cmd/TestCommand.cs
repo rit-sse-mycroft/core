@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mycroft.Cmd;
 using System.IO;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 
 namespace Mycroft.Tests.Cmd
 {
@@ -34,13 +35,9 @@ namespace Mycroft.Tests.Cmd
                 // if this breaks, errors could lie in MSG command etc
                 Command.Parse(input, null);
             }
-            catch (System.Runtime.Serialization.SerializationException)
+            catch (SerializationException e)
             {
-                throw new Exception("JSON could not be parsed into an object - serialization error");
-            }
-            catch (Exception e )
-            {
-                throw new Exception("Unexpected error");
+                throw new Exception("JSON could not be parsed into an object - serialization error", e);
             }
             
             //random input should return null because objects name is incorrect

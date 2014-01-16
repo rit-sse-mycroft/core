@@ -44,9 +44,14 @@ namespace Mycroft.App
         public Version Version { get; private set; }
 
         /// <summary>
+        /// Whether the app is registered and usable by the system
+        /// </summary>
+        public bool IsRegistered { get { return state.IsRegistered; } }
+
+        /// <summary>
         /// Current status in being registered with the system
         /// </summary>
-        private State connectionState;
+        private State state;
 
         /// <summary>
         /// The connection object that reads messages
@@ -72,7 +77,7 @@ namespace Mycroft.App
             this.stream = stream;
             this.dispatcher = dispatcher;
             connection = new CommandConnection(stream);
-            connectionState = new ConnectedState();
+            state = new ConnectedState(this);
             InstanceId = new Guid().ToString();
         }
 
