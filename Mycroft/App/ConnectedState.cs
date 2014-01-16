@@ -9,13 +9,14 @@ namespace Mycroft.App
 {
     class ConnectedState : State
     {
-        public ConnectedState(AppInstance instance)
-            : base(instance, false)
+        public ConnectedState(AppInstance instance, Dispatcher dispatcher)
+            : base(instance, dispatcher, false)
         { }
 
         internal override void HandleCommand(Command cmd)
         {
-
+            // Should only handle the manifest command, then register the app
+            // with the dispatcher
         }
     }
 }

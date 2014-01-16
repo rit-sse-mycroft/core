@@ -77,7 +77,7 @@ namespace Mycroft.App
             this.stream = stream;
             this.dispatcher = dispatcher;
             connection = new CommandConnection(stream);
-            state = new ConnectedState(this);
+            state = new ConnectedState(this, dispatcher);
             InstanceId = new Guid().ToString();
         }
 

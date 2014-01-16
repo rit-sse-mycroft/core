@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 namespace Mycroft.App
 {
     /// <summary>
-    /// Delegates AppInstance behavior to a State object that
-    /// manages how it's registered with the system
+    /// Delegates AppInstance behavior to a State object that manages how
+    /// it's registered with the system
     /// </summary>
     public abstract class State
     {
@@ -18,12 +18,21 @@ namespace Mycroft.App
         /// </summary>
         public bool IsRegistered { get; private set; }
 
-        private AppInstance instance;
+        /// <summary>
+        /// The App Instance in this state
+        /// </summary>
+        protected AppInstance AppInstance { get; private set; }
 
-        internal State(AppInstance instance, bool isRegistered)
+        /// <summary>
+        /// The dispatcher used by the system
+        /// </summary>
+        protected Dispatcher Dispatcher { get; private set; }
+
+        internal State(AppInstance instance, Dispatcher dispatcher, bool isRegistered)
         {
-            this.instance = instance;
+            this.AppInstance = instance;
             this.IsRegistered = isRegistered;
+            this.Dispatcher = dispatcher;
         }
 
         /// <summary>

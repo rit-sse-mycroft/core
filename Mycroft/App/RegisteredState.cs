@@ -9,8 +9,8 @@ namespace Mycroft.App
 {
     class RegisteredState : State
     {
-        public RegisteredState(AppInstance instance)
-            : base(instance, true)
+        public RegisteredState(AppInstance instance, Dispatcher dispatcher)
+            : base(instance, dispatcher, true)
         { }
 
         internal override void HandleCommand(Command cmd)
