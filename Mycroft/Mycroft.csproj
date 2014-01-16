@@ -44,12 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App\Connection\ActiveState.cs" />
+    <Compile Include="App\ActiveState.cs" />
     <Compile Include="App\AppInstance.cs" />
     <Compile Include="App\Capability.cs" />
-    <Compile Include="App\Connection\ConnectedState.cs" />
-    <Compile Include="App\Connection\State.cs" />
-    <Compile Include="App\Connection\RegisteredState.cs" />
+    <Compile Include="App\ConnectedState.cs" />
+    <Compile Include="App\State.cs" />
+    <Compile Include="App\RegisteredState.cs" />
     <Compile Include="App\Status.cs" />
     <Compile Include="Cmd\App\AppCommand.cs" />
     <Compile Include="Cmd\App\Create.cs" />

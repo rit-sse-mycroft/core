@@ -1,5 +1,4 @@
-﻿using Mycroft.App.Connection;
-using Mycroft.Cmd;
+﻿using Mycroft.Cmd;
 using System;
 using System.Collections.Generic;
 using System.IO;

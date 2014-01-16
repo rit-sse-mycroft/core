@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mycroft.App.Connection
+namespace Mycroft.App
 {
-    abstract class State
+    class RegisteredState : State
     {
     }
 }
