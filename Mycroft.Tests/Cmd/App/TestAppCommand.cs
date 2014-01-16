@@ -14,11 +14,11 @@ namespace Mycroft.Tests.Cmd.App
             //base case - shouldn't break with blank data
             Object fooData = null;
             String fooString = "";
-            AppCommand.Parse(fooString, fooString, fooData, fooString);
+            AppCommand.Parse(fooString, fooString, fooData, null);
 
             //command for app up should be called
             String appUpString = @"APP_UP {""foo""";
-            AppCommand.Parse(fooString, appUpString, fooData, fooString);
+            AppCommand.Parse(fooString, appUpString, fooData, null);
         }
     }
 }

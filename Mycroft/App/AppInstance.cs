@@ -72,6 +72,7 @@ namespace Mycroft.App
         {
             this.stream = stream;
             this.dispatcher = dispatcher;
+            connection = new CommandConnection(stream);
             connectionState = new ConnectedState();
             InstanceId = new Guid().ToString();
         }
@@ -87,7 +88,8 @@ namespace Mycroft.App
                 messageTask.Wait();
                 var message = messageTask.Result;
 
-                var command = Command.Parse(message, InstanceId);
+                // Make this command visit this instance before doing anything else
+                var command = Command.Parse(message, this);
                 dispatcher.Enqueue(command);
             }
         }

@@ -6,6 +6,10 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using Mycroft.Cmd;
+using Mycroft.App;
+using Mycroft.Cmd.Sys;
+using Mycroft.Cmd.App;
+using Mycroft.Cmd.Msg;
 
 namespace Mycroft.Cmd
 {
@@ -17,7 +21,7 @@ namespace Mycroft.Cmd
         /// <returns>
         /// Returns the Command object that needs to be routed through the system
         /// </returns>
-        public static Command Parse(String input, String instanceId)
+        public static Command Parse(String input, AppInstance instance)
         {
             // Break the message body into the type token and the JSON blob,
             // then delegate to the specific command parser (MsgCmd.Parse(), AppCmd.Parse(), etc.)
@@ -29,15 +33,15 @@ namespace Mycroft.Cmd
                 Object data = getData(rawData);
                 if (type == "MSG")
                 {
-                    return Msg.MsgCommand.Parse(type, rawData, data, instanceId);
+                    return MsgCommand.Parse(type, rawData, data, instance);
                 }
                 else if (type == "APP")
                 {
-                    return App.AppCommand.Parse(type, rawData, data, instanceId);
+                    return AppCommand.Parse(type, rawData, data, instance);
                 }
                 else if (type == "SYS")
                 {
-                    return Sys.SysCommand.Parse(type, rawData, data, instanceId);
+                    return SysCommand.Parse(type, rawData, data, instance);
                 }
             }
             //TODO standardize

@@ -56,6 +56,7 @@ namespace Mycroft.Tests
         /// <summary>
         /// Tests that an instance ID can be successfully changed
         /// </summary>
+        [TestMethod]
         public void TestChangeInstanceId_NoDuplicate()
         {
             Server server = new FakeServer();
@@ -67,24 +68,18 @@ namespace Mycroft.Tests
         /// <summary>
         /// Tests that an instance ID is not changed if the new ID already exists
         /// </summary>
+        [TestMethod]
         public void TestChangeInstanceId_Duplicate()
         {
-            
+            Assert.IsTrue(false);
         }
 
         /// <summary>
         /// Tests that false is returned when the old ID doesn't exist
         /// </summary>
+        [TestMethod]
         public void TestChangeInstanceId_DoesntExist()
         {
-            var handleClientConnected = typeof(Server).GetMethod(
-                "HandleClientConnected",
-                BindingFlags.Instance | BindingFlags.NonPublic,
-                Type.DefaultBinder,
-                new[] { typeof(string) },
-                null
-            );
-
             Server server = new FakeServer();
             var result = server.ChangeInstanceId("missingId", "theNewId");
             Assert.IsFalse(result);

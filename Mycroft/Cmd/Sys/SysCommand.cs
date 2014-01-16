@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mycroft.App;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,21 +15,21 @@ namespace Mycroft.Cmd.Sys
         /// <param name="messageType">The message type that determines the command to create</param>
         /// <param name="json">The JSON body of the message</param>
         /// <returns>Returns a command object for the parsed message</returns>
-        public static Command Parse(String type, String rawData, Object data, String instanceId)
+        public static Command Parse(String type, String rawData, Object data, AppInstance instance)
         { 
             switch (type)
             {
                 case "SYS_KILLAPP":
-                    KillAll.SysKillAll.killAll(instanceId);
+                    KillAll.SysKillAll.killAll(instance.InstanceId);
                     break;
                 case "SYS_SHUTDOWN":
-                    ShutOff.SysShutOff.shutOff(instanceId);
+                    ShutOff.SysShutOff.shutOff(instance.InstanceId);
                     break;
                 case "SYS_LOCKDOWN":
-                    Lockdown.SysLockdown.lockdown(instanceId);
+                    Lockdown.SysLockdown.lockdown(instance.InstanceId);
                     break;
                 case "SYS_UNLOCK":
-                    Unlock.SysUnlock.unlock(instanceId);
+                    Unlock.SysUnlock.unlock(instance.InstanceId);
                     break;
                 default:
                     //TODO: notify if data does not conform

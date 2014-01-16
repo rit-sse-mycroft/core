@@ -59,6 +59,12 @@ namespace Mycroft
         /// false if the ID was in use</returns>
         internal bool ChangeInstanceId(string oldId, string newId)
         {
+            // Make sure the old ID exists
+            if(!instances.Keys.Contains(oldId))
+            {
+                return false;
+            }
+
             // Make sure we don't have duplicates
             if (instances.Keys.Contains(newId))
             {

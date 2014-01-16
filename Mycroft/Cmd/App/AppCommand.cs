@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mycroft.App;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,21 +15,21 @@ namespace Mycroft.Cmd.App
         /// <param name="messageType">The message type that determines the command to create</param>
         /// <param name="json">The JSON body of the message</param>
         /// <returns>Returns a command object for the parsed message</returns>
-        public static Command Parse(String type, String rawData, Object data, String instanceId)
+        public static Command Parse(String type, String rawData, Object data, AppInstance instance)
         {
         switch (type)
         {
             case "APP_UP":
-                Up.AppUp.up(instanceId);
+                Up.AppUp.up(instance.InstanceId);
                 break;
             case "APP_DOWN":
-                Down.AppDown.down(instanceId);
+                Down.AppDown.down(instance.InstanceId);
                 break;
             case "APP_CREATE":
-                Create.AppCreate.create(instanceId);
+                Create.AppCreate.create(instance.InstanceId);
                 break;
             case "APP_DESTROY":
-                Destroy.AppDestroy.destroy(instanceId);
+                Destroy.AppDestroy.destroy(instance.InstanceId);
                 break;
             default:
                 //data is incorrect - can't do anything with it
