@@ -52,6 +52,11 @@ namespace Mycroft.Cmd.Msg
             rwl.EnterWriteLock();
             try
             {
+
+
+                //TODO check to see that the guid is not in use and if it is send a message back to the sender
+
+
                 var timeCanDie = DateTime.Now + timeToLive;
                 archive.Add(mc.guid, mc, timeCanDie);
             }

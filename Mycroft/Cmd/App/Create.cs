@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Mycroft.App;
+using System;
 
 namespace Mycroft.Cmd.App
 {
     class Create : AppCommand
     {
-        public static void create(String instanceId)
+        public Create(String rawData, AppInstance inatance)
         {
 
         }

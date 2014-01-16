@@ -15,25 +15,20 @@ namespace Mycroft.Cmd.Msg
         /// <param name="messageType">The message type that determines the command to create</param>
         /// <param name="json">The JSON body of the message</param>
         /// <returns>Returns a command object for the parsed message</returns>
-        public static Command Parse(String type, String rawData, Object data, AppInstance instance)
+        public static Command Parse(String type, String rawData, AppInstance instance)
         {
             switch (type)
             {
                 case "MSG_BROADCAST":
-                    Broadcast.broadcast(instance.InstanceId);
-                    break;
+                    return new Broadcast(rawData, instance);
                 case "MSG_QUERY":
-                    Query.query(instance.InstanceId);
-                    break;
+                    return new Query(rawData, instance);
                 case "MSG_DIRECTQUERY":
-                    DirectQuery.directQuery(instance.InstanceId);
-                    break;
+                    return new DirectQuery(rawData, instance);
                 case "MSG_REPLY":
-                    Reply.reply(instance.InstanceId);
-                    break;
+                    return new Reply(rawData, instance);
                 case "MSG_REQUEST":
-                    Request.request(instance.InstanceId);
-                    break;
+                    return new Request(rawData, instance);
                 default:
                     //TODO: notify if data does not meet format
                 break;

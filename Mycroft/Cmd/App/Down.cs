@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Mycroft.App;
+using System;
 
 namespace Mycroft.Cmd.App
 {
     class Down : AppCommand
     {
-        public static void down(String instanceId)
+        public Down(String rawData, AppInstance inatance)
         {
 
         }

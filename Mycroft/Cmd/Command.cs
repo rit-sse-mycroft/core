@@ -31,18 +31,17 @@ namespace Mycroft.Cmd
             {
                 String rawData = input.Substring(input.IndexOf('{'));
                 Console.Write(rawData);
-                Object data = getData(rawData);
-                if (type == "MSG")
+                if (type.StartsWith("MSG"))
                 {
-                    return MsgCommand.Parse(type, rawData, data, instance);
+                    return MsgCommand.Parse(type, rawData, instance);
                 }
-                else if (type == "APP")
+                else if (type.StartsWith("APP"))
                 {
-                    return AppCommand.Parse(type, rawData, data, instance);
+                    return AppCommand.Parse(type, rawData, instance);
                 }
-                else if (type == "SYS")
+                else if (type.StartsWith("SYS"))
                 {
-                    return SysCommand.Parse(type, rawData, data, instance);
+                    return SysCommand.Parse(type, rawData, instance);
                 }
             }
             //TODO standardize
@@ -60,17 +59,6 @@ namespace Mycroft.Cmd
             //TODO standardize
             return null;
         }
-        public static Object getData(String rawData)
-        {
-            var settings = new DataContractJsonSerializerSettings();
-            settings.UseSimpleDictionaryFormat = true;
-            var serializer = new DataContractJsonSerializer(typeof(Object), settings);
-            Object data;
-            var memStream = new MemoryStream(Encoding.UTF8.GetBytes(rawData));
-            data = serializer.ReadObject(memStream) as Object;
-            return data;
-        }
-
 
 
         public void visitAppInstance(AppInstance appInstance)
