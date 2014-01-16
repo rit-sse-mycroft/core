@@ -12,13 +12,14 @@ namespace Mycroft.Server
 {
     public class TlsClient : TcpClient
     {
-        private TcpClient tcpClient;
         private X509Certificate cert;
         public TlsClient(TcpClient client, X509Certificate cert)
-            : base(client.Client) //Close the underlying NetworkStream on close
+            : base() //Close the underlying NetworkStream on close
         {
+            Client = client.Client;
             this.cert = cert;
         }
+
 
         public Stream GetStream()
         {

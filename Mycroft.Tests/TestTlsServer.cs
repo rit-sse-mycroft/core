@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Mycroft.Server;
 
 namespace Mycroft.Tests
 {

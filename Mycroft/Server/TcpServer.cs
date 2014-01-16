@@ -56,7 +56,7 @@ namespace Mycroft.Server
             listeningThread.Join();
         }
 
-        protected TcpClient PrepClient(TcpClient client)
+        protected virtual TcpClient PrepClient(TcpClient client)
         {
             return client;
         }
