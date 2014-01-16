@@ -20,16 +20,16 @@ namespace Mycroft.Cmd.App
         switch (type)
         {
             case "APP_UP":
-                Up.AppUp.up(instance.InstanceId);
+                Up.up(instance.InstanceId);
                 break;
             case "APP_DOWN":
-                Down.AppDown.down(instance.InstanceId);
+                Down.down(instance.InstanceId);
                 break;
             case "APP_CREATE":
-                Create.AppCreate.create(instance.InstanceId);
+                Create.create(instance.InstanceId);
                 break;
             case "APP_DESTROY":
-                Destroy.AppDestroy.destroy(instance.InstanceId);
+                Destroy.destroy(instance.InstanceId);
                 break;
             default:
                 //data is incorrect - can't do anything with it

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mycroft.Cmd.Sys.Unlock
+namespace Mycroft.Cmd.Sys
 {
     class SysUnlock : SysCommand
     {

@@ -1,9 +1,8 @@
 ﻿using System;
-using Mycroft.Cmd.App;
 
-namespace Mycroft.Cmd.App.Up
+namespace Mycroft.Cmd.App
 {
-    class AppUp : AppCommand
+    class Up : AppCommand
     {
         public static void up(String instanceId)
         {

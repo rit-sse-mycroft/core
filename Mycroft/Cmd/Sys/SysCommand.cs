@@ -20,16 +20,16 @@ namespace Mycroft.Cmd.Sys
             switch (type)
             {
                 case "SYS_KILLAPP":
-                    KillAll.SysKillAll.killAll(instance.InstanceId);
+                    KillAll.killAll(instance.InstanceId);
                     break;
                 case "SYS_SHUTDOWN":
-                    ShutOff.SysShutOff.shutOff(instance.InstanceId);
+                    ShutOff.shutOff(instance.InstanceId);
                     break;
                 case "SYS_LOCKDOWN":
-                    Lockdown.SysLockdown.lockdown(instance.InstanceId);
+                    Lockdown.lockdown(instance.InstanceId);
                     break;
                 case "SYS_UNLOCK":
-                    Unlock.SysUnlock.unlock(instance.InstanceId);
+                    SysUnlock.unlock(instance.InstanceId);
                     break;
                 default:
                     //TODO: notify if data does not conform

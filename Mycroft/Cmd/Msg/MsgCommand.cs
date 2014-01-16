@@ -20,19 +20,19 @@ namespace Mycroft.Cmd.Msg
             switch (type)
             {
                 case "MSG_BROADCAST":
-                    Broadcast.MsgBroadcast.broadcast(instance.InstanceId);
+                    Broadcast.broadcast(instance.InstanceId);
                     break;
                 case "MSG_QUERY":
-                    Query.MsgQuery.query(instance.InstanceId);
+                    Query.query(instance.InstanceId);
                     break;
                 case "MSG_DIRECTQUERY":
-                    DirectQuery.MsgDirectQuery.directQuery(instance.InstanceId);
+                    DirectQuery.directQuery(instance.InstanceId);
                     break;
                 case "MSG_REPLY":
-                    Reply.MsgReply.reply(instance.InstanceId);
+                    Reply.reply(instance.InstanceId);
                     break;
                 case "MSG_REQUEST":
-                    Request.MsgRequest.request(instance.InstanceId);
+                    Request.request(instance.InstanceId);
                     break;
                 default:
                     //TODO: notify if data does not meet format

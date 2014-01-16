@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mycroft.Cmd.Msg.DirectQuery
+namespace Mycroft.Cmd.Msg
 {
-    class MsgDirectQuery : MsgCommand
+    class DirectQuery : MsgCommand
     {
         public static void directQuery(String instanceId)
         {

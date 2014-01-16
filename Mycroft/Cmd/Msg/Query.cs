@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mycroft.Cmd.Msg.Query
+namespace Mycroft.Cmd.Msg
 {
-    class MsgQuery : MsgCommand
+    class Query : MsgCommand
     {
         public static void query(String instanceId)
         {
