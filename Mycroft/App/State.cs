@@ -11,7 +11,7 @@ namespace Mycroft.App
     /// Delegates AppInstance behavior to a State object that
     /// manages how it's registered with the system
     /// </summary>
-    abstract class State
+    public abstract class State
     {
         /// <summary>
         /// Indicates that app instance is registered when it's in this state
