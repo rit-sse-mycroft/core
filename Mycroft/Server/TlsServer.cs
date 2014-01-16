@@ -23,8 +23,8 @@ namespace Mycroft.Server
         }
 
 
-        protected override TcpClient PrepClient(TcpClient client) {
-            return new TlsClient(client, cert);
+        protected override TcpConnection PrepClient(TcpClient client) {
+            return new TlsConnection(client, cert);
         }
 
         /// <summary>
