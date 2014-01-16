@@ -60,6 +60,13 @@ namespace Mycroft.App
         private Stream stream;
 
         /// <summary>
+        /// Indicates that we should be listening for messages
+        /// </summary>
+        private volatile bool listening;
+
+        private Object instanceLock = new Object();
+
+        /// <summary>
         /// Set up a null AppInstance. An InstanceId is assigned to a new GUID, which
         /// will be reset if the instance sends a different ID in its manifest.
         /// </summary>
@@ -70,6 +77,7 @@ namespace Mycroft.App
             connection = new CommandConnection(stream);
             InstanceId = new Guid().ToString();
             AppStatus = Status.Connected;
+            listening = false;
         }
 
         /// <summary>
@@ -77,17 +85,21 @@ namespace Mycroft.App
         /// </summary>
         public void Listen()
         {
-            while (true)
+            listening = true;
+            while (listening)
             {
                 Task<string> messageTask = connection.GetCommandAsync();
                 messageTask.Wait();
-                var message = messageTask.Result;
-
-                // Make this command visit this instance before doing anything else
-                var command = Command.Parse(message, this);
-                if(CanUse(command))
+                lock (instanceLock)
                 {
-                    dispatcher.Enqueue(command);
+                    var message = messageTask.Result;
+
+                    // Make this command visit this instance before doing anything else
+                    var command = Command.Parse(message, this);
+                    if (CanUse(command))
+                    {
+                        dispatcher.Enqueue(command);
+                    }
                 }
             }
         }
@@ -98,7 +110,20 @@ namespace Mycroft.App
         /// <param name="command">The command that will operate on the AppInstance</param>
         public void Issue(Command command)
         {
-            command.visitAppInstance(this);
+            lock (instanceLock)
+            {
+                command.visitAppInstance(this);
+            }
+        }
+
+        /// <summary>
+        /// Shuts down the app instance thread
+        /// </summary>
+        public void Disconnect()
+        {
+            lock(instanceLock){
+                listening = false;
+            }
         }
 
         /// <summary>
@@ -108,15 +133,18 @@ namespace Mycroft.App
         /// <returns>Returns true if the command is valid for the current state, false otherwise</returns>
         private bool CanUse(Command cmd)
         {
-            switch(AppStatus)
+            lock (instanceLock)
             {
-                case Status.Connected:
-                    return (cmd is Manifest);
+                switch (AppStatus)
+                {
+                    case Status.Connected:
+                        return (cmd is Manifest);
 
-                case Status.Active:
-                case Status.Inactive:
-                case Status.InUse:
-                    return true;
+                    case Status.Active:
+                    case Status.Inactive:
+                    case Status.InUse:
+                        return true;
+                }
             }
             return true;
         }
