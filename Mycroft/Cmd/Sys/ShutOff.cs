@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mycroft.Cmd.Sys.ShutOff
+namespace Mycroft.Cmd.Sys
 {
-    class SysShutOff : SysCommand
+    class ShutOff : SysCommand
     {
         public static void shutOff(String instanceId)
         {

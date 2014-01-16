@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mycroft.Cmd.Msg.Reply
+namespace Mycroft.Cmd.Msg
 {
-    class MsgReply : MsgCommand
+    class Reply : MsgCommand
     {
         public static void reply(String instanceId)
         {

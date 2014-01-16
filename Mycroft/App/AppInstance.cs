@@ -1,5 +1,4 @@
-﻿using Mycroft.App.Connection;
-using Mycroft.Cmd;
+﻿using Mycroft.Cmd;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +11,7 @@ namespace Mycroft.App
     /// <summary>
     /// Represents an instance of an app that is connected to Mycroft
     /// </summary>
-    class AppInstance
+    public class AppInstance : ICommandable
     {
         /// <summary>
         /// The name of the app that's running.
@@ -72,6 +71,7 @@ namespace Mycroft.App
         {
             this.stream = stream;
             this.dispatcher = dispatcher;
+            connection = new CommandConnection(stream);
             connectionState = new ConnectedState();
             InstanceId = new Guid().ToString();
         }
@@ -87,9 +87,21 @@ namespace Mycroft.App
                 messageTask.Wait();
                 var message = messageTask.Result;
 
-                var command = Command.Parse(message, InstanceId);
+                // Make this command visit this instance before doing anything else
+                var command = Command.Parse(message, this);
                 dispatcher.Enqueue(command);
             }
+        }
+
+
+
+        /// <summary>
+        /// Allow the AppInstance to be visited by commands
+        /// </summary>
+        /// <param name="command">The command that will operate on the AppInstance</param>
+        public void Issue(Command command)
+        {
+            command.visitAppInstance(this);
         }
 
     }

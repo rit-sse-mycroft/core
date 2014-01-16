@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mycroft.App
 {
-    enum Status
+    public enum Status
     {
     }
 }

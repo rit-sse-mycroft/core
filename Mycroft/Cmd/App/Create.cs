@@ -1,9 +1,8 @@
 ﻿using System;
-using Mycroft.Cmd.App;
 
-namespace Mycroft.Cmd.App.Create
+namespace Mycroft.Cmd.App
 {
-    class AppCreate : AppCommand
+    class Create : AppCommand
     {
         public static void create(String instanceId)
         {

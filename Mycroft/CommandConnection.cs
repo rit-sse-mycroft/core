@@ -48,7 +48,7 @@ namespace Mycroft
                         break;
                     }
                 }
-                catch (ArgumentException ex) { } // do nothing, it's just not valid yet
+                catch (ArgumentException) { } // do nothing, it's just not valid yet
             }
             soFar.Trim();
             return int.Parse(soFar);

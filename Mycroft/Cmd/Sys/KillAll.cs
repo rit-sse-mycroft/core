@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mycroft.Cmd.Sys.KillAll
+namespace Mycroft.Cmd.Sys
 {
-    class SysKillAll : SysCommand
+    class KillAll : SysCommand
     {
         public static void killAll(String instanceId)
         {

@@ -9,7 +9,7 @@ namespace Mycroft.App
     /// <summary>
     /// Semantic versioning for apps and capabilities
     /// </summary>
-    class Version
+    public class Version
     {
     }
 }

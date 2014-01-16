@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mycroft.App;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,24 +15,24 @@ namespace Mycroft.Cmd.Msg
         /// <param name="messageType">The message type that determines the command to create</param>
         /// <param name="json">The JSON body of the message</param>
         /// <returns>Returns a command object for the parsed message</returns>
-        public static Command Parse(String type, String rawData, Object data, String instanceId)
+        public static Command Parse(String type, String rawData, Object data, AppInstance instance)
         {
             switch (type)
             {
                 case "MSG_BROADCAST":
-                    Broadcast.MsgBroadcast.broadcast(instanceId);
+                    Broadcast.broadcast(instance.InstanceId);
                     break;
                 case "MSG_QUERY":
-                    Query.MsgQuery.query(instanceId);
+                    Query.query(instance.InstanceId);
                     break;
                 case "MSG_DIRECTQUERY":
-                    DirectQuery.MsgDirectQuery.directQuery(instanceId);
+                    DirectQuery.directQuery(instance.InstanceId);
                     break;
                 case "MSG_REPLY":
-                    Reply.MsgReply.reply(instanceId);
+                    Reply.reply(instance.InstanceId);
                     break;
                 case "MSG_REQUEST":
-                    Request.MsgRequest.request(instanceId);
+                    Request.request(instance.InstanceId);
                     break;
                 default:
                     //TODO: notify if data does not meet format
@@ -39,5 +40,7 @@ namespace Mycroft.Cmd.Msg
             }
             return null;
         }
+
+        public String guid { get; set; }
     }
 }

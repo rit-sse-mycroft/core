@@ -6,10 +6,15 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using Mycroft.Cmd;
+using Mycroft.App;
+using Mycroft.Cmd.Sys;
+using Mycroft.Cmd.App;
+using Mycroft.Cmd.Msg;
+using Mycroft.Server;
 
 namespace Mycroft.Cmd
 {
-    abstract class Command
+    public abstract class Command
     {
         /// <summary>
         /// Parses a Mycroft command from a JSON object
@@ -17,7 +22,7 @@ namespace Mycroft.Cmd
         /// <returns>
         /// Returns the Command object that needs to be routed through the system
         /// </returns>
-        public static Command Parse(String input, String instanceId)
+        public static Command Parse(String input, AppInstance instance)
         {
             // Break the message body into the type token and the JSON blob,
             // then delegate to the specific command parser (MsgCmd.Parse(), AppCmd.Parse(), etc.)
@@ -29,21 +34,21 @@ namespace Mycroft.Cmd
                 Object data = getData(rawData);
                 if (type == "MSG")
                 {
-                    return Msg.MsgCommand.Parse(type, rawData, data, instanceId);
+                    return MsgCommand.Parse(type, rawData, data, instance);
                 }
                 else if (type == "APP")
                 {
-                    return App.AppCommand.Parse(type, rawData, data, instanceId);
+                    return AppCommand.Parse(type, rawData, data, instance);
                 }
                 else if (type == "SYS")
                 {
-                    return Sys.SysCommand.Parse(type, rawData, data, instanceId);
+                    return SysCommand.Parse(type, rawData, data, instance);
                 }
             }
             //TODO standardize
             return null;
         }
-         
+
         public static String getType(String input)
         {
             // get type is in a new method for testing purposes
@@ -57,13 +62,28 @@ namespace Mycroft.Cmd
         }
         public static Object getData(String rawData)
         {
-             var settings = new DataContractJsonSerializerSettings();
-             settings.UseSimpleDictionaryFormat = true;
-             var serializer = new DataContractJsonSerializer(typeof(Object), settings);
-             Object data;
-             var memStream = new MemoryStream(Encoding.UTF8.GetBytes(rawData));
-             data = serializer.ReadObject(memStream) as Object;
-             return data;
+            var settings = new DataContractJsonSerializerSettings();
+            settings.UseSimpleDictionaryFormat = true;
+            var serializer = new DataContractJsonSerializer(typeof(Object), settings);
+            Object data;
+            var memStream = new MemoryStream(Encoding.UTF8.GetBytes(rawData));
+            data = serializer.ReadObject(memStream) as Object;
+            return data;
         }
+
+
+
+        public void visitAppInstance(AppInstance appInstance)
+        {
+
+        }
+
+        public void visitServer(TcpServer server)
+        {
+
+        }
+
+
+
     }
 }

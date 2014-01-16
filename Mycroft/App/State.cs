@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mycroft.Cmd.Sys
+namespace Mycroft.App
 {
-    class SysUnlock : SysCommand
+    abstract class State
     {
-        public static void unlock(String instanceId)
-        {
-
-        }
     }
 }

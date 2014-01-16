@@ -1,9 +1,9 @@
 ﻿using System;
-using Mycroft.Cmd.App;
 
-namespace Mycroft.Cmd.App.Destroy
+
+namespace Mycroft.Cmd.App
 {
-    class AppDestroy : AppCommand
+    class Destroy : AppCommand
     {
         public static void destroy(String instanceId)
         {

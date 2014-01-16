@@ -1,4 +1,5 @@
 ﻿using Mycroft.App;
+using Mycroft.Cmd;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace Mycroft.Server
     /// <summary>
     /// Starts Mycroft's network communications and owns resources in the server
     /// </summary>
-    public class TcpServer
+    public class TcpServer : ICommandable
     {
         private Thread listeningThread;
         private TcpListener tcpListener;
@@ -55,7 +56,7 @@ namespace Mycroft.Server
             listeningThread.Join();
         }
 
-        private TcpClient PrepClient(TcpClient client)
+        protected TcpClient PrepClient(TcpClient client)
         {
             return client;
         }
@@ -68,6 +69,15 @@ namespace Mycroft.Server
         {
             if (ClientConnected != null)
                 ClientConnected(PrepClient((TcpClient)tcpClient));
+        }
+
+        /// <summary>
+        /// Allow the server to be visited by commands
+        /// </summary>
+        /// <param name="command">The command that will operate on the server</param>
+        public void Issue(Command command)
+        {
+            command.visitServer(this);
         }
 
         public event HandleClientConnected ClientConnected;

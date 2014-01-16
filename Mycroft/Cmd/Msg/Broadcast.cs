@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mycroft.Cmd.Msg.Broadcast
+namespace Mycroft.Cmd.Msg
 {
-    class MsgBroadcast : MsgCommand
+    class Broadcast : MsgCommand
     {
         public static void broadcast(String instanceId)
         {
