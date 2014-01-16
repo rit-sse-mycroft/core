@@ -64,12 +64,12 @@ namespace Mycroft.Cmd
         }
 
 
-        public void visitAppInstance(AppInstance appInstance)
+        public virtual void visitAppInstance(AppInstance appInstance)
         {
 
         }
 
-        public void visitServer(TcpServer server)
+        public virtual void visitServer(TcpServer server)
         {
 
         }
