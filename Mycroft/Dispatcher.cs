@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Mycroft
 {
-    class Dispatcher
+    public class Dispatcher
     {
         public void Enqueue(Command cmd)
         {

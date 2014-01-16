@@ -57,6 +57,7 @@
     <Compile Include="Cmd\App\Down.cs" />
     <Compile Include="Cmd\App\Up.cs" />
     <Compile Include="Cmd\Command.cs" />
+    <Compile Include="Cmd\ICommandable.cs" />
     <Compile Include="Cmd\Msg\Broadcast.cs" />
     <Compile Include="Cmd\Msg\DirectQuery.cs" />
     <Compile Include="Cmd\Msg\Query.cs" />

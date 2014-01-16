@@ -11,7 +11,7 @@ namespace Mycroft.App
     /// <summary>
     /// Represents an instance of an app that is connected to Mycroft
     /// </summary>
-    class AppInstance
+    public class AppInstance : ICommandable
     {
         /// <summary>
         /// The name of the app that's running.
@@ -91,6 +91,17 @@ namespace Mycroft.App
                 var command = Command.Parse(message, this);
                 dispatcher.Enqueue(command);
             }
+        }
+
+
+
+        /// <summary>
+        /// Allow the AppInstance to be visited by commands
+        /// </summary>
+        /// <param name="command">The command that will operate on the AppInstance</param>
+        public void Issue(Command command)
+        {
+            command.visitAppInstance(this);
         }
 
     }

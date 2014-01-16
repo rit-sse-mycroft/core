@@ -1,4 +1,5 @@
 ﻿using Mycroft.App;
+using Mycroft.Cmd;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Mycroft
     /// <summary>
     /// Starts Mycroft's network communications and owns resources in the server
     /// </summary>
-    public abstract class Server
+    public abstract class Server : ICommandable
     {
         /// <summary>
         /// The App instances that are running
@@ -79,5 +80,16 @@ namespace Mycroft
 
             return true;
         }
+
+
+        /// <summary>
+        /// Allow the server to be visited by commands
+        /// </summary>
+        /// <param name="command">The command that will operate on the server</param>
+        public void Issue(Command command)
+        {
+            command.visitServer(this);
+        }
+
     }
 }

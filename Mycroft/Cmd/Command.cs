@@ -13,7 +13,7 @@ using Mycroft.Cmd.Msg;
 
 namespace Mycroft.Cmd
 {
-    abstract class Command
+    public abstract class Command
     {
         /// <summary>
         /// Parses a Mycroft command from a JSON object
@@ -47,7 +47,7 @@ namespace Mycroft.Cmd
             //TODO standardize
             return null;
         }
-         
+
         public static String getType(String input)
         {
             // get type is in a new method for testing purposes
@@ -61,13 +61,28 @@ namespace Mycroft.Cmd
         }
         public static Object getData(String rawData)
         {
-             var settings = new DataContractJsonSerializerSettings();
-             settings.UseSimpleDictionaryFormat = true;
-             var serializer = new DataContractJsonSerializer(typeof(Object), settings);
-             Object data;
-             var memStream = new MemoryStream(Encoding.UTF8.GetBytes(rawData));
-             data = serializer.ReadObject(memStream) as Object;
-             return data;
+            var settings = new DataContractJsonSerializerSettings();
+            settings.UseSimpleDictionaryFormat = true;
+            var serializer = new DataContractJsonSerializer(typeof(Object), settings);
+            Object data;
+            var memStream = new MemoryStream(Encoding.UTF8.GetBytes(rawData));
+            data = serializer.ReadObject(memStream) as Object;
+            return data;
         }
+
+
+
+        public void visitAppInstance(AppInstance appInstance)
+        {
+
+        }
+
+        public void visitServer(Server server)
+        {
+
+        }
+
+
+
     }
 }
