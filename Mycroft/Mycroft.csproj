@@ -44,12 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App\ActiveState.cs" />
     <Compile Include="App\AppInstance.cs" />
     <Compile Include="App\Capability.cs" />
-    <Compile Include="App\ConnectedState.cs" />
-    <Compile Include="App\State.cs" />
-    <Compile Include="App\RegisteredState.cs" />
     <Compile Include="App\Status.cs" />
     <Compile Include="Cmd\App\AppCommand.cs" />
     <Compile Include="Cmd\App\Create.cs" />
@@ -73,7 +69,7 @@
     <Compile Include="CommandConnection.cs" />
     <Compile Include="Dispatcher.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="Manifest\Manifest.cs" />
+    <Compile Include="Cmd\App\Manifest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="App\Version.cs" />

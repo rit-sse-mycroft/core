@@ -1,4 +1,5 @@
 ﻿using Mycroft.Cmd;
+using Mycroft.Cmd.App;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,22 +37,12 @@ namespace Mycroft.App
         /// <summary>
         /// The current status of the app
         /// </summary>
-        public Status Status { get; private set; }
+        public Status AppStatus { get; private set; }
 
         /// <summary>
         /// The version of the app
         /// </summary>
         public Version Version { get; private set; }
-
-        /// <summary>
-        /// Whether the app is registered and usable by the system
-        /// </summary>
-        public bool IsRegistered { get { return state.IsRegistered; } }
-
-        /// <summary>
-        /// Current status in being registered with the system
-        /// </summary>
-        private State state;
 
         /// <summary>
         /// The connection object that reads messages
@@ -77,8 +68,8 @@ namespace Mycroft.App
             this.stream = stream;
             this.dispatcher = dispatcher;
             connection = new CommandConnection(stream);
-            state = new ConnectedState(this, dispatcher);
             InstanceId = new Guid().ToString();
+            AppStatus = Status.Connected;
         }
 
         /// <summary>
@@ -94,7 +85,10 @@ namespace Mycroft.App
 
                 // Make this command visit this instance before doing anything else
                 var command = Command.Parse(message, this);
-                dispatcher.Enqueue(command);
+                if(CanUse(command))
+                {
+                    dispatcher.Enqueue(command);
+                }
             }
         }
 
@@ -108,13 +102,23 @@ namespace Mycroft.App
         }
 
         /// <summary>
-        /// Changes the State object used by the app instance
+        /// Checks if a command is valid to have received in the app's current state
         /// </summary>
-        /// <param name="newState">The new state that will be used</param>
-        public void TransitionState(State newState)
+        /// <param name="cmd">The command that was received </param>
+        /// <returns>Returns true if the command is valid for the current state, false otherwise</returns>
+        private bool CanUse(Command cmd)
         {
-            state = newState;
-        }
+            switch(AppStatus)
+            {
+                case Status.Connected:
+                    return (cmd is Manifest);
 
+                case Status.Active:
+                case Status.Inactive:
+                case Status.InUse:
+                    return true;
+            }
+            return true;
+        }
     }
 }

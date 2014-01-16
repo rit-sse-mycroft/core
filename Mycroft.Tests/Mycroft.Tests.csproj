@@ -63,7 +63,7 @@
     <Compile Include="Cmd\Msg\TestMessageArchive.cs" />
     <Compile Include="Cmd\Sys\TestSysCommand.cs" />
     <Compile Include="Cmd\TestCommand.cs" />
-    <Compile Include="Manifest\TestManifest.cs" />
+    <Compile Include="Cmd\App\TestManifest.cs" />
     <Compile Include="TestCommandConnection.cs" />
     <Compile Include="TestDispatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
