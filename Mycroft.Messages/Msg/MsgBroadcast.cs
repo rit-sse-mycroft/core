@@ -11,7 +11,7 @@ using Mycroft.Messages;
 
 namespace Mycroft.Messages.Msg
 {
-    public class MsgBroadcast : DataPacket
+    public class MsgBroadcast : MsgBase
     {
 
         public string Id { get; set; }
@@ -25,6 +25,7 @@ namespace Mycroft.Messages.Msg
             var dct = new Dictionary<string, object>();
             dct["id"] = Id;
             dct["content"] = Content;
+            dct["fromInstanceId"] = FromInstanceId;
             var obj = new DynamicJsonObject(dct);
             var writer = new StringWriter();
             Json.Write(obj, writer);

@@ -8,7 +8,7 @@ using System.Web.Helpers;
 
 namespace Mycroft.Messages.Msg
 {
-    class MsgQueryFail : DataPacket
+    class MsgQueryFail : MsgBase
     {
         public string Id { get; set; }
         public string Message { get; set; }
@@ -18,6 +18,7 @@ namespace Mycroft.Messages.Msg
             var dct = new Dictionary<string, object>();
             dct["id"] = Id;
             dct["message"] = Message;
+            dct["fromInstanceId"] = FromInstanceId;
             var obj = new DynamicJsonObject(dct);
             var writer = new StringWriter();
             Json.Write(obj, writer);

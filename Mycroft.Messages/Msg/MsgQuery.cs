@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Mycroft.Messages.Msg
 {
-    public class MsgQuery : DataPacket
+    public class MsgQuery : MsgBase
     {
         public string Id { get; set; }
 
@@ -33,6 +33,7 @@ namespace Mycroft.Messages.Msg
             dct["data"] = Data;
             dct["instanceId"] = InstanceId;
             dct["priority"] = Priority;
+            dct["fromInstanceId"] = FromInstanceId;
             var obj = new DynamicJsonObject(dct);
             var writer = new StringWriter();
             Json.Write(obj, writer);

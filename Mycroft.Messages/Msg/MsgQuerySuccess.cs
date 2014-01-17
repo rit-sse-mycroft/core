@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Mycroft.Messages.Msg
 {
-    class MsgQuerySuccess : DataPacket
+    class MsgQuerySuccess : MsgBase
     {
         public string Id { get; set; }
         public dynamic Ret { get; set; }
@@ -18,6 +18,7 @@ namespace Mycroft.Messages.Msg
             var dct = new Dictionary<string, object>();
             dct["id"] = Id;
             dct["ret"] = Ret;
+            dct["fromInstanceId"] = FromInstanceId;
             var obj = new DynamicJsonObject(dct);
             var writer = new StringWriter();
             Json.Write(obj, writer);
