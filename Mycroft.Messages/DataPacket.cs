@@ -11,9 +11,7 @@ namespace Mycroft.Messages.Msg
 
         public abstract string Seralize();
 
-        public abstract DataPacket DeSeralize();
-
-
+        public static DataPacket DeSeralize(string json) { return null; }
 
     }
 }
