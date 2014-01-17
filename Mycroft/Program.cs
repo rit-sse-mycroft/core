@@ -37,7 +37,9 @@ namespace Mycroft
             X509Certificate2 cert = collection[0];
             
             var myServ = new TlsServer(IPAddress.Any, 1847, cert);
-            //myServ.Start().Wait();
+            //insecure version var myServ = new TcpServer(IPAddress.Any, 1847);
+            var dispatcher = new Dispatcher(myServ);
+            dispatcher.Run();
         }
     }
 }

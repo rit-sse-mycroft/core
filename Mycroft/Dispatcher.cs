@@ -1,5 +1,7 @@
 ﻿using Mycroft.Cmd;
+using Mycroft.Server;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +11,28 @@ namespace Mycroft
 {
     public class Dispatcher
     {
+        private ConcurrentQueue<Command> DispatchQueue;
+        private TcpServer Server;
+        public Dispatcher(TcpServer server)
+        {
+            Server = server;
+        }
+
+        public void Run()
+        {
+            Command currentCmd;
+            while (true)
+            {
+                if (DispatchQueue.TryDequeue(out currentCmd))
+                {
+                    // Issue all the commands o/
+                    Server.Issue(currentCmd);
+                }
+            }
+        }
         public void Enqueue(Command cmd)
         {
-            throw new NotImplementedException();
+            DispatchQueue.Enqueue(cmd);
         }
     }
 }
