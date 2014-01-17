@@ -55,6 +55,8 @@
   <ItemGroup>
     <Compile Include="Msg\MsgQueryTest.cs" />
     <Compile Include="Msg\MsgBroadcastTest.cs" />
+    <Compile Include="Msg\MsgQuerySuccessTest.cs" />
+    <Compile Include="Msg\MsgQueryFailTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
