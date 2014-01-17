@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mycroft.Tests", "..\Mycroft
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mycroft.Messages", "..\Mycroft.Messages\Mycroft.Messages.csproj", "{39B5B576-AF92-408A-8702-C83F9969C5ED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mycroft.Messages.Test", "Mycroft.Messages.Test\Mycroft.Messages.Test.csproj", "{F2541477-7962-4B1E-AFFF-B608DDAFCA91}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{39B5B576-AF92-408A-8702-C83F9969C5ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39B5B576-AF92-408A-8702-C83F9969C5ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39B5B576-AF92-408A-8702-C83F9969C5ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2541477-7962-4B1E-AFFF-B608DDAFCA91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2541477-7962-4B1E-AFFF-B608DDAFCA91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2541477-7962-4B1E-AFFF-B608DDAFCA91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2541477-7962-4B1E-AFFF-B608DDAFCA91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
