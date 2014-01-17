@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Text;
+using System.Diagnostics;
 using Mycroft.Messages.Msg;
 
 namespace Mycroft.Messages.Test.Msg
@@ -27,6 +29,31 @@ namespace Mycroft.Messages.Test.Msg
         [TestMethod]
         public void TestMsgQuerySerialization()
         {
+            var msgQuery = new MsgQuery();
+            msgQuery.Id = "uuid";
+            msgQuery.Capability = "weather";
+            msgQuery.Action = "get_temperature";
+            var instanceIds = new List<string>();
+            instanceIds.Add("xxxx");
+            instanceIds.Add("xx2");
+            msgQuery.InstanceId = instanceIds;
+            var data = new Dictionary<string, object>();
+            data["scale"] = "fahrenheit";
+            data["other"] = "thing";
+
+            Stream memoryStream = new MemoryStream();
+            var settings = new DataContractJsonSerializerSettings();
+            settings.UseSimpleDictionaryFormat = true;
+            var serializer = new DataContractJsonSerializer(typeof(MsgQuery), settings);
+            serializer.WriteObject(memoryStream, msgQuery);
+
+            memoryStream.Seek(0, 0);
+            long length = memoryStream.Length;
+            byte[] buff = new byte[length];
+            memoryStream.Read(buff, 0, (int)length);
+            string json = Encoding.UTF8.GetString(buff);
+            Debug.WriteLine(json);
+            Assert.IsFalse(json.IndexOf("\"data\":null") >= 0);
         }
 
         [TestMethod]
