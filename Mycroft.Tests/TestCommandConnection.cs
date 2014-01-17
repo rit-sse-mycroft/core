@@ -14,26 +14,24 @@ namespace Mycroft.Tests
     public class TestCommandConnection
     {
         [TestMethod]
-        public async Task TestBodylessMessage(){
+        public void TestBodylessMessage(){
             var s = new MemoryStream(Encoding.UTF8.GetBytes("6\nAPP_UP"));
             var cmd = new CommandConnection(s);
-            var msg = await cmd.GetCommandAsync();
+            var msg = cmd.GetCommand();
             Trace.WriteLine(msg);
-            if (msg != "APP_UP")
-                throw new Exception("Incorrect message!");
+            Assert.Equals(msg, "APP_UP");
         }
 
         [TestMethod]
-        public async Task TestBodaciousMessage()
+        public void TestBodaciousMessage()
         {
             var input = "30\nMSG_BROADCAST {\"key\": \"value\"}";
             var s = new MemoryStream(Encoding.UTF8.GetBytes(input));
             var cmd = new CommandConnection(s);
-            var msg = await cmd.GetCommandAsync();
+            var msg = cmd.GetCommand();
             Trace.WriteLine(msg);
             Trace.WriteLine(input.Substring(3));
-            if (msg != input.Substring(3))
-                throw new Exception("Incorrect message!");
+            Assert.Equals(msg, input.Substring(3));
         }
            
     }
