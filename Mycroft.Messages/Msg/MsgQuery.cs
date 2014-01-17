@@ -16,7 +16,7 @@ namespace Mycroft.Messages.Msg
 
         public string Action { get; set; }
 
-        public Dictionary<string, object> Data { get; set; }
+        public dynamic Data { get; set; }
 
         public List<string> InstanceId { get; set; }
 
@@ -24,12 +24,43 @@ namespace Mycroft.Messages.Msg
 
 
         override
-        public string Seralize() { return null; }
+        public string Seralize() 
+        {
+            var dct = new Dictionary<string, object>();
+            dct["id"] = Id;
+            dct["capability"] = Capability;
+            dct["action"] = Action;
+            dct["data"] = Data;
+            dct["instanceId"] = InstanceId;
+            dct["priority"] = Priority;
+            var obj = new DynamicJsonObject(dct);
+            var writer = new StringWriter();
+            Json.Write(obj, writer);
+            return writer.ToString();
+        }
 
         public static DataPacket DeSeralize(string json)
         {
-            dynamic obj = Json.Decode(json);
-            return null;
+            try
+            {
+                MsgQuery ret = new MsgQuery();
+                dynamic obj = Json.Decode(json);
+                ret.Id = obj["id"];
+                ret.Capability = obj["capability"];
+                ret.Action = obj["action"];
+                ret.Data = obj["data"];
+                ret.InstanceId = new List<string>();
+                DynamicJsonArray instanceIds = obj["instanceId"];
+                foreach(object elem in instanceIds) {
+                    ret.InstanceId.Add(elem.ToString());
+                }
+                ret.Priority = obj["priority"];
+                return ret;
+            }
+            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException ex)
+            {
+                return null;
+            }
         }
     }
 }

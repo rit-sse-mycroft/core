@@ -46,18 +46,9 @@ namespace Mycroft.Messages.Test.Msg
             data["other"] = inner;
             msgQuery.Data = data;
 
-            Stream memoryStream = new MemoryStream();
-            var settings = new DataContractJsonSerializerSettings();
-            settings.UseSimpleDictionaryFormat = true;
-            var serializer = new DataContractJsonSerializer(typeof(MsgQuery), settings);
-            serializer.WriteObject(memoryStream, msgQuery);
-
-            memoryStream.Seek(0, 0);
-            long length = memoryStream.Length;
-            byte[] buff = new byte[length];
-            memoryStream.Read(buff, 0, (int)length);
-            string json = Encoding.UTF8.GetString(buff);
+            string json = msgQuery.Seralize();
             Debug.WriteLine(json);
+
             Assert.IsFalse(json.IndexOf("\"data\":null") >= 0, "Sould not contain null for data");
             Assert.IsFalse(json.IndexOf("KeyValuePairOf") >= 0, "Should not have strange toString");
             Assert.IsFalse(json.IndexOf("\"data\":[]") >= 0, "Should not have empty array for data");
@@ -66,11 +57,7 @@ namespace Mycroft.Messages.Test.Msg
         [TestMethod]
         public void TestMsgQueryDeserialization()
         {
-            var settings = new DataContractJsonSerializerSettings();
-            settings.UseSimpleDictionaryFormat = true;
-            var serializer = new DataContractJsonSerializer(typeof(MsgQuery), settings);
-            var memStream = new MemoryStream(Encoding.UTF8.GetBytes(SampleQuery));
-            MsgQuery msgQuery = serializer.ReadObject(memStream) as MsgQuery;
+            MsgQuery msgQuery = MsgQuery.DeSeralize(SampleQuery) as MsgQuery;
 
             Assert.AreEqual("uuid", msgQuery.Id);
             Assert.AreEqual("weather", msgQuery.Capability);
@@ -79,14 +66,7 @@ namespace Mycroft.Messages.Test.Msg
             Assert.AreEqual("xxxx", msgQuery.InstanceId[0]);
             Assert.AreEqual("xx2", msgQuery.InstanceId[1]);
 
-            var outStream = new MemoryStream();
-            serializer.WriteObject(outStream, msgQuery);
-
-            outStream.Seek(0, 0);
-            long length = outStream.Length;
-            byte[] buff = new byte[length];
-            outStream.Read(buff, 0, (int)length);
-            string json = Encoding.UTF8.GetString(buff);
+            string json = msgQuery.Seralize();
             Debug.WriteLine(json);
             Assert.IsFalse(json.IndexOf("\"data\":{}") >= 0, "data should not be an empty object");
         }

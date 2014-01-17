@@ -1,4 +1,5 @@
-﻿using Mycroft.Cmd;
+﻿using Mycroft.App;
+using Mycroft.Cmd;
 using Mycroft.Server;
 using System;
 using System.Collections.Concurrent;
@@ -13,7 +14,7 @@ namespace Mycroft
     {
         private ConcurrentQueue<Command> DispatchQueue;
         private TcpServer Server;
-        public Dispatcher(TcpServer server)
+        public Dispatcher(TcpServer server, Registry registry)
         {
             Server = server;
             DispatchQueue = new ConcurrentQueue<Command>();
