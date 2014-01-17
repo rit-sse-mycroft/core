@@ -81,7 +81,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Mycroft.Messages\Mycroft.Messages.csproj">
+      <Project>{39b5b576-af92-408a-8702-c83f9969c5ed}</Project>
+      <Name>Mycroft.Messages</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>IF NOT EXIST "$(TargetDir)settings.xml" xcopy "$(ProjectDir)settings.xml" "$(TargetDir)"</PostBuildEvent>
