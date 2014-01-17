@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Mycroft.App
@@ -14,35 +15,67 @@ namespace Mycroft.App
     /// </summary>
     public class AppInstance : ICommandable
     {
+        private ReaderWriterLockSlim readwrite = new ReaderWriterLockSlim();
+
         /// <summary>
         /// The name of the app that's running.
         /// </summary>
-        public String Name { get; private set; }
+        public String Name
+        {
+            get { return Read(() => _name); }
+            private set { Write(() => _name = value); }
+        }
+        private String _name;
 
         /// <summary>
         /// The pretty name of the app
         /// </summary>
-        public String DisplayName { get; private set; }
+        public String DisplayName
+        {
+            get { return Read(() => _displayName); }
+            private set { Write(() => _displayName = value); }
+        }
+        private String _displayName;
 
         /// <summary>
         /// The unique instance ID of the app
         /// </summary>
-        public String InstanceId { get; internal set; }
+        public String InstanceId
+        {
+            get { return Read(() => _instanceId); }
+            private set { Write(() => _instanceId = value); }
+        }
+        private String _instanceId;
 
         /// <summary>
         /// The Mycroft API version the app expects
         /// </summary>
-        public uint? ApiVersion { get; private set; }
+        public uint? ApiVersion
+        {
+            get { return Read(() => _apiVersion); }
+            private set { Write(() => _apiVersion = value); }
+        }
+        private uint? _apiVersion;
 
         /// <summary>
         /// The current status of the app
         /// </summary>
-        public Status AppStatus { get; private set; }
+        public Status AppStatus
+        {
+            get { return Read(() => _status); }
+            private set { Write(() => _status = value); }
+        }
+        private Status _status;
 
         /// <summary>
         /// The version of the app
         /// </summary>
-        public Version Version { get; private set; }
+        public Version Version
+        {
+            get { return Read(() => _version); }
+            private set { Write(() => _version = value); }
+        }
+        private Version _version;
 
         /// <summary>
         /// The connection object that reads messages
@@ -64,8 +97,6 @@ namespace Mycroft.App
         /// </summary>
         private volatile bool listening;
 
-        private Object instanceLock = new Object();
-
         /// <summary>
         /// Set up a null AppInstance. An InstanceId is assigned to a new GUID, which
         /// will be reset if the instance sends a different ID in its manifest.
@@ -85,21 +116,20 @@ namespace Mycroft.App
         /// </summary>
         public void Listen()
         {
-            listening = true;
-            while (listening)
+            // Set that we're listening for commands
+            Write(() => listening = true );
+
+            while (Read(() => listening))
             {
                 Task<string> messageTask = connection.GetCommandAsync();
                 messageTask.Wait();
-                lock (instanceLock)
-                {
-                    var message = messageTask.Result;
+                var message = messageTask.Result;
 
-                    // Make this command visit this instance before doing anything else
-                    var command = Command.Parse(message, this);
-                    if (CanUse(command))
-                    {
-                        dispatcher.Enqueue(command);
-                    }
+                // Make this command visit this instance before doing anything else
+                var command = Command.Parse(message, this);
+                if (CanUse(command))
+                {
+                    dispatcher.Enqueue(command);
                 }
             }
         }
@@ -110,10 +140,7 @@ namespace Mycroft.App
         /// <param name="command">The command that will operate on the AppInstance</param>
         public void Issue(Command command)
         {
-            lock (instanceLock)
-            {
-                command.visitAppInstance(this);
-            }
+            command.visitAppInstance(this);
         }
 
         /// <summary>
@@ -121,9 +148,7 @@ namespace Mycroft.App
         /// </summary>
         public void Disconnect()
         {
-            lock(instanceLock){
-                listening = false;
-            }
+            Write(() => listening = false );
         }
 
         /// <summary>
@@ -133,8 +158,7 @@ namespace Mycroft.App
         /// <returns>Returns true if the command is valid for the current state, false otherwise</returns>
         private bool CanUse(Command cmd)
         {
-            lock (instanceLock)
-            {
+            return Read(() => {
                 switch (AppStatus)
                 {
                     case Status.Connected:
@@ -145,8 +169,84 @@ namespace Mycroft.App
                     case Status.InUse:
                         return true;
                 }
+                return true;
+            });
+        }
+    
+        /// <summary>
+        /// Lambda that can be used for locking
+        /// </summary>
+        private delegate T LockOperation<T>();
+        private delegate void LockOperation();
+
+        /// <summary>
+        /// Executes the operation under a read lock
+        /// </summary>
+        /// <param name="op">The operation that will be locked</param>
+        private T Read<T>(LockOperation<T> op)
+        {
+            try
+            {
+                readwrite.EnterReadLock();
+                return op();
             }
-            return true;
+            finally
+            {
+                readwrite.ExitReadLock();
+            }
+        }
+
+        /// <summary>
+        /// Locks on an operation that does not return
+        /// </summary>
+        /// <param name="op"></param>
+        private void Read(LockOperation op){
+            try
+            {
+                readwrite.EnterReadLock();
+                op();
+            }
+            finally
+            {
+                readwrite.ExitReadLock();
+            }
+        }
+
+        
+        /// <summary>
+        /// Runs the operation under a write lock
+        /// </summary>
+        /// <param name="op">The operation under the write lock</param>
+        private T Write<T>(LockOperation<T> op)
+        {
+            try
+            {
+                readwrite.EnterWriteLock();
+                return op();
+            }
+            finally
+            {
+                readwrite.ExitWriteLock();
+            }
+        }
+
+        /// <summary>
+        /// Locks on a write operation that doesn't return
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="op"></param>
+        /// <returns></returns>
+        private void Write(LockOperation op)
+        {
+            try
+            {
+                readwrite.EnterWriteLock();
+                op();
+            }
+            finally
+            {
+                readwrite.ExitWriteLock();
+            }
         }
     }
 }
