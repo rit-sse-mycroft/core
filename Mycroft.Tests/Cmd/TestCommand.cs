@@ -29,7 +29,7 @@ namespace Mycroft.Tests.Cmd
             
             // JSON of "MSG_QUERY" should return "MSG"
             String msgQuery = Command.getType(input);
-            Assert.AreEqual(msgQuery, "MSG", "Get type should return 'MSG' ");
+            Assert.AreEqual("MSG", msgQuery, "Get type should return 'MSG' ");
             try
             {
                 // if this breaks, errors could lie in MSG command etc
