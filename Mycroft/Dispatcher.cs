@@ -16,6 +16,7 @@ namespace Mycroft
         public Dispatcher(TcpServer server)
         {
             Server = server;
+            DispatchQueue = new ConcurrentQueue<Command>();
         }
 
         public void Run()
