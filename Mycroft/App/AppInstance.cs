@@ -137,7 +137,7 @@ namespace Mycroft.App
         /// <param name="command">The command that will operate on the AppInstance</param>
         public void Issue(Command command)
         {
-            command.visitAppInstance(this);
+            command.VisitAppInstance(this);
         }
 
         /// <summary>

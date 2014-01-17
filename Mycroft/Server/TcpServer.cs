@@ -77,7 +77,7 @@ namespace Mycroft.Server
         /// <param name="command">The command that will operate on the server</param>
         public void Issue(Command command)
         {
-            command.visitServer(this);
+            command.VisitServer(this);
         }
 
         public event HandleClientConnected ClientConnected;
