@@ -21,7 +21,9 @@ namespace Mycroft.Messages.Test.Msg
           ""instanceId"" : [""xxxx"", ""xx2""],
           ""data"" : {
              ""scale"" : ""fahrenheit"",
-             ""other"" : ""thing""
+             ""other"" : {
+               ""k"" : ""v""
+             }
           },
           ""priority"" : 30
         }";
@@ -39,7 +41,10 @@ namespace Mycroft.Messages.Test.Msg
             msgQuery.InstanceId = instanceIds;
             var data = new Dictionary<string, object>();
             data["scale"] = "fahrenheit";
-            data["other"] = "thing";
+            var inner = new Dictionary<string, object>();
+            inner["k"] = "v";
+            data["other"] = inner;
+            msgQuery.Data = data;
 
             Stream memoryStream = new MemoryStream();
             var settings = new DataContractJsonSerializerSettings();
@@ -53,7 +58,9 @@ namespace Mycroft.Messages.Test.Msg
             memoryStream.Read(buff, 0, (int)length);
             string json = Encoding.UTF8.GetString(buff);
             Debug.WriteLine(json);
-            Assert.IsFalse(json.IndexOf("\"data\":null") >= 0);
+            Assert.IsFalse(json.IndexOf("\"data\":null") >= 0, "Sould not contain null for data");
+            Assert.IsFalse(json.IndexOf("KeyValuePairOf") >= 0, "Should not have strange toString");
+            Assert.IsFalse(json.IndexOf("\"data\":[]") >= 0, "Should not have empty array for data");
         }
 
         [TestMethod]
@@ -71,8 +78,17 @@ namespace Mycroft.Messages.Test.Msg
             Assert.AreEqual(30, msgQuery.Priority);
             Assert.AreEqual("xxxx", msgQuery.InstanceId[0]);
             Assert.AreEqual("xx2", msgQuery.InstanceId[1]);
-            Assert.AreEqual("fahrenheit", msgQuery.Data["scale"]);
-            Assert.AreEqual("thing", msgQuery.Data["other"]);
+
+            var outStream = new MemoryStream();
+            serializer.WriteObject(outStream, msgQuery);
+
+            outStream.Seek(0, 0);
+            long length = outStream.Length;
+            byte[] buff = new byte[length];
+            outStream.Read(buff, 0, (int)length);
+            string json = Encoding.UTF8.GetString(buff);
+            Debug.WriteLine(json);
+            Assert.IsFalse(json.IndexOf("\"data\":{}") >= 0, "data should not be an empty object");
         }
     }
 }

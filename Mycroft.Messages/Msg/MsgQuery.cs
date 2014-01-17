@@ -21,7 +21,7 @@ namespace Mycroft.Messages.Msg
         public string Action { get; set; }
 
         [DataMember(Name = "data", IsRequired = true)]
-        public Dictionary<string, string> Data { get; set; }
+        public Dictionary<string, object> Data { get; set; }
 
         [DataMember(Name = "instanceId", IsRequired = true)]
         public List<string> InstanceId { get; set; }
