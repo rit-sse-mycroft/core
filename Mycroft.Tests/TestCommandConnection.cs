@@ -19,7 +19,7 @@ namespace Mycroft.Tests
             var cmd = new CommandConnection(s);
             var msg = cmd.GetCommand();
             Trace.WriteLine(msg);
-            Assert.Equals(msg, "APP_UP");
+            Assert.AreEqual(msg, "APP_UP");
         }
 
         [TestMethod]
@@ -31,7 +31,7 @@ namespace Mycroft.Tests
             var msg = cmd.GetCommand();
             Trace.WriteLine(msg);
             Trace.WriteLine(input.Substring(3));
-            Assert.Equals(msg, input.Substring(3));
+            Assert.AreEqual(msg, input.Substring(3));
         }
            
     }
