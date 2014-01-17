@@ -4,26 +4,24 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
-using Mycroft.Messages;
-
 
 namespace Mycroft.Messages.Msg
 {
     [DataContract]
-    class MsgBroadcast : DataPacket
+    class MsgBroadcastSuccess : DataPacket
     {
 
         [DataMember(Name = "id", IsRequired = true)]
         public string Id { get; set; }
 
-        [DataMember(Name = "content", IsRequired = true)]
+        [DataMember(Name = "message", IsRequired = true)]
         public string Content { get; set; }
 
-
         override
-        public string Seralize(){return null;}
+        public string Seralize() { return null; }
 
         override
         public DataPacket DeSeralize() { return null; }
+
     }
 }

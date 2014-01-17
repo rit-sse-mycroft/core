@@ -9,7 +9,7 @@ using System.Runtime.Serialization.Json;
 namespace Mycroft.Messages.Msg
 {
     [DataContract]
-    public class MsgQuery
+    public class MsgQuery : DataPacket
     {
         [DataMember(Name = "id", IsRequired = true)]
         public string Id { get; set; }
@@ -28,5 +28,12 @@ namespace Mycroft.Messages.Msg
 
         [DataMember(Name = "priority", IsRequired = true)]
         public int Priority { get; set; }
+
+
+        override
+        public string Seralize() { return null; }
+
+        override
+        public DataPacket DeSeralize() { return null; }
     }
 }

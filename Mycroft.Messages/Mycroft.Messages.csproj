@@ -40,6 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataPacket.cs" />
+    <Compile Include="Msg\MsgBroadcast.cs" />
+    <Compile Include="Msg\MsgBroadcastFail.cs" />
+    <Compile Include="Msg\MsgBroadcastSuccess.cs" />
     <Compile Include="Msg\MsgQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
