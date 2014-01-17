@@ -2,6 +2,7 @@
 using Mycroft.Cmd.App;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -80,21 +81,17 @@ namespace Mycroft.App
         /// <summary>
         /// The connection object that reads messages
         /// </summary>
-        private CommandConnection connection;
+        private readonly CommandConnection connection;
 
         /// <summary>
         /// Dispatches messages through the system once received
         /// </summary>
-        private Dispatcher dispatcher;
-
-        /// <summary>
-        /// Input stream that receives messages from the app instance
-        /// </summary>
-        private Stream stream;
+        private readonly Dispatcher dispatcher;
 
         /// <summary>
         /// Indicates that we should be listening for messages
         /// </summary>
+        /// <remarks>Should always be accessed under a read/write lock</remarks>
         private volatile bool listening;
 
         /// <summary>
@@ -103,7 +100,6 @@ namespace Mycroft.App
         /// </summary>
         public AppInstance(Stream stream, Dispatcher dispatcher)
         {
-            this.stream = stream;
             this.dispatcher = dispatcher;
             connection = new CommandConnection(stream);
             InstanceId = new Guid().ToString();
@@ -125,6 +121,9 @@ namespace Mycroft.App
                 messageTask.Wait();
                 var message = messageTask.Result;
 
+                Debug.WriteLine("Message received by AppInstance " + InstanceId);
+                Debug.WriteLine(message);
+
                 // Make this command visit this instance before doing anything else
                 var command = Command.Parse(message, this);
                 if (CanUse(command))
@@ -141,6 +140,15 @@ namespace Mycroft.App
         public void Issue(Command command)
         {
             command.visitAppInstance(this);
+        }
+
+        /// <summary>
+        /// Sends a message to the connected app
+        /// </summary>
+        /// <param name="message"></param>
+        public void Send(string message)
+        {
+            Task writeTask = connection.SendMessageAsync(message);
         }
 
         /// <summary>
