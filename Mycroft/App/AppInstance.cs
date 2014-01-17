@@ -117,9 +117,7 @@ namespace Mycroft.App
 
             while (Read(() => listening))
             {
-                Task<string> messageTask = connection.GetCommandAsync();
-                messageTask.Wait();
-                var message = messageTask.Result;
+                var message = connection.GetCommand();
 
                 Debug.WriteLine("Message received by AppInstance " + InstanceId);
                 Debug.WriteLine(message);

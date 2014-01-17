@@ -22,9 +22,9 @@ namespace Mycroft.App
             this.input = input;
         }
 
-        public async Task<string> GetCommandAsync()
+        public string GetCommand()
         {
-            int msgLen = await Task.Run<int>((Func<int>)(GetMsgLen));
+            int msgLen = GetMsgLen();
 
             byte[] buff = new byte[msgLen];
             input.Read(buff, 0, buff.Length);
