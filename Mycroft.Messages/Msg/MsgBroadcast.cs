@@ -23,7 +23,6 @@ namespace Mycroft.Messages.Msg
         override
         public string Seralize(){return null;}
 
-        override
-        public DataPacket DeSeralize() { return null; }
+        public static DataPacket DeSeralize(string json) { return null; }
     }
 }
