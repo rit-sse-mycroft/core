@@ -56,7 +56,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Mycroft.Messages\Mycroft.Messages.csproj">
+    <ProjectReference Include="..\Mycroft.Messages\Mycroft.Messages.csproj">
       <Project>{39b5b576-af92-408a-8702-c83f9969c5ed}</Project>
       <Name>Mycroft.Messages</Name>
     </ProjectReference>
