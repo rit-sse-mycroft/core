@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App\AppBase.cs" />
     <Compile Include="DataPacket.cs" />
     <Compile Include="Msg\MsgBase.cs" />
     <Compile Include="Msg\MsgBroadcast.cs" />
@@ -50,7 +51,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App\" />
     <Folder Include="Sys\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
