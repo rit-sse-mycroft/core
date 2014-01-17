@@ -33,6 +33,19 @@ namespace Mycroft.App
             return msg;
         }
 
+        /// <summary>
+        /// Writes a message back to the host
+        /// </summary>
+        /// <param name="message">The message to write, including the message type tag and JSON body</param>
+        /// <returns>Returns a Task for async operation</returns>
+        public async Task SendMessageAsync(string message)
+        {
+            var size = Encoding.UTF8.GetByteCount(message);
+            string fullMessage = size.ToString() + "\n" + message;
+            byte[] data = Encoding.UTF8.GetBytes(message);
+            await input.WriteAsync(data, 0, data.Length);
+        }
+
         private int GetMsgLen()
         {
             byte[] smallBuf = new byte[100];
