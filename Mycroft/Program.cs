@@ -1,4 +1,5 @@
-﻿using Mycroft.Server;
+﻿using Mycroft.App;
+using Mycroft.Server;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -35,10 +36,12 @@ namespace Mycroft
             }
 
             X509Certificate2 cert = collection[0];
+
+            var registry = new Registry();
             
             var myServ = new TlsServer(IPAddress.Any, 1847, cert);
             //insecure version var myServ = new TcpServer(IPAddress.Any, 1847);
-            var dispatcher = new Dispatcher(myServ);
+            var dispatcher = new Dispatcher(myServ, registry);
             dispatcher.Run();
         }
     }
