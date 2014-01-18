@@ -24,7 +24,7 @@ namespace Mycroft.Messages.Msg
 
 
         override
-        public string Seralize() 
+        public string Serialize() 
         {
             var dct = new Dictionary<string, object>();
             dct["id"] = Id;
@@ -40,7 +40,7 @@ namespace Mycroft.Messages.Msg
             return writer.ToString();
         }
 
-        public static DataPacket DeSeralize(string json)
+        public static DataPacket DeSerialize(string json)
         {
             try
             {

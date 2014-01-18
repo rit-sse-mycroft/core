@@ -46,7 +46,7 @@ namespace Mycroft.Messages.Test.Msg
             data["other"] = inner;
             msgQuery.Data = data;
 
-            string json = msgQuery.Seralize();
+            string json = msgQuery.Serialize();
             Debug.WriteLine(json);
 
             Assert.IsFalse(json.IndexOf("\"data\":null") >= 0, "Sould not contain null for data");
@@ -57,7 +57,7 @@ namespace Mycroft.Messages.Test.Msg
         [TestMethod]
         public void TestMsgQueryDeserialization()
         {
-            MsgQuery msgQuery = MsgQuery.DeSeralize(SampleQuery) as MsgQuery;
+            MsgQuery msgQuery = MsgQuery.DeSerialize(SampleQuery) as MsgQuery;
 
             Assert.AreEqual("uuid", msgQuery.Id);
             Assert.AreEqual("weather", msgQuery.Capability);
@@ -66,7 +66,7 @@ namespace Mycroft.Messages.Test.Msg
             Assert.AreEqual("xxxx", msgQuery.InstanceId[0]);
             Assert.AreEqual("xx2", msgQuery.InstanceId[1]);
 
-            string json = msgQuery.Seralize();
+            string json = msgQuery.Serialize();
             Debug.WriteLine(json);
             Assert.IsFalse(json.IndexOf("\"data\":{}") >= 0, "data should not be an empty object");
         }

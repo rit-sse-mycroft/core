@@ -9,9 +9,9 @@ namespace Mycroft.Messages
     public abstract class DataPacket
     {
 
-        public abstract string Seralize();
+        public abstract string Serialize();
 
-        public static DataPacket DeSeralize(string json) { return null; }
+        public static DataPacket DeSerialize(string json) { return null; }
 
     }
 }

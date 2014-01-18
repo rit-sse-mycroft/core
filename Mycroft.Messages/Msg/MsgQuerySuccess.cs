@@ -13,7 +13,7 @@ namespace Mycroft.Messages.Msg
         public string Id { get; set; }
         public dynamic Ret { get; set; }
 
-        public override string Seralize()
+        public override string Serialize()
         {
             var dct = new Dictionary<string, object>();
             dct["id"] = Id;

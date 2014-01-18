@@ -53,6 +53,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="App\AppManifestTest.cs" />
     <Compile Include="Msg\MsgQueryTest.cs" />
     <Compile Include="Msg\MsgBroadcastTest.cs" />
     <Compile Include="Msg\MsgQuerySuccessTest.cs" />
@@ -65,9 +66,7 @@
       <Name>Mycroft.Messages</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App\" />
-  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

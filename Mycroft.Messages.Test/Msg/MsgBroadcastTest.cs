@@ -35,7 +35,7 @@ namespace Mycroft.Messages.Test.Msg
             dct.Add("thing", innerDct);
             msgBroadcast.Content = dct;
 
-            string json = msgBroadcast.Seralize();
+            string json = msgBroadcast.Serialize();
             System.Diagnostics.Debug.WriteLine(json);
 
             Assert.IsTrue(json.IndexOf("\"other\":\"blah\"") > 0, "should have inner dict content");
@@ -44,7 +44,7 @@ namespace Mycroft.Messages.Test.Msg
         [TestMethod]
         public void TestMsgBroadcastDeserialization()
         {
-            var msgBroadcast = MsgBroadcast.DeSeralize(SampleQuery) as MsgBroadcast;
+            var msgBroadcast = MsgBroadcast.DeSerialize(SampleQuery) as MsgBroadcast;
             Assert.AreEqual("uuid", msgBroadcast.Id, "should have correct uuid");
             Assert.AreNotEqual(null, msgBroadcast.Content as object, "should have content");
         }
