@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Helpers;
+using System.IO;
 
 namespace Mycroft.Messages.App
 {
@@ -20,7 +21,31 @@ namespace Mycroft.Messages.App
 
         public override string Serialize()
         {
- 	        throw new NotImplementedException();
+            var dct = new Dictionary<string, object>();
+            dct.Add("version", Version);
+            dct.Add("API", API);
+            dct.Add("description", Description);
+            dct.Add("name", Name);
+            if (DisplayName != null)
+            {
+                dct.Add("displayName", DisplayName);
+            }
+            if (InstanceId != null)
+            {
+                dct.Add("instanceId", InstanceId);
+            }
+            if (Capabilities.Count != 0)
+            {
+                dct.Add("capabilities", Capabilities);
+            }
+            if (Dependencies.Count != 0)
+            {
+                dct.Add("dependencies", Dependencies);
+            }
+            var obj = new DynamicJsonObject(dct);
+            var writer = new StringWriter();
+            Json.Write(obj, writer);
+            return writer.ToString();
         }
 
         public static DataPacket DeSerialize(string json)
