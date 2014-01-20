@@ -40,7 +40,7 @@ namespace Mycroft.Messages.Msg
             return writer.ToString();
         }
 
-        public static DataPacket DeSerialize(string json)
+        public static new DataPacket DeSerialize(string json)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace Mycroft.Messages.Msg
                 ret.Priority = obj["priority"];
                 return ret;
             }
-            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException ex)
+            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
             {
                 return null;
             }

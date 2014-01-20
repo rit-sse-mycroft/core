@@ -22,7 +22,7 @@ namespace Mycroft.Messages.App
             return writer.ToString();
         }
 
-        public static DataPacket DeSerialize(string json)
+        public static new DataPacket DeSerialize(string json)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace Mycroft.Messages.App
                 ret.InstanceId = obj["instanceId"];
                 return ret;
             }
-            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException ex)
+            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
             {
                 return null;
             }
