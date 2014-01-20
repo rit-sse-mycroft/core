@@ -29,7 +29,7 @@ namespace Mycroft.Tests.Cmd.App
             }}";
             try
             {
-                Manifest.Parse(input);
+                new Manifest(input, null);
             }
             catch (ManifestValidationException e)
             {
@@ -47,7 +47,7 @@ namespace Mycroft.Tests.Cmd.App
             var input = "{}";
             try
             {
-                Manifest.Parse(input);
+                new Manifest(input, null);
             }
             catch (ManifestValidationException e)
             {
@@ -84,7 +84,7 @@ namespace Mycroft.Tests.Cmd.App
 
             try
             {
-                Manifest.Parse(input);
+                new Manifest(input, null);
             }
             catch (ManifestValidationException err)
             {
