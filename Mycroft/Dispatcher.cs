@@ -6,6 +6,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Mycroft
@@ -14,6 +15,7 @@ namespace Mycroft
     {
         private ConcurrentQueue<Command> DispatchQueue;
         private TcpServer Server;
+
         public Dispatcher(TcpServer server, Registry registry)
         {
             Server = server;
@@ -22,6 +24,9 @@ namespace Mycroft
 
         public void Run()
         {
+            Server.ClientConnected += HandleNewClientConnection;
+            Server.Start();
+
             Command currentCmd;
             while (true)
             {
@@ -32,9 +37,20 @@ namespace Mycroft
                 }
             }
         }
+
         public void Enqueue(Command cmd)
         {
             DispatchQueue.Enqueue(cmd);
+        }
+
+        /// <summary>
+        /// Put a newly connected app in its own thread in the app thread pool
+        /// </summary>
+        /// <param name="connection"></param>
+        private void HandleNewClientConnection(TcpConnection connection)
+        {
+            var instance = new AppInstance(connection.Client, this);
+            instance.Listen();
         }
     }
 }

@@ -3,6 +3,7 @@ using Mycroft.Cmd;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -16,6 +17,7 @@ namespace Mycroft.Server
 {
 
     public delegate void HandleClientConnected(TcpConnection client);
+
     /// <summary>
     /// Starts Mycroft's network communications and owns resources in the server
     /// </summary>
@@ -23,7 +25,8 @@ namespace Mycroft.Server
     {
         private Thread listeningThread;
         private TcpListener tcpListener;
-        private bool cancelThread;
+        private volatile bool cancelThread;
+
         public TcpServer(IPAddress ip, int port)
         {
             tcpListener = new TcpListener(ip, port);
@@ -35,19 +38,25 @@ namespace Mycroft.Server
         public void Start()
         {
             cancelThread = false;
-            listeningThread = new Thread(new ParameterizedThreadStart(Listen));
+            listeningThread = new Thread(Listen);
+            listeningThread.Start();
         }
 
         private void Listen(object pars)
         {
+            Debug.WriteLine("Listening for connections...");
+            tcpListener.Start();
             while (!cancelThread)
             {
                 var tcpClient = tcpListener.AcceptTcpClient();
+
+                Debug.WriteLine("Accepted TCP Client");
 
                 //create a thread to handle communication with connected client
                 var clientThread = new Thread(new ParameterizedThreadStart(OnClientConnected));
                 clientThread.Start(PrepClient(tcpClient));
             }
+            tcpListener.Stop();
         }
 
         public void Stop()
@@ -65,10 +74,21 @@ namespace Mycroft.Server
         /// Handle clients connecting to the server by creating an AppInstance for the connection
         /// </summary>
         /// <param name="stream">The stream over which the app is sending information</param>
-        private void OnClientConnected(object tcpClient)
+        private void OnClientConnected(object connection)
         {
+            Debug.WriteLine("Client connected...");
+
             if (ClientConnected != null)
-                ClientConnected(PrepClient((TcpClient)tcpClient));
+            {
+                var tcpConnection = connection as TcpConnection;
+                // Asynchronously run the event handler, generating the listener threads
+                ClientConnected.BeginInvoke(tcpConnection, (IAsyncResult result) =>
+                    {
+                        tcpConnection.Client.Close();
+                        tcpConnection.GetStream().Close();
+                    },
+                    null);
+            }
         }
 
         /// <summary>

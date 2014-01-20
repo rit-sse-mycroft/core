@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Mycroft
@@ -22,27 +23,31 @@ namespace Mycroft
             Debug.WriteLine(store.Certificates.Count);
 
             // Use the settings file to figure out which certificate to use
-            var collection = store.Certificates.Find(
-                X509FindType.FindByThumbprint,
-                ConfigurationManager.AppSettings["CertThumbprint"],
-                false
-            );
+            //var collection = store.Certificates.Find(
+            //    X509FindType.FindByThumbprint,
+            //    TlsServer.FormatCertificateThumbprint(ConfigurationManager.AppSettings["CertThumbprint"]),
+            //    false
+            //);
 
-            foreach(var c in collection)
-            {
-                Debug.Write(c.Subject);
-                Debug.Write(" ");
-                Debug.WriteLine(c.Thumbprint);
-            }
+            //foreach(var c in collection)
+            //{
+            //    Debug.Write(c.Subject);
+            //    Debug.Write(" ");
+            //    Debug.WriteLine(c.Thumbprint);
+            //}
 
-            X509Certificate2 cert = collection[0];
+            //X509Certificate2 cert = collection[0];
 
             var registry = new Registry();
             
-            var myServ = new TlsServer(IPAddress.Any, 1847, cert);
-            //insecure version var myServ = new TcpServer(IPAddress.Any, 1847);
-            var dispatcher = new Dispatcher(myServ, registry);
+            //var server = new TlsServer(IPAddress.Any, 1847, cert);
+
+            //insecure version
+            var server = new TcpServer(IPAddress.Any, 1847);
+            var dispatcher = new Dispatcher(server, registry);
             dispatcher.Run();
+
         }
+
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -128,10 +129,10 @@ namespace Mycroft.App
         /// Set up a null AppInstance. An InstanceId is assigned to a new GUID, which
         /// will be reset if the instance sends a different ID in its manifest.
         /// </summary>
-        public AppInstance(Stream stream, Dispatcher dispatcher)
+        public AppInstance(TcpClient client, Dispatcher dispatcher)
         {
             this.dispatcher = dispatcher;
-            connection = new CommandConnection(stream);
+            connection = new CommandConnection(client.GetStream());
             InstanceId = new Guid().ToString();
             AppStatus = Status.Connected;
             listening = false;
@@ -142,6 +143,8 @@ namespace Mycroft.App
         /// </summary>
         public void Listen()
         {
+            Debug.WriteLine("Listening for messages...");
+
             // Set that we're listening for commands
             Write(() => listening = true );
 
