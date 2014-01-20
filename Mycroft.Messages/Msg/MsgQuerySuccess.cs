@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Mycroft.Messages.Msg
 {
-    class MsgQuerySuccess : MsgBase
+    public class MsgQuerySuccess : MsgBase
     {
         public string Id { get; set; }
         public dynamic Ret { get; set; }

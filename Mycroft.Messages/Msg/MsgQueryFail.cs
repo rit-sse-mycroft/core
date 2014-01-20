@@ -8,7 +8,7 @@ using System.Web.Helpers;
 
 namespace Mycroft.Messages.Msg
 {
-    class MsgQueryFail : MsgBase
+    public class MsgQueryFail : MsgBase
     {
         public string Id { get; set; }
         public string Message { get; set; }
