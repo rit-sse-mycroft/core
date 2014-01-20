@@ -27,40 +27,24 @@ namespace Mycroft.Tests.Cmd.App
                     ""logging"": ""1.2"",
                     ""*"": ""*""
             }}";
-            try
-            {
-                new Manifest(input, null);
-            }
-            catch (ManifestValidationException e)
-            {
-                foreach (var item in e.Fields)
-                {
-                    foreach(var err in item.Value)
-                        Trace.WriteLine(err);
-                }
-                throw e;
-            }
+            AppCommand cmd = AppCommand.Parse("APP_MANIFEST", input, null) as AppCommand;
+            Assert.IsInstanceOfType(cmd, typeof(Create));
         }
+
         [TestMethod]
         public void TestParseMissingVals()
         {
             var input = "{}";
-            try
-            {
-                new Manifest(input, null);
-            }
-            catch (ManifestValidationException e)
-            {
-                Trace.Write(e.Message);
-                string msg = e.Message;
-                Assert.IsTrue(msg.Contains("API"), "should complain about API");
-                Assert.IsTrue(msg.Contains("description"), "should complain about description");
-                Assert.IsTrue(msg.Contains("displayName"), "should complain about displayName");
-                Assert.IsTrue(msg.Contains("name"), "should complain about name");
-                Assert.IsTrue(msg.Contains("version"), "should complain about version");
-                return;
-            }
-            throw new Exception("Missing values not caught");
+            AppCommand cmd = AppCommand.Parse("APP_MANIFEST", input, null) as AppCommand;
+            Assert.IsInstanceOfType(cmd, typeof(ManifestFail));
+            var manifestFail = cmd as ManifestFail;
+            string msg = manifestFail.Fail.Message;
+            Trace.Write(msg);
+            Assert.IsTrue(msg.Contains("API"), "should complain about API");
+            Assert.IsTrue(msg.Contains("description"), "should complain about description");
+            Assert.IsTrue(msg.Contains("displayName"), "should complain about displayName");
+            Assert.IsTrue(msg.Contains("name"), "should complain about name");
+            Assert.IsTrue(msg.Contains("version"), "should complain about version");
         }
 
         [TestMethod]
@@ -81,24 +65,14 @@ namespace Mycroft.Tests.Cmd.App
                     ""logging"": ""HEY!"",
                     ""*"": ""*""
             }}";
-
-            try
-            {
-                new Manifest(input, null);
-            }
-            catch (ManifestValidationException err)
-            {
-                if (!err.Fields.ContainsKey("version"))
-                    throw new Exception("Validator failed to catch app version error");
-                if (!err.Fields.ContainsKey("capabilities") || err.Fields["capabilities"].Count != 2)
-                    throw new Exception("Validator failed to catch semantic version errors in capabilities");
-                if (!err.Fields.ContainsKey("dependencies") || err.Fields["dependencies"].Count != 1)
-                    throw new Exception("Validator failed to catch semantic version errors in dependencies");
-                return;
-            }
-
-            throw new Exception("Oh god, we didn't catch anything!");
-
+            AppCommand cmd = AppCommand.Parse("APP_MANIFEST", input, null) as AppCommand;
+            Assert.IsInstanceOfType(cmd, typeof(ManifestFail));
+            var manifestFail = cmd as ManifestFail;
+            string msg = manifestFail.Fail.Message;
+            Trace.Write(msg);
+            Assert.IsTrue(msg.Contains("version"), "should complain about version");
+            Assert.IsTrue(msg.Contains("capabilities"), "should complain about capabilities)");
+            Assert.IsTrue(msg.Contains("dependencies"), "should complain about depdendencies");
         }
     }
 }

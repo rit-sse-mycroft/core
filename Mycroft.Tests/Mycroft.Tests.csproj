@@ -67,6 +67,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\Mycroft.Messages\Mycroft.Messages.csproj">
+      <Project>{39b5b576-af92-408a-8702-c83f9969c5ed}</Project>
+      <Name>Mycroft.Messages</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mycroft\Mycroft.csproj">
       <Project>{d72071e2-b7a3-45eb-aefa-94c135547608}</Project>
       <Name>Mycroft</Name>

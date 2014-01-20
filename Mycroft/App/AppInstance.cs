@@ -24,7 +24,7 @@ namespace Mycroft.App
         public String Name
         {
             get { return Read(() => _name); }
-            private set { Write(() => _name = value); }
+            internal set { Write(() => _name = value); }
         }
         private String _name;
 
@@ -34,7 +34,7 @@ namespace Mycroft.App
         public String DisplayName
         {
             get { return Read(() => _displayName); }
-            private set { Write(() => _displayName = value); }
+            internal set { Write(() => _displayName = value); }
         }
         private String _displayName;
 
@@ -44,7 +44,7 @@ namespace Mycroft.App
         public String InstanceId
         {
             get { return Read(() => _instanceId); }
-            private set { Write(() => _instanceId = value); }
+            internal set { Write(() => _instanceId = value); }
         }
         private String _instanceId;
 
@@ -54,7 +54,7 @@ namespace Mycroft.App
         public uint? ApiVersion
         {
             get { return Read(() => _apiVersion); }
-            private set { Write(() => _apiVersion = value); }
+            internal set { Write(() => _apiVersion = value); }
         }
         private uint? _apiVersion;
 
@@ -64,9 +64,19 @@ namespace Mycroft.App
         public Status AppStatus
         {
             get { return Read(() => _status); }
-            private set { Write(() => _status = value); }
+            internal set { Write(() => _status = value); }
         }
         private Status _status;
+
+        /// <summary>
+        /// A description of the current app (like a sentence)
+        /// </summary>
+        public string Description
+        {
+            get { return Read(() => _description); }
+            internal set { Write(() => _description = value); }
+        }
+        private string _description;
 
         /// <summary>
         /// The version of the app
@@ -74,18 +84,28 @@ namespace Mycroft.App
         public Version Version
         {
             get { return Read(() => _version); }
-            private set { Write(() => _version = value); }
+            internal set { Write(() => _version = value); }
         }
         private Version _version;
 
         /// <summary>
-        /// Map of capabilities that this app depends on
+        /// Map of capabilities that this app provides
         /// </summary>
         private SortedSet<Capability> _capabilities = new SortedSet<Capability>();
 
         public IEnumerable<Capability> Capabilities
         {
             get { return Read(() => new List<Capability>(_capabilities)); }
+        }
+
+        /// <summary>
+        /// Set of capabilities that this app depends upon
+        /// </summary>
+        private SortedSet<Capability> _dependencies = new SortedSet<Capability>();
+
+        public IEnumerable<Capability> Dependencies
+        {
+            get { return Read(() => new List<Capability>(_dependencies)); }
         }
 
         /// <summary>
@@ -168,6 +188,24 @@ namespace Mycroft.App
         }
 
         /// <summary>
+        /// Adds a capability to the list of capabilities
+        /// </summary>
+        /// <param name="c">The capability to add</param>
+        internal void AddCapability(Capability c)
+        {
+            Write(() => _capabilities.Add(c));
+        }
+
+        /// <summary>
+        /// Add a capability to the list of depencies for this app
+        /// </summary>
+        /// <param name="c">The capability on which this app depends</param>
+        internal void AddDependency(Capability c)
+        {
+            Write(() => _dependencies.Add(c));
+        }
+
+        /// <summary>
         /// Checks if a command is valid to have received in the app's current state
         /// </summary>
         /// <param name="cmd">The command that was received </param>
@@ -178,7 +216,7 @@ namespace Mycroft.App
                 switch (AppStatus)
                 {
                     case Status.Connected:
-                        return (cmd is Manifest);
+                        return (cmd is Create || cmd is ManifestFail);
 
                     case Status.Active:
                     case Status.Inactive:

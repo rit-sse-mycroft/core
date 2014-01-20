@@ -23,12 +23,10 @@ namespace Mycroft.Cmd.App
                     return new Up(json, instance);
                 case "APP_DOWN":
                     return new Down(json, instance);
-                case "APP_CREATE":
-                    return new Create(json, instance);
                 case "APP_DESTROY":
                     return new Destroy(json, instance);
                 case "APP_MANIFEST":
-                    return new Manifest(json, instance);
+                    return Manifest.Parse(json, instance);
                 default:
                     //data is incorrect - can't do anything with it
                     // TODO notify that is wrong

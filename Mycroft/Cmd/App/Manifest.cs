@@ -13,37 +13,21 @@ using Mycroft.App;
 
 namespace Mycroft.Cmd.App
 {
-    public class Manifest : Command
+    class Manifest
     {
-        public AppInstance Instance { get; private set; }
-        public string Version { get; set;  }
-        public string Name { get; set;  }
-        public string DisplayName { get; set;  }
-        public string InstanceId { get; set;  }
-        public int API { get; set;  }
-        public string Description { get; set; }
-        public Dictionary<string, string> Capabilities { get; set; }
-        public Dictionary<string, string> Dependencies { get; set; }
 
-        public Manifest(string rawData, AppInstance instance)
+        public static AppCommand Parse(string json, AppInstance instance)
         {
-            Instance = instance;
-
-            var manifest = AppManifest.DeSerialize(rawData) as AppManifest;
-            Validate(manifest);
-
-            Version = manifest.Version;
-            Name = manifest.Name;
-            DisplayName = manifest.DisplayName;
-            API = manifest.API;
-            Description = manifest.Description;
-            Capabilities = manifest.Capabilities;
-            Dependencies = manifest.Dependencies;
-
-            if (manifest.InstanceId != null)
+            var mfst = AppManifest.DeSerialize(json) as AppManifest;
+            try
             {
-                InstanceId = manifest.InstanceId;
+                Validate(mfst);
             }
+            catch (ManifestValidationException ex)
+            {
+                return new ManifestFail(ex.Message, instance);
+            }
+            return new Create(mfst, instance);
         }
 
         private static void Validate(AppManifest manifest)
