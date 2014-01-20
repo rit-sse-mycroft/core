@@ -58,7 +58,7 @@ namespace Mycroft.Messages.App
         /// </summary>
         /// <param name="json">the manifest json to parse</param>
         /// <returns>a new AppManifest</returns>
-        public static DataPacket DeSerialize(string json)
+        public static new DataPacket DeSerialize(string json)
         {
             try
             {
@@ -101,7 +101,7 @@ namespace Mycroft.Messages.App
 
                 return ret;
             }
-            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException ex)
+            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
             {
                 return null;
             }
@@ -113,7 +113,7 @@ namespace Mycroft.Messages.App
             {
                 return obj[key];
             }
-            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException ex)
+            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
             {
                 return null;
             }

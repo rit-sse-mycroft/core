@@ -27,6 +27,8 @@ namespace Mycroft.Cmd.App
                     return new Create(json, instance);
                 case "APP_DESTROY":
                     return new Destroy(json, instance);
+                case "APP_MANIFEST":
+                    return new Manifest(json, instance);
                 default:
                     //data is incorrect - can't do anything with it
                     // TODO notify that is wrong

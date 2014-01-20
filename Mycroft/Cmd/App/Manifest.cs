@@ -9,11 +9,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Mycroft.Messages.App;
+using Mycroft.App;
 
 namespace Mycroft.Cmd.App
 {
     public class Manifest : Command
     {
+        public AppInstance Instance { get; private set; }
         public string Version { get; set;  }
         public string Name { get; set;  }
         public string DisplayName { get; set;  }
@@ -23,26 +25,25 @@ namespace Mycroft.Cmd.App
         public Dictionary<string, string> Capabilities { get; set; }
         public Dictionary<string, string> Dependencies { get; set; }
 
-        public static Manifest Parse(string manifestJson)
+        public Manifest(string rawData, AppInstance instance)
         {
-            var manifest = AppManifest.DeSerialize(manifestJson) as AppManifest;
+            Instance = instance;
+
+            var manifest = AppManifest.DeSerialize(rawData) as AppManifest;
             Validate(manifest);
 
-            var ret = new Manifest();
-            ret.Version = manifest.Version;
-            ret.Name = manifest.Name;
-            ret.DisplayName = manifest.DisplayName;
-            ret.API = manifest.API;
-            ret.Description = manifest.Description;
-            ret.Capabilities = manifest.Capabilities;
-            ret.Dependencies = manifest.Dependencies;
+            Version = manifest.Version;
+            Name = manifest.Name;
+            DisplayName = manifest.DisplayName;
+            API = manifest.API;
+            Description = manifest.Description;
+            Capabilities = manifest.Capabilities;
+            Dependencies = manifest.Dependencies;
 
             if (manifest.InstanceId != null)
             {
-                ret.InstanceId = manifest.InstanceId;
+                InstanceId = manifest.InstanceId;
             }
-
-            return ret;
         }
 
         private static void Validate(AppManifest manifest)
