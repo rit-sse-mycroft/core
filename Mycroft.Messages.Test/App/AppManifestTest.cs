@@ -32,7 +32,7 @@ namespace Mycroft.Messages.Test.App
             }";
 
         [TestMethod]
-        public void TestSerialization()
+        public void TestAppManifestSerialization()
         {
             // just see if we can serialize and de-serialize two times
             var appManifest = AppManifest.DeSerialize(SampleManifest) as AppManifest;
@@ -44,7 +44,7 @@ namespace Mycroft.Messages.Test.App
         }
 
         [TestMethod]
-        public void TestDeSerialization()
+        public void TestAppManifestDeSerialization()
         {
             var appManifest = AppManifest.DeSerialize(SampleManifest) as AppManifest;
             Assert.AreEqual("0.0.1", appManifest.Version, "version should be equal");
@@ -59,7 +59,7 @@ namespace Mycroft.Messages.Test.App
         }
 
         [TestMethod]
-        public void TestMinimalDeSerialization()
+        public void TestAppManifestMinimalDeSerialization()
         {
             var appManifest = AppManifest.DeSerialize(MinimalManifest) as AppManifest;
             Assert.AreEqual(0, appManifest.Dependencies.Count, "dependencies should be empty");
