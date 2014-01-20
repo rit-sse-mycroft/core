@@ -43,7 +43,7 @@ namespace Mycroft.App
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        int IComparable.CompareTo(object other)
+        public int CompareTo(object other)
         {
             var capB = other as Capability;
             if (capB == null) return 1;
