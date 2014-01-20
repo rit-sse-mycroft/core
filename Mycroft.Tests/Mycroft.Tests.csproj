@@ -50,14 +50,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="App\Connection\TestActiveState.cs" />
-    <Compile Include="App\Connection\TestConnectedState.cs" />
-    <Compile Include="App\Connection\TestRegisteredState.cs" />
-    <Compile Include="App\Connection\TestState.cs" />
     <Compile Include="App\TestAppInstance.cs" />
     <Compile Include="App\TestCapability.cs" />
     <Compile Include="App\TestStatus.cs" />
-    <Compile Include="App\TestVersion.cs" />
     <Compile Include="Cmd\App\TestAppCommand.cs" />
     <Compile Include="Cmd\Msg\TestMsgCommand.cs" />
     <Compile Include="Cmd\Msg\TestMessageArchive.cs" />

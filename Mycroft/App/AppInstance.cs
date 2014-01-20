@@ -79,6 +79,16 @@ namespace Mycroft.App
         private Version _version;
 
         /// <summary>
+        /// Map of capabilities that this app depends on
+        /// </summary>
+        private SortedSet<Capability> _capabilities = new SortedSet<Capability>();
+
+        public IEnumerable<Capability> Capabilities
+        {
+            get { return Read(() => new List<Capability>(_capabilities)); }
+        }
+
+        /// <summary>
         /// The connection object that reads messages
         /// </summary>
         private readonly CommandConnection connection;

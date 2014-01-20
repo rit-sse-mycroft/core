@@ -14,7 +14,20 @@ namespace Mycroft.App
     /// thread should touch this class</remarks>
     public class Registry : ICommandable
     {
+        /// <summary>
+        /// The instances registered in the app
+        /// </summary>
         private Dictionary<string, AppInstance> instances = new Dictionary<string, AppInstance>();
+
+        /// <summary>
+        /// Maps Capabilities to a list of instanceIds that depend on the capability
+        /// </summary>
+        private Dictionary<Capability, SortedSet<string>> dependents = new Dictionary<Capability, SortedSet<string>>();
+
+        /// <summary>
+        /// Maps Capabilities to a list of instanceIds that provide a capability
+        /// </summary>
+        private Dictionary<Capability, SortedSet<string>> providers = new Dictionary<Capability, SortedSet<string>>();
 
         /// <summary>
         /// Adds an instance to the registry
@@ -31,6 +44,25 @@ namespace Mycroft.App
             }
 
             instances[instance.InstanceId] = instance;
+            var capabilities = instance.Capabilities;
+
+            foreach (var capability in capabilities)
+            {
+                // Add the capability if it isn't known
+                if(!providers.ContainsKey(capability))
+                {
+                    providers[capability] = new SortedSet<string>();
+                }
+                providers[capability].Add(instance.InstanceId);
+
+                // Add the dependency if it isn't known
+                if(!dependents.ContainsKey(capability))
+                {
+                    dependents[capability] = new SortedSet<string>();
+                }
+                dependents[capability].Add(instance.InstanceId);
+            }
+        
             return true;
         }
 
@@ -55,6 +87,38 @@ namespace Mycroft.App
             AppInstance instance;
             instances.TryGetValue(instanceId, out instance);
             return instance;
+        }
+
+        /// <summary>
+        /// Gets instances that depend on a capability
+        /// </summary>
+        /// <param name="capability"></param>
+        /// <returns></returns>
+        public IEnumerable<AppInstance> GetDependents(Capability capability)
+        {
+            return dependents[capability].Select(instanceId => instances[instanceId]);
+        }
+
+        /// <summary>
+        /// Gets instances that provide a capability
+        /// </summary>
+        /// <param name="capability"></param>
+        /// <returns></returns>
+        public IEnumerable<AppInstance> GetProviders(Capability capability)
+        {
+            return providers[capability].Select(instanceId => instances[instanceId]);
+        }
+
+        /// <summary>
+        /// Returns all instances that depend on or provide a capability
+        /// </summary>
+        /// <param name="capability"></param>
+        /// <returns></returns>
+        public IEnumerable<AppInstance> GetAllRelated(Capability capability)
+        {
+            var all = dependents[capability];
+            all.UnionWith(providers[capability]);
+            return all.Select(instanceId => instances[instanceId]);
         }
 
         public void Issue(Command command)
