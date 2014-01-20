@@ -49,10 +49,15 @@ namespace Mycroft.Tests.Cmd.App
             {
                 Manifest.Parse(input);
             }
-            catch (SerializationException e)
+            catch (ManifestValidationException e)
             {
                 Trace.Write(e.Message);
-                Assert.IsTrue(e.Message.Contains("'API, description, displayName, name, version' were not found"));
+                string msg = e.Message;
+                Assert.IsTrue(msg.Contains("API"), "should complain about API");
+                Assert.IsTrue(msg.Contains("description"), "should complain about description");
+                Assert.IsTrue(msg.Contains("displayName"), "should complain about displayName");
+                Assert.IsTrue(msg.Contains("name"), "should complain about name");
+                Assert.IsTrue(msg.Contains("version"), "should complain about version");
                 return;
             }
             throw new Exception("Missing values not caught");

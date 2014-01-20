@@ -48,16 +48,30 @@ namespace Mycroft.Messages.App
             return writer.ToString();
         }
 
+        /// <summary>
+        /// Returns a new AppManifest from the given json.
+        /// If a property is not given in the json then the instance
+        /// variable to which it corresponds is set to null.
+        /// Capabilities will always be non-null, but may be empty
+        /// Dependencies will always be non-null, but also may be empty
+        /// If API was not supplied it is set to -1, since ints cannot be nulled
+        /// </summary>
+        /// <param name="json">the manifest json to parse</param>
+        /// <returns>a new AppManifest</returns>
         public static DataPacket DeSerialize(string json)
         {
             try
             {
                 var ret = new AppManifest();
                 var obj = Json.Decode(json);
-                ret.Version = obj["version"];
-                ret.API = obj["API"];
-                ret.Description = obj["description"];
-                ret.Name = obj["name"];
+                ret.Version = TryGetValueFromDynamic(obj, "version");
+                dynamic API = TryGetValueFromDynamic(obj, "API");
+                if (API != null)
+                    ret.API = TryGetValueFromDynamic(obj, "API");
+                else
+                    ret.API = -1;
+                ret.Description = TryGetValueFromDynamic(obj, "description");
+                ret.Name = TryGetValueFromDynamic(obj, "name");
                 ret.DisplayName = TryGetValueFromDynamic(obj, "displayName");
                 ret.InstanceId = TryGetValueFromDynamic(obj, "instanceId");
 
