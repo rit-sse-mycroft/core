@@ -17,22 +17,22 @@ namespace Mycroft.Cmd.App
         /// <returns>Returns a command object for the parsed message</returns>
         public static Command Parse(String type, String rawData, AppInstance instance)
         {
-        switch (type)
-        {
-            case "APP_UP":
-                return new Up(rawData, instance);
-            case "APP_DOWN":
-                return new Down(rawData, instance);
-            case "APP_CREATE":
-                return new Create(rawData, instance);
-            case "APP_DESTROY":
-                return new Destroy(rawData, instance);
-            default:
-                //data is incorrect - can't do anything with it
-                // TODO notify that is wrong
-                break;
+            switch (type)
+            {
+                case "APP_UP":
+                    return new Up(rawData, instance);
+                case "APP_DOWN":
+                    return new Down(rawData, instance);
+                case "APP_CREATE":
+                    return new Create(rawData, instance);
+                case "APP_DESTROY":
+                    return new Destroy(rawData, instance);
+                default:
+                    //data is incorrect - can't do anything with it
+                    // TODO notify that is wrong
+                    break;
             }
-        return null ;
+            return null ;
         }
     }
 }
