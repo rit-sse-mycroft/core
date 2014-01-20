@@ -56,6 +56,8 @@
     <Compile Include="App\AppManifestTest.cs" />
     <Compile Include="App\AppDependencyTest.cs" />
     <Compile Include="App\AppManifestOkTest.cs" />
+    <Compile Include="App\AppManifestFailTest.cs" />
+    <Compile Include="App\AppInUseTest.cs" />
     <Compile Include="Msg\MsgQueryTest.cs" />
     <Compile Include="Msg\MsgBroadcastTest.cs" />
     <Compile Include="Msg\MsgQuerySuccessTest.cs" />

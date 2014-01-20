@@ -43,7 +43,9 @@
   <ItemGroup>
     <Compile Include="App\AppBase.cs" />
     <Compile Include="App\AppDependency.cs" />
+    <Compile Include="App\AppInUse.cs" />
     <Compile Include="App\AppManifest.cs" />
+    <Compile Include="App\AppManifestFail.cs" />
     <Compile Include="App\AppManifestOk.cs" />
     <Compile Include="DataPacket.cs" />
     <Compile Include="Msg\MsgBase.cs" />
