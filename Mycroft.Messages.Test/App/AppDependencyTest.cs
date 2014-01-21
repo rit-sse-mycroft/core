@@ -45,5 +45,19 @@ namespace Mycroft.Messages.Test.App
             Assert.AreEqual("up", dep.Dependencies["Speaker"]["SpeakerOne"]);
             Assert.AreEqual("up", dep.Dependencies["Speaker"]["SpeakerTwo"]);
         }
+
+        [TestMethod]
+        public void TestAppDependencyInvalidDeSerialization()
+        {
+            try
+            {
+                var dep = AppDependency.Deserialize("}") as AppDependency;
+                Assert.Fail("Should have thrown a ParseException");
+            }
+            catch (ParseException ex)
+            {
+                Assert.AreEqual("}", ex.Received);
+            }
+        }
     }
 }
