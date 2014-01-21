@@ -13,10 +13,6 @@ namespace Mycroft.Tests.Cmd
         [TestMethod]
         public void TestParse()
         {
-            // Blank manifest should return null
-            Command nullReturned = Command.Parse("", null);
-            Assert.AreEqual(null, nullReturned, "Should return null");
-
             // sample input taken from the wiki
             var input = @"MSG_QUERY : {
                 ""id"": ""uuid"",
@@ -29,7 +25,7 @@ namespace Mycroft.Tests.Cmd
             
             // JSON of "MSG_QUERY" should return "MSG"
             String msgQuery = Command.getType(input);
-            Assert.AreEqual("MSG", msgQuery, "Get type should return 'MSG' ");
+            Assert.AreEqual("MSG_QUERY", msgQuery, "Get type should return 'MSG_QUERY' ");
             try
             {
                 // if this breaks, errors could lie in MSG command etc
