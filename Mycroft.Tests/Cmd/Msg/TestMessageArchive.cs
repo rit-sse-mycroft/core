@@ -28,7 +28,7 @@ namespace Mycroft.Tests.Cmd.Msg
         [TestMethod]
         public void TestinCache()
         {
-            archive.PostMessage(testMsg);
+            archive.TryPostMessage(testMsg);
             Assert.AreSame(testMsg,archive[testMsg.guid],"tests you get the same object back from the archive");
         }
 
@@ -37,7 +37,7 @@ namespace Mycroft.Tests.Cmd.Msg
         [TestMethod]
         public void TestCacheTimeout()
         {
-            archive.PostMessage(testMsg);
+            archive.TryPostMessage(testMsg);
 
             Thread.Sleep(2000);
 
