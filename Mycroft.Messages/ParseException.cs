@@ -11,7 +11,7 @@ namespace Mycroft.Messages
         public string Received { get; private set; }
         public string Message { get; private set; }
 
-        public void ParseException(string received, string message)
+        public ParseException(string received, string message)
         {
             Received = received;
             Message = message;
