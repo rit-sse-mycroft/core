@@ -92,12 +92,11 @@ namespace Mycroft.App
         /// Retrives an app instance with that ID
         /// </summary>
         /// <param name="instanceId"></param>
+        /// <param name="outInstance"></param>
         /// <returns></returns>
-        public AppInstance GetAppInstance(string instanceId)
+        public bool TryGetInstance(string instanceId, out AppInstance outInstance)
         {
-            AppInstance instance;
-            instances.TryGetValue(instanceId, out instance);
-            return instance;
+            return instances.TryGetValue(instanceId, out outInstance);
         }
 
         /// <summary>
