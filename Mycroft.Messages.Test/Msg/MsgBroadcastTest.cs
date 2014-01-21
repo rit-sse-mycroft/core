@@ -48,5 +48,29 @@ namespace Mycroft.Messages.Test.Msg
             Assert.AreEqual("uuid", msgBroadcast.Id, "should have correct uuid");
             Assert.AreNotEqual(null, msgBroadcast.Content as object, "should have content");
         }
+
+        [TestMethod]
+        public void TestMsgBroadcastInvalidJson()
+        {
+            try
+            {
+                MsgBroadcast.Deserialize("{");
+                Assert.Fail("01 should have thrown exception");
+            }
+            catch (ParseException ex)
+            {
+                Assert.AreEqual("{", ex.Received);
+            }
+
+            try
+            {
+                MsgBroadcast.Deserialize("{}");
+                Assert.Fail("02 should have thrown exception");
+            }
+            catch (ParseException ex)
+            {
+                Assert.AreEqual("{}", ex.Received);
+            }
+        }
     }
 }
