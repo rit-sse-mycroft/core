@@ -69,7 +69,7 @@ namespace Mycroft.Cmd
 
         public virtual void VisitRegistry(Registry registry) { }
 
-
+        public virtual void VisitMessageArchive(MessageArchive messageArchive) { }
 
     }
 }

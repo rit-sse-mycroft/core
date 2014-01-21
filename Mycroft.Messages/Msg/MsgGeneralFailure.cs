@@ -6,16 +6,18 @@ using System.Threading.Tasks;
 using System.Web.Helpers;
 using System.IO;
 
-namespace Mycroft.Messages.App
+namespace Mycroft.Messages.Msg
 {
-    public class AppManifestOk : AppBase
+    public class MsgGeneralFailure : MsgBase
     {
-        public string InstanceId { get; set; }
+        public string Received { get; set; }
+        public string Message { get; set; }
 
         public override string Serialize()
         {
             var dct = new Dictionary<string, object>();
-            dct.Add("instanceId", InstanceId);
+            dct["received"] = Received;
+            dct["message"] = Message;
             var obj = new DynamicJsonObject(dct);
             var writer = new StringWriter();
             Json.Write(obj, writer);
@@ -26,18 +28,15 @@ namespace Mycroft.Messages.App
         {
             try
             {
-                var ret = new AppManifestOk();
-                dynamic obj = Json.Decode(json);
-                ret.InstanceId = obj["instanceId"];
-                if (ret.InstanceId == null)
-                {
-                    throw new ParseException(json, "Does not contain instanceId");
-                }
+                var ret = new MsgGeneralFailure();
+                var obj = Json.Decode(json);
+                ret.Message = obj["message"];
+                ret.Received = obj["received"];
                 return ret;
             }
             catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
             {
-                throw new ParseException(json, "General binding exception, is instanceId valid?");
+                throw new ParseException(json, "General binding exception");
             }
             catch (ArgumentException)
             {

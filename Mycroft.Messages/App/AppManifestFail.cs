@@ -27,13 +27,23 @@ namespace Mycroft.Messages.App
             try
             {
                 var ret = new AppManifestFail();
-                dynamic obj = Json.Decode(json);
+                var obj = Json.Decode(json);
                 ret.Message = obj["message"];
+                if (ret.Message == null)
+                {
+                    throw new ParseException(json, "Did not contain 'message'");
+                }
                 return ret;
             }
             catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
             {
-                return null;
+                // NOTE: this probably should never be caught because obj["foo"], when foo doesn't exist,
+                // just returns null and doesnt throw an exception. But I'm keeping this just in case.
+                throw new ParseException(json, "Did not contain 'message'");
+            }
+            catch (ArgumentException)
+            {
+                throw new ParseException(json, "Invalid JSON");
             }
         }
     }

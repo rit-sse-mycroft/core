@@ -39,12 +39,20 @@ namespace Mycroft.Messages.Msg
                 var ret = new MsgBroadcast();
                 dynamic obj = Json.Decode(json);
                 ret.Id = obj["id"];
+                if (ret.Id == null)
+                    throw new ParseException(json, "No id was supplied");
                 ret.Content = obj["content"];
+                if (ret.Content == null)
+                    throw new ParseException(json, "No content was supplied");
                 return ret;
             }
             catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
             {
-                return null;
+                throw new ParseException(json, "General binding exception. Was something invalid?");
+            }
+            catch (ArgumentException)
+            {
+                throw new ParseException(json, "Invalid JSON");
             }
         }
     }

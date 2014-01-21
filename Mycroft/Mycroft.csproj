@@ -52,9 +52,8 @@
     <Compile Include="Cmd\App\AppCommand.cs" />
     <Compile Include="Cmd\App\Create.cs" />
     <Compile Include="Cmd\App\Destroy.cs" />
-    <Compile Include="Cmd\App\Down.cs" />
+    <Compile Include="Cmd\App\DependencyChange.cs" />
     <Compile Include="Cmd\App\ManifestFail.cs" />
-    <Compile Include="Cmd\App\Up.cs" />
     <Compile Include="Cmd\Command.cs" />
     <Compile Include="Cmd\ICommandable.cs" />
     <Compile Include="Cmd\Msg\Broadcast.cs" />

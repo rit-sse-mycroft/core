@@ -29,5 +29,28 @@ namespace Mycroft.Messages.Test.App
 
             Assert.IsTrue(json.IndexOf("\"instanceId\":\"inst101\"") > 0, "Should have inst101 for instanceId");
         }
+
+        [TestMethod]
+        public void TestAppManifestInvalidJson()
+        {
+            try
+            {
+                AppManifestOk.Deserialize("{");
+                Assert.Fail("01 should have thrown an exception");
+            }
+            catch (ParseException ex)
+            {
+                Assert.AreEqual("{", ex.Received);
+            }
+
+            try
+            {
+                AppManifestOk.Deserialize("{}");
+            }
+            catch (ParseException ex)
+            {
+                Assert.AreEqual("{}", ex.Received);
+            }
+        }
     }
 }

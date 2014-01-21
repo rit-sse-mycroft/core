@@ -28,5 +28,29 @@ namespace Mycroft.Messages.Test.App
 
             Assert.IsTrue(json.IndexOf("\"message\":\"foo1\"") > 0, "should have a message foo1");
         }
+
+        [TestMethod]
+        public void TestAppManifestFailInvalidJson()
+        {
+            try
+            {
+                AppManifestFail.Deserialize("{");
+                Assert.Fail("01 Should have thrown an exception");
+            }
+            catch (ParseException ex)
+            {
+                Assert.AreEqual("{", ex.Received);
+            }
+
+            try
+            {
+                AppManifestFail.Deserialize("{}");
+                Assert.Fail("02 Should have thrown an exception");
+            }
+            catch (ParseException ex)
+            {
+                Assert.AreEqual("{}", ex.Received);
+            }
+        }
     }
 }

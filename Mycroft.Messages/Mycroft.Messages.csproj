@@ -47,9 +47,11 @@
     <Compile Include="App\AppManifest.cs" />
     <Compile Include="App\AppManifestFail.cs" />
     <Compile Include="App\AppManifestOk.cs" />
+    <Compile Include="ParseException.cs" />
     <Compile Include="DataPacket.cs" />
     <Compile Include="Msg\MsgBase.cs" />
     <Compile Include="Msg\MsgBroadcast.cs" />
+    <Compile Include="Msg\MsgGeneralFailure.cs" />
     <Compile Include="Msg\MsgQuery.cs" />
     <Compile Include="Msg\MsgQueryFail.cs" />
     <Compile Include="Msg\MsgQuerySuccess.cs" />

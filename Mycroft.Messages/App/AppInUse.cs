@@ -33,7 +33,11 @@ namespace Mycroft.Messages.App
             }
             catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
             {
-                return null;
+                throw new ParseException(json, "'priority' was not found");
+            }
+            catch (System.ArgumentException)
+            {
+                throw new ParseException(json, "Invalid JSON");
             }
         }
     }

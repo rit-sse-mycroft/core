@@ -19,8 +19,7 @@ namespace Mycroft.Messages.Test.App
             ""API"": 0,
             ""description"": ""It does odd stuff like testing or things"",
             ""dependencies"": {
-                ""logger"": "">=1.2"",
-                ""*"": """"
+                ""logger"": ""1.2""
               }
             }";
 
@@ -28,18 +27,28 @@ namespace Mycroft.Messages.Test.App
             ""version"": ""0.0.1"",
             ""name"": ""test-service"",
             ""API"": 0,
-            ""description"": ""It does odd stuff like testing or things""
+            ""description"": ""It does odd stuff like testing or things"",
+            ""displayName"": ""A name""
             }";
 
         [TestMethod]
         public void TestAppManifestSerialization()
         {
+            AppManifest appManifest = null;
             // just see if we can serialize and de-serialize two times
-            var appManifest = AppManifest.Deserialize(SampleManifest) as AppManifest;
+            try
+            {
+                appManifest = AppManifest.Deserialize(SampleManifest) as AppManifest;
+            }
+            catch (ParseException ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                throw ex;
+            }
             var str = appManifest.Serialize();
             appManifest = AppManifest.Deserialize(str) as AppManifest;
             Assert.AreNotEqual(null, appManifest, "should still have a valid manifest");
-            Assert.AreEqual(2, appManifest.Dependencies.Count, "should have 2 dependencies");
+            Assert.AreEqual(1, appManifest.Dependencies.Count, "should have 1 dependency");
             Assert.AreEqual(2, appManifest.Capabilities.Count, "should have 2 capabilities");
         }
 
@@ -54,17 +63,25 @@ namespace Mycroft.Messages.Test.App
             Assert.AreEqual(0, appManifest.API, "API version should be equal");
             Assert.AreEqual("1.0.2", appManifest.Capabilities["microphone"], "microphone version should be the same");
             Assert.AreEqual("4.2.1", appManifest.Capabilities["speaker"], "speaker version should be the same");
-            Assert.AreEqual(">=1.2", appManifest.Dependencies["logger"], "logger version should be the same");
-            Assert.AreEqual("", appManifest.Dependencies["*"], "all-inclusive dependency version should be empty string");
+            Assert.AreEqual("1.2", appManifest.Dependencies["logger"], "logger version should be the same");
         }
 
         [TestMethod]
         public void TestAppManifestMinimalDeSerialization()
         {
-            var appManifest = AppManifest.Deserialize(MinimalManifest) as AppManifest;
+            AppManifest appManifest = null;
+            try
+            {
+                appManifest = AppManifest.Deserialize(MinimalManifest) as AppManifest;
+            }
+            catch (ParseException ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                throw ex;
+            }
             Assert.AreEqual(0, appManifest.Dependencies.Count, "dependencies should be empty");
             Assert.AreEqual(0, appManifest.Capabilities.Count, "capabilities should be empty");
-            Assert.AreEqual(null, appManifest.DisplayName, "displayName should be null");
+            Assert.AreEqual("A name", appManifest.DisplayName, "displayName should match");
             Assert.AreEqual(null, appManifest.InstanceId, "instanceId should be null");
         }
 

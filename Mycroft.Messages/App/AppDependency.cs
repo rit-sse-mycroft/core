@@ -33,25 +33,40 @@ namespace Mycroft.Messages.App
 
         public new static DataPacket Deserialize(string json)
         {
-            var ret = new AppDependency();
-            ret.Dependencies = new Dictionary<string,Dictionary<string,string>>();
-
-            dynamic obj = Json.Decode(json);
-            DynamicJsonObject djobj = obj as DynamicJsonObject;
-
-            // iterate over each of the capabilities
-            foreach (string capability in djobj.GetDynamicMemberNames())
+            try
             {
-                // iterate over each of the instance ids for this capability
-                DynamicJsonObject inner = obj[capability] as DynamicJsonObject;
-                ret.Dependencies[capability] = new Dictionary<string, string>();
-                foreach (string instanceId in inner.GetDynamicMemberNames())
+                var ret = new AppDependency();
+                ret.Dependencies = new Dictionary<string, Dictionary<string, string>>();
+
+                dynamic obj = Json.Decode(json);
+                DynamicJsonObject djobj = obj as DynamicJsonObject;
+
+                // iterate over each of the capabilities
+                foreach (string capability in djobj.GetDynamicMemberNames())
                 {
-                    string status = obj[capability][instanceId];
-                    ret.Dependencies[capability][instanceId] = status;
+                    // iterate over each of the instance ids for this capability
+                    DynamicJsonObject inner = obj[capability] as DynamicJsonObject;
+                    if (inner == null)
+                    {
+                        throw new ParseException(json, "JSON not structured correctly");
+                    }
+                    ret.Dependencies[capability] = new Dictionary<string, string>();
+                    foreach (string instanceId in inner.GetDynamicMemberNames())
+                    {
+                        string status = obj[capability][instanceId];
+                        ret.Dependencies[capability][instanceId] = status;
+                    }
                 }
+                return ret;
             }
-            return ret;
+            catch (System.ArgumentException)
+            {
+                throw new ParseException(json, "Invalid JSON");
+            }
+            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+            {
+                throw new ParseException(json, "Valid JSON but invalid content");
+            }
         }
     }
 }

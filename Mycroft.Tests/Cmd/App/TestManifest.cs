@@ -74,5 +74,40 @@ namespace Mycroft.Tests.Cmd.App
             Assert.IsTrue(msg.Contains("capabilities"), "should complain about capabilities)");
             Assert.IsTrue(msg.Contains("dependencies"), "should complain about depdendencies");
         }
+
+        [TestMethod]
+        public void TestAPIAsString()
+        {
+            var input = @"{
+                ""version"": ""s0.0.1"",
+                ""name"": ""test-service"",
+                ""displayName"": ""Mycroft test service"",
+                ""instanceId"" : ""instance1"",
+                ""capabilities"": {
+                    ""microphone"" : "".0.2"",
+                    ""speaker""    : ""4.2.1.3""
+                },
+                ""API"": ""0"",
+                ""description"": ""It does odd stuff like testing or things"",
+                ""dependencies"": {
+                    ""logging"": ""HEY!"",
+                    ""*"": ""*""
+            }}";
+            AppCommand cmd = AppCommand.Parse("APP_MANIFEST", input, null) as AppCommand;
+            Assert.IsInstanceOfType(cmd, typeof(ManifestFail));
+            string msg = (cmd as ManifestFail).Fail.Message;
+            Assert.IsTrue(msg.Contains("API"), "should complain about API");
+        }
+
+        [TestMethod]
+        public void TestInvalidManifestJson()
+        {
+            var input = "{";
+            AppCommand cmd = AppCommand.Parse("APP_MANIFEST", input, null) as AppCommand;
+            Assert.IsInstanceOfType(cmd, typeof(ManifestFail));
+            string msg = (cmd as ManifestFail).Fail.Message;
+            System.Diagnostics.Debug.WriteLine(msg);
+            Assert.IsTrue(msg.Contains("Invalid JSON"), "should complain about json");
+        }
     }
 }
