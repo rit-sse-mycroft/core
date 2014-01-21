@@ -11,7 +11,7 @@ namespace Mycroft.Messages
 
         public abstract string Serialize();
 
-        public static DataPacket DeSerialize(string json) { return null; }
+        public static DataPacket Deserialize(string json) { return null; }
 
     }
 }

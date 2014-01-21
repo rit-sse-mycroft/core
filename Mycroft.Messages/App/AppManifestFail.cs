@@ -22,7 +22,7 @@ namespace Mycroft.Messages.App
             return writer.ToString();
         }
 
-        public static new DataPacket DeSerialize(string json)
+        public static new DataPacket Deserialize(string json)
         {
             try
             {

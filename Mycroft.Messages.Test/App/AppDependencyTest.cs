@@ -37,7 +37,7 @@ namespace Mycroft.Messages.Test.App
         [TestMethod]
         public void TestAppDependencyDeSerialization()
         {
-            var dep = AppDependency.DeSerialize(SampleAppDependency) as AppDependency;
+            var dep = AppDependency.Deserialize(SampleAppDependency) as AppDependency;
             Assert.AreEqual(2, dep.Dependencies.Count, "should have 2 capabilities");
             Assert.AreEqual("in use", dep.Dependencies["Video"]["GoogleTV"]);
             Assert.AreEqual("down", dep.Dependencies["Video"]["Projector"]);

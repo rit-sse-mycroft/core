@@ -44,7 +44,7 @@ namespace Mycroft.Messages.Test.Msg
         [TestMethod]
         public void TestMsgBroadcastDeserialization()
         {
-            var msgBroadcast = MsgBroadcast.DeSerialize(SampleQuery) as MsgBroadcast;
+            var msgBroadcast = MsgBroadcast.Deserialize(SampleQuery) as MsgBroadcast;
             Assert.AreEqual("uuid", msgBroadcast.Id, "should have correct uuid");
             Assert.AreNotEqual(null, msgBroadcast.Content as object, "should have content");
         }

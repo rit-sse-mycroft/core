@@ -15,7 +15,7 @@ namespace Mycroft.Messages.Test.App
         [TestMethod]
         public void TestAppInUseDeSerialization()
         {
-            var appInUse = AppInUse.DeSerialize(SampleMessage) as AppInUse;
+            var appInUse = AppInUse.Deserialize(SampleMessage) as AppInUse;
             Assert.AreEqual(10, appInUse.Priority);
         }
 

@@ -18,7 +18,7 @@ namespace Mycroft.Cmd.App
 
         public static AppCommand Parse(string json, AppInstance instance)
         {
-            var mfst = AppManifest.DeSerialize(json) as AppManifest;
+            var mfst = AppManifest.Deserialize(json) as AppManifest;
             try
             {
                 Validate(mfst);

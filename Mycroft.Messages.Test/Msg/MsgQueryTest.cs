@@ -57,7 +57,7 @@ namespace Mycroft.Messages.Test.Msg
         [TestMethod]
         public void TestMsgQueryDeserialization()
         {
-            MsgQuery msgQuery = MsgQuery.DeSerialize(SampleQuery) as MsgQuery;
+            MsgQuery msgQuery = MsgQuery.Deserialize(SampleQuery) as MsgQuery;
 
             Assert.AreEqual("uuid", msgQuery.Id);
             Assert.AreEqual("weather", msgQuery.Capability);

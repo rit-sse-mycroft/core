@@ -58,7 +58,7 @@ namespace Mycroft.Messages.App
         /// </summary>
         /// <param name="json">the manifest json to parse</param>
         /// <returns>a new AppManifest</returns>
-        public static new DataPacket DeSerialize(string json)
+        public static new DataPacket Deserialize(string json)
         {
             try
             {
