@@ -67,5 +67,35 @@ namespace Mycroft.Messages.Test.App
             Assert.AreEqual(null, appManifest.DisplayName, "displayName should be null");
             Assert.AreEqual(null, appManifest.InstanceId, "instanceId should be null");
         }
+
+        [TestMethod]
+        public void TestMockAppDeSerialization()
+        {
+            var mockAppManifestPretty = @"{
+                ""version"": ""0.0.1"",
+                ""name"": ""test-service"",
+                ""displayName"": ""Mycroft test service"",
+                ""instanceId"": ""mockapp1"",
+                ""capabilities"": {
+                    ""mocking"": ""0.4.2""
+                },
+                ""API"": 0,
+                ""description"": ""It does odd stuff like testing or things"",
+                ""dependencies"": {
+                    ""logger"": ""1.2""
+                }
+            }";
+            var mockAppManifestUgly = "{\"version\":\"0.0.1\",\"name\":\"test-service\",\"displayName\":\"Mycroft test service\",\"instanceId\":\"mockapp1\",\"capabilities\":{\"mocking\":\"0.4.2\"},\"API\":0,\"description\":\"It does odd stuff like testing or things\",\"dependencies\":{\"logger\":\"1.2\"}}";
+            var appManifest = AppManifest.DeSerialize(mockAppManifestPretty);
+            Assert.IsNotNull(appManifest);
+            appManifest = AppManifest.DeSerialize(mockAppManifestUgly);
+            Assert.IsNotNull(appManifest);
+        }
+
+        [TestMethod]
+        public void TestInvalidAPIDeSerialization()
+        {
+            
+        }
     }
 }
