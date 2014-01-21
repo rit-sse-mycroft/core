@@ -29,5 +29,29 @@ namespace Mycroft.Messages.Test.App
             System.Diagnostics.Debug.WriteLine(json);
             Assert.IsTrue(json.IndexOf("\"priority\":10") > 0, "should have priority 10");
         }
+
+        [TestMethod]
+        public void TestAppInUseInvalidInput()
+        {
+            try
+            {
+                AppInUse.Deserialize("}");
+                Assert.Fail("01 Should have thrown a ParseException");
+            }
+            catch (ParseException ex)
+            {
+                Assert.AreEqual("}", ex.Received);
+            }
+
+            try
+            {
+                AppInUse.Deserialize("{}");
+                Assert.Fail("02 Should have thrown a ParseException");
+            }
+            catch (ParseException ex)
+            {
+                Assert.AreEqual("{}", ex.Received);
+            }
+        }
     }
 }
