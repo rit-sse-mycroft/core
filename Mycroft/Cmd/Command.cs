@@ -71,5 +71,7 @@ namespace Mycroft.Cmd
 
         public virtual void VisitMessageArchive(MessageArchive messageArchive) { }
 
+        public virtual void VisitDispatcher(Dispatcher dispatcher) { }
+
     }
 }

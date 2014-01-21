@@ -45,7 +45,6 @@ namespace Mycroft.App
 
             instances[instance.InstanceId] = instance;
             var capabilities = instance.Capabilities;
-
             foreach (var capability in capabilities)
             {
                 // Add the capability if it isn't known
@@ -54,13 +53,17 @@ namespace Mycroft.App
                     providers[capability] = new SortedSet<string>();
                 }
                 providers[capability].Add(instance.InstanceId);
+            }
 
+            var dependencies = instance.Dependencies;
+            foreach (var dependency in dependencies)
+            {
                 // Add the dependency if it isn't known
-                if(!dependents.ContainsKey(capability))
+                if (!dependents.ContainsKey(dependency))
                 {
-                    dependents[capability] = new SortedSet<string>();
+                    dependents[dependency] = new SortedSet<string>();
                 }
-                dependents[capability].Add(instance.InstanceId);
+                dependents[dependency].Add(instance.InstanceId);
             }
         
             return true;
@@ -106,6 +109,10 @@ namespace Mycroft.App
         /// <returns></returns>
         public IEnumerable<AppInstance> GetDependents(Capability capability)
         {
+            if (!dependents.ContainsKey(capability))
+            {
+                dependents[capability] = new SortedSet<string>();
+            }
             return dependents[capability].Select(instanceId => instances[instanceId]);
         }
 
@@ -116,6 +123,10 @@ namespace Mycroft.App
         /// <returns></returns>
         public IEnumerable<AppInstance> GetProviders(Capability capability)
         {
+            if (!providers.ContainsKey(capability))
+            {
+                providers[capability] = new SortedSet<string>();
+            }
             return providers[capability].Select(instanceId => instances[instanceId]);
         }
 

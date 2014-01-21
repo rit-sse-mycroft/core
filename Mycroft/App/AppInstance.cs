@@ -32,7 +32,7 @@ namespace Mycroft.App
             get { return Read(() => _name); }
             internal set { Write(() => _name = value); }
         }
-        private String _name = new Guid().ToString();
+        private String _name;
 
         /// <summary>
         /// The pretty name of the app
@@ -52,7 +52,7 @@ namespace Mycroft.App
             get { return Read(() => _instanceId); }
             internal set { Write(() => _instanceId = value); }
         }
-        private String _instanceId = Guid.NewGuid().ToString();
+        private String _instanceId;
 
         /// <summary>
         /// The Mycroft API version the app expects
@@ -138,7 +138,7 @@ namespace Mycroft.App
         {
             this.dispatcher = dispatcher;
             connection = new CommandConnection(client.GetStream());
-            InstanceId = new Guid().ToString();
+            InstanceId = Guid.NewGuid().ToString();
             AppStatus = Status.connected;
             listening = false;
             OnDisconnect += NotifyDisconnected;
@@ -257,7 +257,10 @@ namespace Mycroft.App
             if(AppStatus != Status.down)
             {
                 AppStatus = Status.down;
+                dispatcher.Enqueue(new DependencyChange(this));
             }
+
+            // TODO remove the app from the registry
         }
     
         /// <summary>

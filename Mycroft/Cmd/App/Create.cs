@@ -65,5 +65,14 @@ namespace Mycroft.Cmd.App
                 appInstance.Send("APP_MANIFEST_OK " + okMsg.Serialize());
             }
         }
+
+        /// <summary>
+        /// Create a dependency list message and send it to the dispatcher
+        /// </summary>
+        /// <param name="dispatcher"></param>
+        public override void VisitDispatcher(Dispatcher dispatcher)
+        {
+            dispatcher.Enqueue(new DependencyList(instance));
+        }
     }
 }

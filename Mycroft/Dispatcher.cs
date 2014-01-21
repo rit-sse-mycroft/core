@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Mycroft
 {
-    public class Dispatcher
+    public class Dispatcher : ICommandable
     {
         private ConcurrentQueue<Command> DispatchQueue;
         private TcpServer Server;
@@ -37,6 +37,7 @@ namespace Mycroft
                     // Issue all the commands o/
                     Server.Issue(currentCmd);
                     Registry.Issue(currentCmd);
+                    this.Issue(currentCmd);
                 }
             }
         }
@@ -54,6 +55,15 @@ namespace Mycroft
         {
             var instance = new AppInstance(connection.Client, this);
             instance.Listen();
+        }
+
+        /// <summary>
+        /// Applies a command to the registry
+        /// </summary>
+        /// <param name="command"></param>
+        public void Issue(Command command)
+        {
+            command.VisitDispatcher(this);
         }
     }
 }

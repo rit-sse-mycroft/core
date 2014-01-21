@@ -51,6 +51,7 @@
     <Compile Include="App\Status.cs" />
     <Compile Include="Cmd\App\AppCommand.cs" />
     <Compile Include="Cmd\App\Create.cs" />
+    <Compile Include="Cmd\App\DependencyList.cs" />
     <Compile Include="Cmd\App\Destroy.cs" />
     <Compile Include="Cmd\App\DependencyChange.cs" />
     <Compile Include="Cmd\App\ManifestFail.cs" />

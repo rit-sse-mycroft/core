@@ -12,6 +12,11 @@ namespace Mycroft.Messages.App
     {
         public Dictionary<string, Dictionary<string, string>> Dependencies { get; set; }
 
+        public AppDependency()
+        {
+            Dependencies = new Dictionary<string, Dictionary<string, string>>();
+        }
+
         public override string Serialize()
         {
             dynamic obj = new DynamicJsonObject(new Dictionary<string, object>());

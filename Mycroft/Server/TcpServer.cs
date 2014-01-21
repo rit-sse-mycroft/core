@@ -84,8 +84,12 @@ namespace Mycroft.Server
                 // Asynchronously run the event handler, generating the listener threads
                 ClientConnected.BeginInvoke(tcpConnection, (IAsyncResult result) =>
                     {
-                        tcpConnection.Client.Close();
-                        tcpConnection.GetStream().Close();
+                        try
+                        {
+                            tcpConnection.GetStream().Close();
+                            tcpConnection.Client.Close();
+                        }
+                        catch (InvalidOperationException) { }
                     },
                     null);
             }
