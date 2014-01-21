@@ -70,5 +70,29 @@ namespace Mycroft.Messages.Test.Msg
             Debug.WriteLine(json);
             Assert.IsFalse(json.IndexOf("\"data\":{}") >= 0, "data should not be an empty object");
         }
+
+        [TestMethod]
+        public void TestMsgQueryInvalidJson()
+        {
+            try
+            {
+                MsgQuery.Deserialize("{");
+                Assert.Fail("01 should have thrown exception");
+            }
+            catch (ParseException ex)
+            {
+                Assert.AreEqual("{", ex.Received);
+            }
+
+            try
+            {
+                MsgQuery.Deserialize("{}");
+                Assert.Fail("02 should have thrown exception");
+            }
+            catch (ParseException ex)
+            {
+                Assert.AreEqual("{}", ex.Received);
+            }
+        }
     }
 }

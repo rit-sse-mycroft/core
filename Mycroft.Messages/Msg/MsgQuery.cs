@@ -47,8 +47,14 @@ namespace Mycroft.Messages.Msg
                 MsgQuery ret = new MsgQuery();
                 dynamic obj = Json.Decode(json);
                 ret.Id = obj["id"];
+                if (ret.Id == null)
+                    throw new ParseException(json, "No id found");
                 ret.Capability = obj["capability"];
+                if (ret.Capability == null)
+                    throw new ParseException(json, "No capability found");
                 ret.Action = obj["action"];
+                if (ret.Action == null)
+                    throw new ParseException(json, "No action found");
                 ret.Data = obj["data"];
                 ret.InstanceId = new List<string>();
                 DynamicJsonArray instanceIds = obj["instanceId"];
@@ -60,7 +66,11 @@ namespace Mycroft.Messages.Msg
             }
             catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
             {
-                return null;
+                throw new ParseException(json, "General binding exception. Is something invalid?");
+            }
+            catch (ArgumentException)
+            {
+                throw new ParseException(json, "Invalid JSON");
             }
         }
     }
