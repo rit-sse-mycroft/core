@@ -36,7 +36,11 @@ namespace Mycroft.Messages.Msg
             }
             catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
             {
-                return null;
+                throw new ParseException(json, "General binding exception");
+            }
+            catch (ArgumentException)
+            {
+                throw new ParseException(json, "Invalid JSON");
             }
         }
     }

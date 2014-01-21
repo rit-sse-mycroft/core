@@ -32,5 +32,19 @@ namespace Mycroft.Messages.Test.Msg
             Assert.AreEqual("APP_MANFST {}", msg.Received);
             Assert.AreEqual("this is a message", msg.Message);
         }
+
+        [TestMethod]
+        public void TestMsgGeneralFailureInvalidJson()
+        {
+            try
+            {
+                MsgGeneralFailure.Deserialize("{");
+                Assert.Fail("01 should have thrown exception");
+            }
+            catch (ParseException ex)
+            {
+                Assert.AreEqual(ex.Received, "{");
+            }
+        }
     }
 }
