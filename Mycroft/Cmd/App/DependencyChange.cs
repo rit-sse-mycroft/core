@@ -57,7 +57,10 @@ namespace Mycroft.Cmd.App
                     };
                 }
 
-                app.Key.Send("APP_DEPENDENCY " + message.Serialize());
+                if (message.Dependencies.Count > 0)
+                {
+                    app.Key.Send("APP_DEPENDENCY " + message.Serialize());
+                }
             }
         }
     }

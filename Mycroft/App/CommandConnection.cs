@@ -42,7 +42,7 @@ namespace Mycroft.App
         {
             var size = Encoding.UTF8.GetByteCount(message);
             string fullMessage = size.ToString() + "\n" + message;
-            byte[] data = Encoding.UTF8.GetBytes(message);
+            byte[] data = Encoding.UTF8.GetBytes(fullMessage);
             await input.WriteAsync(data, 0, data.Length);
         }
 
