@@ -49,6 +49,9 @@ namespace Mycroft.Cmd.App
                 instance.AddDependency(c);
             }
             registry.Register(instance);
+
+            // We have to send the message to the instance on our own
+            instance.Issue(this);
         }
 
         /// <summary>

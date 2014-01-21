@@ -15,10 +15,12 @@ namespace Mycroft
     {
         private ConcurrentQueue<Command> DispatchQueue;
         private TcpServer Server;
+        private Registry Registry;
 
         public Dispatcher(TcpServer server, Registry registry)
         {
             Server = server;
+            Registry = registry;
             DispatchQueue = new ConcurrentQueue<Command>();
         }
 
@@ -34,6 +36,7 @@ namespace Mycroft
                 {
                     // Issue all the commands o/
                     Server.Issue(currentCmd);
+                    Registry.Issue(currentCmd);
                 }
             }
         }
