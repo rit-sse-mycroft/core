@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Mycroft.Cmd.App
 {
-    class Down : AppCommand
+    class DependencyChange : AppCommand
     {
         private AppInstance instance;
 
@@ -14,7 +14,7 @@ namespace Mycroft.Cmd.App
         /// Used to notify that an app instance has gone down
         /// </summary>
         /// <param name="instance"></param>
-        public Down(AppInstance instance)
+        public DependencyChange(AppInstance instance)
         {
             this.instance = instance;
         }

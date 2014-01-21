@@ -22,7 +22,7 @@ namespace Mycroft.Cmd.App
                 case "APP_UP":
                     return new Up(json, instance);
                 case "APP_DOWN":
-                    return new Down(instance);
+                    return new DependencyChange(instance);
                 case "APP_DESTROY":
                     return new Destroy(json, instance);
                 case "APP_MANIFEST":
