@@ -53,14 +53,8 @@ namespace Mycroft.Cmd
 
         public static String getType(String input)
         {
-            // get type is in a new method for testing purposes
-            if (input.Length >= 3)
-            {
-                return input.Substring(0, 3);
-            }
-            //malformed json
-            //TODO standardize
-            return null;
+            // Needs error handling?
+            return input.Substring(0, input.IndexOf(" "));
         }
 
 
