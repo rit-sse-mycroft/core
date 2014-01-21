@@ -35,9 +35,9 @@ namespace Mycroft.Messages.Test.App
         public void TestAppManifestSerialization()
         {
             // just see if we can serialize and de-serialize two times
-            var appManifest = AppManifest.DeSerialize(SampleManifest) as AppManifest;
+            var appManifest = AppManifest.Deserialize(SampleManifest) as AppManifest;
             var str = appManifest.Serialize();
-            appManifest = AppManifest.DeSerialize(str) as AppManifest;
+            appManifest = AppManifest.Deserialize(str) as AppManifest;
             Assert.AreNotEqual(null, appManifest, "should still have a valid manifest");
             Assert.AreEqual(2, appManifest.Dependencies.Count, "should have 2 dependencies");
             Assert.AreEqual(2, appManifest.Capabilities.Count, "should have 2 capabilities");
@@ -46,7 +46,7 @@ namespace Mycroft.Messages.Test.App
         [TestMethod]
         public void TestAppManifestDeSerialization()
         {
-            var appManifest = AppManifest.DeSerialize(SampleManifest) as AppManifest;
+            var appManifest = AppManifest.Deserialize(SampleManifest) as AppManifest;
             Assert.AreEqual("0.0.1", appManifest.Version, "version should be equal");
             Assert.AreEqual("test-service", appManifest.Name, "name should be equal");
             Assert.AreEqual("Mycroft test service", appManifest.DisplayName, "displayName should be equal");
@@ -61,7 +61,7 @@ namespace Mycroft.Messages.Test.App
         [TestMethod]
         public void TestAppManifestMinimalDeSerialization()
         {
-            var appManifest = AppManifest.DeSerialize(MinimalManifest) as AppManifest;
+            var appManifest = AppManifest.Deserialize(MinimalManifest) as AppManifest;
             Assert.AreEqual(0, appManifest.Dependencies.Count, "dependencies should be empty");
             Assert.AreEqual(0, appManifest.Capabilities.Count, "capabilities should be empty");
             Assert.AreEqual(null, appManifest.DisplayName, "displayName should be null");

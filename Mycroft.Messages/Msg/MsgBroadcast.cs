@@ -32,7 +32,7 @@ namespace Mycroft.Messages.Msg
             return writer.ToString();
         }
 
-        public static new DataPacket DeSerialize(string json)
+        public static new DataPacket Deserialize(string json)
         {
             try
             {

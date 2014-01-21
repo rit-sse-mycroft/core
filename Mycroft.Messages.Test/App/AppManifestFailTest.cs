@@ -15,7 +15,7 @@ namespace Mycroft.Messages.Test.App
         [TestMethod]
         public void TestAppManifestFailDeSerialization()
         {
-            var appManifestFail = AppManifestFail.DeSerialize(SampleMessage) as AppManifestFail;
+            var appManifestFail = AppManifestFail.Deserialize(SampleMessage) as AppManifestFail;
             Assert.AreEqual("this is a message", appManifestFail.Message, "Message should match");
         }
 

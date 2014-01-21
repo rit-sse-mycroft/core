@@ -51,10 +51,15 @@ namespace Mycroft.Cmd
             return null;
         }
 
-        public static String getType(String input)
+        public static string getType(string input)
         {
             // Needs error handling?
-            return input.Substring(0, input.IndexOf(" "));
+            var firstSpace = input.IndexOf(" ");
+            if(firstSpace < 0)
+            {
+                return input;
+            }
+            return input.Substring(0, firstSpace);
         }
 
 

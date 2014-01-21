@@ -16,7 +16,7 @@ namespace Mycroft.Messages.Test.App
         [TestMethod]
         public void TestAppManifestOkDeSerialization()
         {
-            var mfstOk = AppManifestOk.DeSerialize(SampleManifestOk) as AppManifestOk;
+            var mfstOk = AppManifestOk.Deserialize(SampleManifestOk) as AppManifestOk;
             Assert.AreEqual("inst101", mfstOk.InstanceId);
         }
 
