@@ -28,5 +28,16 @@ namespace Mycroft.Messages
             msgFail.Received = Received;
             return msgFail.Serialize();
         }
+
+        public override string ToString()
+        {
+            StringBuilder msgBuilder = new StringBuilder();
+            msgBuilder.Append("JSON Received: \n");
+            msgBuilder.Append(Received);
+            msgBuilder.Append("\nMessage: \n");
+            msgBuilder.Append(Message);
+            return msgBuilder.ToString();
+        }
+
     }
 }

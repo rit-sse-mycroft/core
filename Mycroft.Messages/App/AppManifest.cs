@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Helpers;
 using System.IO;
@@ -99,14 +100,30 @@ namespace Mycroft.Messages.App
                     }
                 }
 
+                Validate(ret);
+
                 return ret;
             }
             catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
             {
-                return null;
+                throw new ParseException(json, "Unknown parsing exception");
+            }
+            catch (ParseException ex)
+            {
+                throw new ParseException(json, ex.Message);
+            }
+            catch (System.ArgumentException)
+            {
+                throw new ParseException(json, "Invalid JSON");
             }
         }
 
+        /// <summary>
+        /// Try to get a value from a dynamic object
+        /// </summary>
+        /// <param name="obj">The dynamic to get from</param>
+        /// <param name="key">The property name</param>
+        /// <returns>The value or null if not found</returns>
         private static object TryGetValueFromDynamic(dynamic obj, string key)
         {
             try
@@ -116,6 +133,66 @@ namespace Mycroft.Messages.App
             catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
             {
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Validate a given manifest. If the manifest is invalid a ParseException is thrown.
+        /// The Received property of that exception is set to an empty string, and should be set
+        /// by the caller that knows about the json that was parsed.
+        /// </summary>
+        /// <param name="manifest">manifest to check</param>
+        private static void Validate(AppManifest manifest)
+        {
+            var problems = new List<string>();
+
+            var versionRegex = new Regex(@"^(\d+(\.\d+(\.\d+)?)?|[*])$");
+            if (manifest.Version == null || !versionRegex.IsMatch(manifest.Version))
+            {
+                problems.Add("Supplied version number is invalid");
+            }
+
+            if (manifest.API < 0)
+            {
+                problems.Add("API number is invalid");
+            }
+
+            if (manifest.DisplayName == null || manifest.DisplayName == "")
+            {
+                problems.Add("No displayName was found");
+            }
+
+            if (manifest.Description == null || manifest.Description == "")
+            {
+                problems.Add("No description was found");
+            }
+
+            if (manifest.Name == null || manifest.Name == "")
+            {
+                problems.Add("No name was found");
+            }
+
+            foreach (var item in manifest.Capabilities)
+            {
+                if (!versionRegex.IsMatch(item.Value))
+                {
+                    problems.Add("Capability version number for " + item.Key + " is not semantic");
+                }
+            }
+
+            foreach (var item in manifest.Dependencies)
+            {
+                if (!versionRegex.IsMatch(item.Value))
+                {
+                    problems.Add("Dependency version number for " + item.Key + "is not semantic");
+                }
+            }
+
+            // if we have problems report them
+            if (problems.Count != 0)
+            {
+                var msg = string.Join("\n", problems);
+                throw new ParseException("", msg);
             }
         }
     }
