@@ -1,4 +1,5 @@
 ﻿using Mycroft.App;
+using Mycroft.Messages.Msg;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Mycroft.Cmd.Msg
 {
-    class MsgCommand : Command
+   public class MsgCommand : Command
     {
         /// <summary>
         /// Parses JSON into message command objects
@@ -31,11 +32,17 @@ namespace Mycroft.Cmd.Msg
                     return new Request(rawData, instance);
                 default:
                     //TODO: notify if data does not meet format
-                break;
+                    break;
             }
             return null;
         }
 
         public String guid { get; set; }
+
+
+
+
+        
+
     }
 }

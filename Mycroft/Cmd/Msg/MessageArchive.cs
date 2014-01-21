@@ -8,7 +8,7 @@ using System.Runtime.Caching;
 
 namespace Mycroft.Cmd.Msg
 {
-    class MessageArchive
+   public class MessageArchive
     {
         static ReaderWriterLockSlim rwl = new ReaderWriterLockSlim();
 
@@ -47,7 +47,7 @@ namespace Mycroft.Cmd.Msg
             }
         }
 
-        public void PostMessage(MsgCommand mc)
+        public Boolean TryPostMessage(MsgCommand mc)
         {
             rwl.EnterWriteLock();
             try
@@ -55,16 +55,21 @@ namespace Mycroft.Cmd.Msg
 
 
                 //TODO check to see that the guid is not in use and if it is send a message back to the sender
-
+                if (archive.Contains(mc.guid))
+                {
+                    return false;
+                }
 
                 var timeCanDie = DateTime.Now + timeToLive;
                 archive.Add(mc.guid, mc, timeCanDie);
+
             }
             finally
             {
                 // Ensure that the lock is released.
                 rwl.ExitWriteLock();
             }
+            return true;
         }
     }
 }
