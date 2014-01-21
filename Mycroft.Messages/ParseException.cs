@@ -8,7 +8,14 @@ namespace Mycroft.Messages
 {
     public class ParseException : Exception
     {
+        /// <summary>
+        /// What we got from the stream: can be anything really, because any
+        /// random combination of characters could be invalid.
+        /// </summary>
         public string Received { get; private set; }
+        /// <summary>
+        /// The message you would like to relay to the client.
+        /// </summary>
         public string Message { get; private set; }
 
         public ParseException(string received, string message)
