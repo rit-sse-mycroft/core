@@ -74,6 +74,17 @@ namespace Mycroft.App
         /// if it was not found in the registry</return>
         public bool Remove(AppInstance instance)
         {
+            foreach (var capability in instance.Capabilities)
+            {
+                if (providers[capability].Contains(instance.InstanceId))
+                    providers[capability].Remove(instance.InstanceId);
+            }
+            foreach (var dependency in instance.Dependencies)
+            {
+                if (dependents[dependency].Contains(instance.InstanceId))
+                    dependents[dependency].Remove(instance.InstanceId);
+            }
+
             return instances.Remove(instance.InstanceId);
         }
 
