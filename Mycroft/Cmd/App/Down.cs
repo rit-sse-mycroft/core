@@ -1,13 +1,63 @@
 ﻿using Mycroft.App;
+using Mycroft.Messages.App;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Mycroft.Cmd.App
 {
     class Down : AppCommand
     {
-        public Down(String rawData, AppInstance inatance)
-        {
+        private AppInstance instance;
 
+        /// <summary>
+        /// Used to notify that an app instance has gone down
+        /// </summary>
+        /// <param name="instance"></param>
+        public Down(AppInstance instance)
+        {
+            this.instance = instance;
+        }
+
+        /// <summary>
+        /// Notify dependencies that the app has gone down
+        /// </summary>
+        /// <param name="registry"></param>
+        public override void VisitRegistry(Registry registry)
+        {
+            var capabilities = instance.Capabilities;
+
+            // apps that depend on this, mapped to the capabilities they expect it to use
+            var apps = new Dictionary<AppInstance, List<string>>();
+
+            // Build the list of things that depend on this
+            foreach (var capability in capabilities)
+            {
+                foreach (var app in registry.GetDependents(capability))
+                {
+                    if(!apps.ContainsKey(app))
+                    {
+                        apps[app] = new List<string>();
+                    }
+                    apps[app].Add(capability.Name);
+                }
+            }
+
+            // Assemble the message that gets sent for each app
+            foreach (var app in apps)
+            {
+                var message = new AppDependency();
+                message.Dependencies = new Dictionary<string, Dictionary<string, string>>();
+                foreach(var capability in app.Value)
+                {
+                    message.Dependencies[capability] = new Dictionary<string, string>()
+                    {
+                        { instance.InstanceId, instance.AppStatus.ToString() }
+                    };
+                }
+
+                app.Key.Send("APP_DEPENDENCY " + message.Serialize());
+            }
         }
     }
 }

@@ -17,6 +17,11 @@ namespace Mycroft.App
     /// </summary>
     public class AppInstance : ICommandable
     {
+
+        public delegate void DisconnectHandler(AppInstance instance);
+
+        public event DisconnectHandler OnDisconnect;
+
         private ReaderWriterLockSlim readwrite = new ReaderWriterLockSlim();
 
         /// <summary>
@@ -47,7 +52,7 @@ namespace Mycroft.App
             get { return Read(() => _instanceId); }
             internal set { Write(() => _instanceId = value); }
         }
-        private String _instanceId;
+        private String _instanceId = Guid.NewGuid().ToString();
 
         /// <summary>
         /// The Mycroft API version the app expects
@@ -134,8 +139,9 @@ namespace Mycroft.App
             this.dispatcher = dispatcher;
             connection = new CommandConnection(client.GetStream());
             InstanceId = new Guid().ToString();
-            AppStatus = Status.Connected;
+            AppStatus = Status.connected;
             listening = false;
+            OnDisconnect += NotifyDisconnected;
         }
 
         /// <summary>
@@ -150,16 +156,30 @@ namespace Mycroft.App
 
             while (Read(() => listening))
             {
-                var message = connection.GetCommand();
-
-                Debug.WriteLine("Message received by AppInstance " + InstanceId);
-                Debug.WriteLine(message);
-
-                // Make this command visit this instance before doing anything else
-                var command = Command.Parse(message, this);
-                if (CanUse(command))
+                try
                 {
-                    dispatcher.Enqueue(command);
+                    var message = connection.GetCommand();
+
+                    Debug.WriteLine("Message received by AppInstance " + InstanceId);
+                    Debug.WriteLine(message);
+
+                    // Make this command visit this instance before doing anything else
+                    var command = Command.Parse(message, this);
+                    if (CanUse(command))
+                    {
+                        dispatcher.Enqueue(command);
+                    }
+
+                }
+                // Handle client disconnects
+                catch (IOException e)
+                {
+                    Debug.Write("Disconnected? " + e.Message);
+                    Write(() => listening = false);
+                    if (OnDisconnect != null)
+                    {
+                        OnDisconnect(this);
+                    }
                 }
             }
         }
@@ -217,15 +237,27 @@ namespace Mycroft.App
         {
             switch (AppStatus)
             {
-                case Status.Connected:
+                case Status.connected:
                     return (cmd is Create || cmd is ManifestFail);
 
-                case Status.Active:
-                case Status.Inactive:
-                case Status.InUse:
+                case Status.up:
+                case Status.down:
+                case Status.in_use:
                     return true;
             }
             return true;
+        }
+
+        /// <summary>
+        /// Sends a message to the registry that this app was disconnected
+        /// </summary>
+        /// <param name="instance"></param>
+        private void NotifyDisconnected(AppInstance instance)
+        {
+            if(AppStatus != Status.down)
+            {
+                AppStatus = Status.down;
+            }
         }
     
         /// <summary>
