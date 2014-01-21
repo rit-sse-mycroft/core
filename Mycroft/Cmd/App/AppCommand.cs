@@ -22,8 +22,6 @@ namespace Mycroft.Cmd.App
                 case "APP_UP":
                 case "APP_DOWN":
                     return new DependencyChange(instance);
-                case "APP_DESTROY":
-                    return new Destroy(json, instance);
                 case "APP_MANIFEST":
                     return Manifest.Parse(json, instance);
                 default:

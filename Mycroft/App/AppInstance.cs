@@ -260,7 +260,7 @@ namespace Mycroft.App
                 dispatcher.Enqueue(new DependencyChange(this));
             }
 
-            // TODO remove the app from the registry
+            dispatcher.Enqueue(new Destroy(this));
         }
     
         /// <summary>
