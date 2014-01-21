@@ -29,11 +29,19 @@ namespace Mycroft.Messages.App
                 var ret = new AppManifestOk();
                 dynamic obj = Json.Decode(json);
                 ret.InstanceId = obj["instanceId"];
+                if (ret.InstanceId == null)
+                {
+                    throw new ParseException(json, "Does not contain instanceId");
+                }
                 return ret;
             }
             catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
             {
-                return null;
+                throw new ParseException(json, "General binding exception, is instanceId valid?");
+            }
+            catch (ArgumentException)
+            {
+                throw new ParseException(json, "Invalid JSON");
             }
         }
     }
