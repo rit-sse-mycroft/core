@@ -62,6 +62,7 @@ namespace Mycroft.Cmd.App
         {
             if (appInstance == instance)
             {
+                appInstance.AppStatus = Status.down;
                 appInstance.Send("APP_MANIFEST_OK " + okMsg.Serialize());
             }
         }

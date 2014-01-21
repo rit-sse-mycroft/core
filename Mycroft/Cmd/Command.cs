@@ -32,8 +32,9 @@ namespace Mycroft.Cmd
             String type = getType(input);
             if (type != null)
             {
-                String rawData = input.Substring(input.IndexOf('{'));
-                Console.Write(rawData);
+                var startJson = input.IndexOf('{');
+                string rawData = startJson < 0 ? "" : input.Substring(startJson);
+                
                 if (type.StartsWith("MSG"))
                 {
                     return MsgCommand.Parse(type, rawData, instance);

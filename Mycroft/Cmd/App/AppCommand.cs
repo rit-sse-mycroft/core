@@ -20,8 +20,9 @@ namespace Mycroft.Cmd.App
             switch (type)
             {
                 case "APP_UP":
+                    return new DependencyChange(instance, Status.up);
                 case "APP_DOWN":
-                    return new DependencyChange(instance);
+                    return new DependencyChange(instance, Status.down);
                 case "APP_MANIFEST":
                     return Manifest.Parse(json, instance);
                 default:

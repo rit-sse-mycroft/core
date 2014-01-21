@@ -256,8 +256,7 @@ namespace Mycroft.App
         {
             if(AppStatus != Status.down)
             {
-                AppStatus = Status.down;
-                dispatcher.Enqueue(new DependencyChange(this));
+                dispatcher.Enqueue(new DependencyChange(this, Status.down));
             }
 
             dispatcher.Enqueue(new Destroy(this));

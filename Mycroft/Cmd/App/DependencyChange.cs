@@ -14,9 +14,10 @@ namespace Mycroft.Cmd.App
         /// Used to notify that an app instance has gone down
         /// </summary>
         /// <param name="instance"></param>
-        public DependencyChange(AppInstance instance)
+        public DependencyChange(AppInstance instance, Status status)
         {
             this.instance = instance;
+            instance.AppStatus = status;
         }
 
         /// <summary>
