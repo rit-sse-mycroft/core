@@ -86,9 +86,9 @@ namespace Mycroft.Messages.Test.App
                 }
             }";
             var mockAppManifestUgly = "{\"version\":\"0.0.1\",\"name\":\"test-service\",\"displayName\":\"Mycroft test service\",\"instanceId\":\"mockapp1\",\"capabilities\":{\"mocking\":\"0.4.2\"},\"API\":0,\"description\":\"It does odd stuff like testing or things\",\"dependencies\":{\"logger\":\"1.2\"}}";
-            var appManifest = AppManifest.DeSerialize(mockAppManifestPretty);
+            var appManifest = AppManifest.Deserialize(mockAppManifestPretty);
             Assert.IsNotNull(appManifest);
-            appManifest = AppManifest.DeSerialize(mockAppManifestUgly);
+            appManifest = AppManifest.Deserialize(mockAppManifestUgly);
             Assert.IsNotNull(appManifest);
         }
 
