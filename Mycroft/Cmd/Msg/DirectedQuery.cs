@@ -4,16 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Mycroft.App;
+using Mycroft.Messages.Msg;
 
 namespace Mycroft.Cmd.Msg
 {
-    class DirectedQuery : MsgCommand
+    class DirectedQuery : Query
     {
-        private AppInstance instance;
 
-        public DirectedQuery(String rawData, AppInstance instance)
+        public DirectedQuery(MsgQuery query, AppInstance instance)
+            : base(query, instance)
         {
-            this.instance = instance;
+
         }
     }
 }

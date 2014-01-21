@@ -58,8 +58,12 @@ namespace Mycroft.Messages.Msg
                 ret.Data = obj["data"];
                 ret.InstanceId = new List<string>();
                 DynamicJsonArray instanceIds = obj["instanceId"];
-                foreach(object elem in instanceIds) {
-                    ret.InstanceId.Add(elem.ToString());
+                if (instanceIds != null)
+                {
+                    foreach (object elem in instanceIds)
+                    {
+                        ret.InstanceId.Add(elem.ToString());
+                    }
                 }
                 ret.Priority = obj["priority"];
                 return ret;

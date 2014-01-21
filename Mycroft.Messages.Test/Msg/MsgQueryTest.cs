@@ -72,6 +72,45 @@ namespace Mycroft.Messages.Test.Msg
         }
 
         [TestMethod]
+        public void TestMsgQueryUndirected()
+        {
+            string input1 = @"
+             {
+              ""id"" : ""uuid"",
+              ""capability"" : ""weather"",
+              ""action"" : ""get_temperature"",
+              ""instanceId"" : [],
+              ""data"" : {
+                 ""scale"" : ""fahrenheit"",
+                 ""other"" : {
+                   ""k"" : ""v""
+                 }
+              },
+              ""priority"" : 30
+            }";
+            string input2 = @"
+             {
+              ""id"" : ""uuid"",
+              ""capability"" : ""weather"",
+              ""action"" : ""get_temperature"",
+              ""data"" : {
+                 ""scale"" : ""fahrenheit"",
+                 ""other"" : {
+                   ""k"" : ""v""
+                 }
+              },
+              ""priority"" : 30
+            }";
+
+            var msgQuery = MsgQuery.Deserialize(input1) as MsgQuery;
+            Assert.AreEqual(0, msgQuery.InstanceId.Count, "should hvae 0 instance IDs");
+
+            msgQuery = MsgQuery.Deserialize(input2) as MsgQuery;
+            Assert.AreEqual(0, msgQuery.InstanceId.Count, "should hvae 0 instance IDs");
+            
+        }
+
+        [TestMethod]
         public void TestMsgQueryInvalidJson()
         {
             try
