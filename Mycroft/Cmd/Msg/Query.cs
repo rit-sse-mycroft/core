@@ -7,14 +7,19 @@ using Mycroft.App;
 
 namespace Mycroft.Cmd.Msg
 {
-    class Query : MsgCommand
+    abstract class Query : MsgCommand
     {
-        private AppInstance instance;
 
-        public Query(String rawData, AppInstance instance)
+        /// <summary>
+        /// Get the Query object associated with this MSG_QUERY
+        /// </summary>
+        /// <param name="data">the JSON data without a verb</param>
+        /// <param name="instance">the app instance that issued this query</param>
+        /// <returns>either a DirectedQuery or UndirectedQuery</returns>
+        public static new Command Parse(string data, AppInstance instance)
         {
-            this.instance = instance;
+            return null;
         }
-
+    
     }
 }

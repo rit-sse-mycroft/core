@@ -23,13 +23,11 @@ namespace Mycroft.Cmd.Msg
                 case "MSG_BROADCAST":
                     return new Broadcast(rawData, instance);
                 case "MSG_QUERY":
-                    return new Query(rawData, instance);
-                case "MSG_DIRECTQUERY":
-                    return new DirectQuery(rawData, instance);
-                case "MSG_REPLY":
+                    return Query.Parse(rawData, instance);
+                case "MSG_QUERY_SUCCESS":
                     return new Reply(rawData, instance);
-                case "MSG_REQUEST":
-                    return new Request(rawData, instance);
+                case "MSG_QUERY_FAIL":
+                    return new QueryFail(rawData, instance);
                 default:
                     //TODO: notify if data does not meet format
                     break;
@@ -38,11 +36,6 @@ namespace Mycroft.Cmd.Msg
         }
 
         public String guid { get; set; }
-
-
-
-
-        
 
     }
 }

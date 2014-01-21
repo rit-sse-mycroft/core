@@ -57,12 +57,13 @@
     <Compile Include="Cmd\Command.cs" />
     <Compile Include="Cmd\ICommandable.cs" />
     <Compile Include="Cmd\Msg\Broadcast.cs" />
-    <Compile Include="Cmd\Msg\DirectQuery.cs" />
+    <Compile Include="Cmd\Msg\DirectedQuery.cs" />
     <Compile Include="Cmd\Msg\Query.cs" />
     <Compile Include="Cmd\Msg\MessageArchive.cs" />
     <Compile Include="Cmd\Msg\MsgCommand.cs" />
+    <Compile Include="Cmd\Msg\QueryFail.cs" />
     <Compile Include="Cmd\Msg\Reply.cs" />
-    <Compile Include="Cmd\Msg\Request.cs" />
+    <Compile Include="Cmd\Msg\UndirectedQuery.cs" />
     <Compile Include="Cmd\Sys\Unlock.cs" />
     <Compile Include="Cmd\Sys\Lockdown.cs" />
     <Compile Include="Cmd\Sys\ShutOff.cs" />

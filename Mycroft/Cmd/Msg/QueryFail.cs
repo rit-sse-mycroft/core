@@ -7,13 +7,13 @@ using Mycroft.App;
 
 namespace Mycroft.Cmd.Msg
 {
-    class Request : MsgCommand
+    class QueryFail : MsgCommand
     {
-        private AppInstance instance;
+        private AppInstance Instance;
 
-        public Request(String rawData, AppInstance instance)
+        public QueryFail(string data, AppInstance instance)
         {
-            this.instance = instance;
+            Instance = instance;
         }
     }
 }

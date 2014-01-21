@@ -7,11 +7,11 @@ using Mycroft.App;
 
 namespace Mycroft.Cmd.Msg
 {
-    class DirectQuery : MsgCommand
+    class DirectedQuery : MsgCommand
     {
         private AppInstance instance;
 
-        public DirectQuery(String rawData, AppInstance instance)
+        public DirectedQuery(String rawData, AppInstance instance)
         {
             this.instance = instance;
         }
