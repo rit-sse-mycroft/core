@@ -4,6 +4,7 @@ using Mycroft.Cmd;
 using System.IO;
 using System.Diagnostics;
 using System.Runtime.Serialization;
+using Mycroft.Messages;
 
 namespace Mycroft.Tests.Cmd
 {
@@ -14,14 +15,17 @@ namespace Mycroft.Tests.Cmd
         public void TestParse()
         {
             // sample input taken from the wiki
-            var input = @"MSG_QUERY : {
-                ""id"": ""uuid"",
-                ""capability"": ""weather"",
-                ""remoteProcedure"": ""get_temperature"",
-                ""args"" : [""farenheit""],
-                ""instanceId"":[""xxxx""],
-                ""priority"": 30           
-            }}";
+            var input = @"MSG_QUERY {
+              ""id"" : ""uuid"",
+              ""capability"" : ""weather"",
+              ""action"" : ""get_temperature"",
+              ""data"" : {
+                 ""scale"": ""fahrenheit"",
+                 ""other"" : ""thing""
+              },
+              ""instanceId"" : [""xxxx""],
+              ""priority"" : 30
+            }";
             
             // JSON of "MSG_QUERY" should return "MSG"
             String msgQuery = Command.getType(input);
@@ -31,9 +35,9 @@ namespace Mycroft.Tests.Cmd
                 // if this breaks, errors could lie in MSG command etc
                 Command.Parse(input, null);
             }
-            catch (SerializationException e)
+            catch (ParseException e)
             {
-                throw new Exception("JSON could not be parsed into an object - serialization error", e);
+                throw new Exception("JSON could not be parsed into an object - serialization error " + e.ToString());
             }
             
             //random input should return null because objects name is incorrect

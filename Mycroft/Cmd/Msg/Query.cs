@@ -11,24 +11,15 @@ namespace Mycroft.Cmd.Msg
     abstract class Query : MsgCommand
     {
 
-        protected string Id { get; set; }
-        protected string Capability { get; set; }
-        protected string Action { get; set; }
-        protected dynamic Data { get; set; }
-        protected int priority;
-        protected AppInstance Instance;
-        protected List<string> InstanceId;
+        protected MsgQuery query;
+        protected AppInstance instance;
 
         public Query(MsgQuery query, AppInstance instance)
         {
-            this.Instance = instance;
-
-            this.Id = query.Id;
-            this.Capability = query.Capability;
-            this.Action = query.Action;
-            this.Data = query.Data;
-            this.priority = query.Priority;
-            this.InstanceId = query.InstanceId;
+            this.instance = instance;
+            this.query = query;
+            if (instance != null)
+                this.query.FromInstanceId = instance.InstanceId;
         }
 
         /// <summary>
