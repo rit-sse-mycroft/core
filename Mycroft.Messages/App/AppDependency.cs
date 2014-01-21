@@ -46,6 +46,10 @@ namespace Mycroft.Messages.App
                 {
                     // iterate over each of the instance ids for this capability
                     DynamicJsonObject inner = obj[capability] as DynamicJsonObject;
+                    if (inner == null)
+                    {
+                        throw new ParseException(json, "JSON not structured correctly");
+                    }
                     ret.Dependencies[capability] = new Dictionary<string, string>();
                     foreach (string instanceId in inner.GetDynamicMemberNames())
                     {
@@ -58,6 +62,10 @@ namespace Mycroft.Messages.App
             catch (System.ArgumentException)
             {
                 throw new ParseException(json, "Invalid JSON");
+            }
+            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+            {
+                throw new ParseException(json, "Valid JSON but invalid content");
             }
         }
     }

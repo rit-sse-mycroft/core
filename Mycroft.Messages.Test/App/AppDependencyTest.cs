@@ -51,12 +51,22 @@ namespace Mycroft.Messages.Test.App
         {
             try
             {
-                var dep = AppDependency.Deserialize("}") as AppDependency;
-                Assert.Fail("Should have thrown a ParseException");
+                AppDependency.Deserialize("}");
+                Assert.Fail("01 Should have thrown a ParseException");
             }
             catch (ParseException ex)
             {
                 Assert.AreEqual("}", ex.Received);
+            }
+
+            try
+            {
+                var dep = AppDependency.Deserialize("{\"this is\":\"invalid\"}");
+                Assert.Fail("02 Shoud have thrown a ParseException 02");
+            }
+            catch (ParseException ex)
+            {
+                Assert.AreEqual("{\"this is\":\"invalid\"}", ex.Received);
             }
         }
     }
