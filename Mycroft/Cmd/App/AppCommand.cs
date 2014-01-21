@@ -20,7 +20,6 @@ namespace Mycroft.Cmd.App
             switch (type)
             {
                 case "APP_UP":
-                    return new Up(json, instance);
                 case "APP_DOWN":
                     return new DependencyChange(instance);
                 case "APP_DESTROY":
