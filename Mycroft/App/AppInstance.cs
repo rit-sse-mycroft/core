@@ -27,7 +27,7 @@ namespace Mycroft.App
             get { return Read(() => _name); }
             internal set { Write(() => _name = value); }
         }
-        private String _name;
+        private String _name = new Guid().ToString();
 
         /// <summary>
         /// The pretty name of the app
@@ -215,19 +215,17 @@ namespace Mycroft.App
         /// <returns>Returns true if the command is valid for the current state, false otherwise</returns>
         private bool CanUse(Command cmd)
         {
-            return Read(() => {
-                switch (AppStatus)
-                {
-                    case Status.Connected:
-                        return (cmd is Create || cmd is ManifestFail);
+            switch (AppStatus)
+            {
+                case Status.Connected:
+                    return (cmd is Create || cmd is ManifestFail);
 
-                    case Status.Active:
-                    case Status.Inactive:
-                    case Status.InUse:
-                        return true;
-                }
-                return true;
-            });
+                case Status.Active:
+                case Status.Inactive:
+                case Status.InUse:
+                    return true;
+            }
+            return true;
         }
     
         /// <summary>
