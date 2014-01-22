@@ -15,6 +15,7 @@ namespace Mycroft
     public class Dispatcher : ICommandable
     {
         private ConcurrentQueue<Command> DispatchQueue;
+        private ConcurrentStack<Command> DispatchStack;
         private TcpServer Server;
         private Registry Registry;
         private MessageArchive MessageArchive;
@@ -25,6 +26,7 @@ namespace Mycroft
             Registry = registry;
             MessageArchive = messageArchive;
             DispatchQueue = new ConcurrentQueue<Command>();
+            DispatchStack = new ConcurrentStack<Command>();
         }
 
         public void Run()
@@ -35,12 +37,12 @@ namespace Mycroft
             Command currentCmd;
             while (true)
             {
-                if (DispatchQueue.TryDequeue(out currentCmd))
+                if (DispatchStack.TryPop(out currentCmd) || DispatchQueue.TryDequeue(out currentCmd))
                 {
                     // Issue all the commands o/
                     Server.Issue(currentCmd);
-                    Registry.Issue(currentCmd);
                     MessageArchive.Issue(currentCmd);
+                    Registry.Issue(currentCmd);
                     this.Issue(currentCmd);
                 }
             }
@@ -49,6 +51,11 @@ namespace Mycroft
         public void Enqueue(Command cmd)
         {
             DispatchQueue.Enqueue(cmd);
+        }
+
+        public void PreemptQueue(Command cmd)
+        {
+            DispatchStack.Push(cmd);
         }
 
         /// <summary>
