@@ -14,6 +14,7 @@ namespace Mycroft.Cmd.Msg
         protected MsgQuery query;
         protected AppInstance instance;
         protected bool HasValidGuid;
+        protected bool ShouldArchive;
 
         public Query(MsgQuery query, AppInstance instance)
         {
@@ -23,6 +24,7 @@ namespace Mycroft.Cmd.Msg
                 this.query.FromInstanceId = instance.InstanceId;
             this.guid = query.Id;
             this.HasValidGuid = false;
+            this.ShouldArchive = false;
         }
 
         /// <summary>
@@ -43,14 +45,14 @@ namespace Mycroft.Cmd.Msg
         }
 
         /// <summary>
-        /// Register this query with the message archive.
+        /// Check if this guid is already in the message archive
         /// If the GUID given already exists in the archive the app instance
         /// is notified and HasValidGuid is set to false
         /// </summary>
         /// <param name="messageArchive">The archive to visit</param>
         public override void VisitMessageArchive(MessageArchive messageArchive)
         {
-            if (!messageArchive.TryPostMessage(this))
+            if (messageArchive[this.guid] == null)
             {
                 HasValidGuid = false;
                 var genFail = new MsgGeneralFailure();
@@ -61,6 +63,17 @@ namespace Mycroft.Cmd.Msg
             }
             else
                 HasValidGuid = true;
+        }
+
+        /// <summary>
+        /// If we should archive this message then add a new command
+        /// to the dispatcher which does so.
+        /// </summary>
+        /// <param name="dispatcher"></param>
+        public override void VisitDispatcher(Dispatcher dispatcher)
+        {
+            if (ShouldArchive)
+                dispatcher.PreemptQueue(new ArchiveCommand(this));
         }
     
     }

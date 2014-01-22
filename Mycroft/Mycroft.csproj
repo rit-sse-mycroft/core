@@ -57,6 +57,7 @@
     <Compile Include="Cmd\App\ManifestFail.cs" />
     <Compile Include="Cmd\Command.cs" />
     <Compile Include="Cmd\ICommandable.cs" />
+    <Compile Include="Cmd\Msg\ArchiveCommand.cs" />
     <Compile Include="Cmd\Msg\Broadcast.cs" />
     <Compile Include="Cmd\Msg\DirectedQuery.cs" />
     <Compile Include="Cmd\Msg\GeneralFailure.cs" />

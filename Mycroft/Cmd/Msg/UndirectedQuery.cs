@@ -31,6 +31,7 @@ namespace Mycroft.Cmd.Msg
             foreach (AppInstance other in registry.GetProviders(cap))
             {
                 other.Send(msg);
+                ShouldArchive = true;
             }
         }
 

@@ -30,6 +30,7 @@ namespace Mycroft.Cmd.Msg
                 if (registry.TryGetInstance(instanceId, out toInstance))
                 {
                     sendQueryTo(toInstance);
+                    ShouldArchive = true;
                 }
             }
         }
