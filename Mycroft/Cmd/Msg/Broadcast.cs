@@ -11,7 +11,6 @@ namespace Mycroft.Cmd.Msg
 {
     class Broadcast : MsgCommand
     {
-        private AppInstance instance;
         private string verb = "MSG_BROADCAST";
         private dynamic msgContent;
         private List<AppInstance> sendto;
@@ -34,7 +33,7 @@ namespace Mycroft.Cmd.Msg
 
             msg = verb + ' ' + bcast.Serialize();
 
-            this.instance = instance;
+            this.FromInstance = instance;
             sendto = new List<AppInstance>();
         }
 
@@ -44,7 +43,7 @@ namespace Mycroft.Cmd.Msg
         public void VisitRegistry(Registry registry)
         {
             //get all the recipenats 
-            foreach (var cap in instance.Capabilities)
+            foreach (var cap in FromInstance.Capabilities)
             {
                 sendto.AddRange(registry.GetDependents(cap));
             }
@@ -66,10 +65,10 @@ namespace Mycroft.Cmd.Msg
                 Debug.WriteLine("failed because message currently exists");
                 var fail = new MsgGeneralFailure();
                 fail.Message = "Message key '" + guid + "' currently exists in message archive, can't override";
-                fail.FromInstanceId = instance.InstanceId;
+                fail.FromInstanceId = FromInstance.InstanceId;
                 fail.Received = "";
 
-                instance.Send("MSG_GENERAL_FAILURE " + fail.Serialize());
+                FromInstance.Send("MSG_GENERAL_FAILURE " + fail.Serialize());
 
 
             }

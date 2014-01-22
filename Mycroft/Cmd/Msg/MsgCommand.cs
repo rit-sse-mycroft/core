@@ -36,6 +36,7 @@ namespace Mycroft.Cmd.Msg
         }
 
         public String guid { get; set; }
+        public AppInstance FromInstance { get; protected set; }
 
     }
 }

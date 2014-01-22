@@ -12,13 +12,12 @@ namespace Mycroft.Cmd.Msg
     {
 
         protected MsgQuery query;
-        protected AppInstance instance;
         protected bool HasValidGuid;
         protected bool ShouldArchive;
 
         public Query(MsgQuery query, AppInstance instance)
         {
-            this.instance = instance;
+            this.FromInstance = instance;
             this.query = query;
             if (instance != null)
                 this.query.FromInstanceId = instance.InstanceId;
@@ -59,7 +58,7 @@ namespace Mycroft.Cmd.Msg
                 genFail.Received = "";
                 genFail.Message = "The guid " + this.guid + " was already taken";
                 var msg = "MSG_GENERAL_FAILURE " + genFail.Serialize();
-                instance.Send(msg);
+                FromInstance.Send(msg);
             }
             else
                 HasValidGuid = true;
