@@ -52,7 +52,7 @@ namespace Mycroft.Cmd.Msg
         /// <param name="messageArchive">The archive to visit</param>
         public override void VisitMessageArchive(MessageArchive messageArchive)
         {
-            if (messageArchive[this.guid] == null)
+            if (messageArchive[this.guid] != null)
             {
                 HasValidGuid = false;
                 var genFail = new MsgGeneralFailure();
