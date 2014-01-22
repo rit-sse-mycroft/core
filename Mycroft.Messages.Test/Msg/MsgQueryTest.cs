@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Text;
 using System.Diagnostics;
+using System.Web.Helpers;
 using Mycroft.Messages.Msg;
 
 namespace Mycroft.Messages.Test.Msg
@@ -132,6 +133,31 @@ namespace Mycroft.Messages.Test.Msg
             {
                 Assert.AreEqual("{}", ex.Received);
             }
+        }
+
+        [TestMethod]
+        public void TestMsgQueryNestedArray()
+        {
+            string input = @"
+             {
+              ""id"" : ""uuid"",
+              ""capability"" : ""weather"",
+              ""action"" : ""get_temperature"",
+              ""data"" : {
+                 ""text to say"" : [
+                     {""foo"" : ""bar"", ""baz"" : ""bing""} 
+                 ]
+              },
+              ""priority"" : 30
+            }";
+
+            var msgQuery = MsgQuery.Deserialize(input) as MsgQuery;
+
+            string output = msgQuery.Serialize();
+
+            Debug.WriteLine(output);
+
+            Assert.IsFalse(output.Contains("\"text to say\":{}"), "text to say should not be empty");
         }
     }
 }

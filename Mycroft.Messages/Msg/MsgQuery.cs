@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Helpers;
 using System.IO;
+using System.Dynamic;
+using System.Diagnostics;
 
 namespace Mycroft.Messages.Msg
 {
@@ -16,7 +18,7 @@ namespace Mycroft.Messages.Msg
 
         public string Action { get; set; }
 
-        public dynamic Data { get; set; }
+        public Dictionary<string, object> Data { get; set; }
 
         public List<string> InstanceId { get; set; }
 
@@ -55,7 +57,7 @@ namespace Mycroft.Messages.Msg
                 ret.Action = obj["action"];
                 if (ret.Action == null)
                     throw new ParseException(json, "No action found");
-                ret.Data = obj["data"];
+                ret.Data = ParseDataThing(obj["data"]);
                 ret.InstanceId = new List<string>();
                 DynamicJsonArray instanceIds = obj["instanceId"];
                 if (instanceIds != null)
@@ -75,6 +77,42 @@ namespace Mycroft.Messages.Msg
             catch (ArgumentException)
             {
                 throw new ParseException(json, "Invalid JSON");
+            }
+        }
+
+        /// <summary>
+        /// Returns either a dictionary<string, object>, list<string>,
+        /// or other primative
+        /// </summary>
+        /// <param name="obj">the object to parse</param>
+        /// <returns>what this object is</returns>
+        private static Object ParseDataThing(dynamic obj)
+        {
+            // parse as a dictionary
+            if (obj is DynamicJsonObject)
+            {
+                var djobj = obj as DynamicJsonObject;
+                dynamic dobj = obj;
+                var ret = new Dictionary<string, object>();
+                foreach (string key in djobj.GetDynamicMemberNames())
+                {
+                    ret[key] = ParseDataThing(dobj[key]);
+                }
+                return ret;
+            }
+            else if (obj is DynamicJsonArray)
+            {
+                var djarr = obj as DynamicJsonArray;
+                var ret = new List<object>();
+                for (var i = 0; i < djarr.Count(); i++)
+                {
+                    ret.Add(djarr[i]);
+                }
+                return ret;
+            }
+            else
+            {
+                return obj;
             }
         }
     }
