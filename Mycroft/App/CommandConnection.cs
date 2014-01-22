@@ -63,8 +63,7 @@ namespace Mycroft.App
                 }
                 catch (ArgumentException) { } // do nothing, it's just not valid yet
             }
-            soFar.Trim();
-            return int.Parse(soFar);
+            return int.Parse(soFar.Trim());
         }
 
         /// <summary>
