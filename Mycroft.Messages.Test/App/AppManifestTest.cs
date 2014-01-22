@@ -19,7 +19,7 @@ namespace Mycroft.Messages.Test.App
             ""API"": 0,
             ""description"": ""It does odd stuff like testing or things"",
             ""dependencies"": {
-                ""logger"": ""1.2""
+                ""logger"": ""1.2.0""
               }
             }";
 
@@ -63,7 +63,7 @@ namespace Mycroft.Messages.Test.App
             Assert.AreEqual(0, appManifest.API, "API version should be equal");
             Assert.AreEqual("1.0.2", appManifest.Capabilities["microphone"], "microphone version should be the same");
             Assert.AreEqual("4.2.1", appManifest.Capabilities["speaker"], "speaker version should be the same");
-            Assert.AreEqual("1.2", appManifest.Dependencies["logger"], "logger version should be the same");
+            Assert.AreEqual("1.2.0", appManifest.Dependencies["logger"], "logger version should be the same");
         }
 
         [TestMethod]
@@ -99,13 +99,10 @@ namespace Mycroft.Messages.Test.App
                 ""API"": 0,
                 ""description"": ""It does odd stuff like testing or things"",
                 ""dependencies"": {
-                    ""logger"": ""1.2""
+                    ""logger"": ""1.2.0""
                 }
             }";
-            var mockAppManifestUgly = "{\"version\":\"0.0.1\",\"name\":\"test-service\",\"displayName\":\"Mycroft test service\",\"instanceId\":\"mockapp1\",\"capabilities\":{\"mocking\":\"0.4.2\"},\"API\":0,\"description\":\"It does odd stuff like testing or things\",\"dependencies\":{\"logger\":\"1.2\"}}";
             var appManifest = AppManifest.Deserialize(mockAppManifestPretty);
-            Assert.IsNotNull(appManifest);
-            appManifest = AppManifest.Deserialize(mockAppManifestUgly);
             Assert.IsNotNull(appManifest);
         }
 

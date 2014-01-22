@@ -146,7 +146,7 @@ namespace Mycroft.Messages.App
         {
             var problems = new List<string>();
 
-            var versionRegex = new Regex(@"^(\d+(\.\d+(\.\d+)?)?|[*])$");
+            var versionRegex = new Regex(@"(^\d+\.\d+\.\d+|[*])$");
             if (manifest.Version == null || !versionRegex.IsMatch(manifest.Version))
             {
                 problems.Add("Supplied version number is invalid");

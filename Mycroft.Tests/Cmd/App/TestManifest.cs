@@ -24,7 +24,7 @@ namespace Mycroft.Tests.Cmd.App
                 ""API"": 0,
                 ""description"": ""It does odd stuff like testing or things"",
                 ""dependencies"": {
-                    ""logging"": ""1.2"",
+                    ""logging"": ""1.2.0"",
                     ""*"": ""*""
             }}";
             AppCommand cmd = AppCommand.Parse("APP_MANIFEST", input, null) as AppCommand;
