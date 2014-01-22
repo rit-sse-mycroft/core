@@ -51,7 +51,7 @@ namespace Mycroft.Cmd.Msg
         /// <returns>the capability or null if not found</returns>
         private Capability GetCapability()
         {
-            foreach (Capability cap in instance.Capabilities)
+            foreach (Capability cap in instance.Dependencies)
             {
                 if (cap.Name == this.query.Capability)
                     return cap;
