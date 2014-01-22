@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Mycroft.App;
 using Mycroft.Messages.Msg;
+using System.Diagnostics;
 
 namespace Mycroft.Cmd.Msg
 {
@@ -12,7 +13,7 @@ namespace Mycroft.Cmd.Msg
     {
         private AppInstance instance;
         private string verb = "MSG_BROADCAST";
-        private string msgContent;
+        private dynamic msgContent;
         private List<AppInstance> sendto;
 
         private string msg;
@@ -62,6 +63,7 @@ namespace Mycroft.Cmd.Msg
         {
             if (!messageArchive.TryPostMessage(this))
             {
+                Debug.WriteLine("failed because message currently exists");
                 var fail = new MsgGeneralFailure();
                 fail.Message = "Message key '" + guid + "' currently exists in message archive, can't override";
                 fail.FromInstanceId = instance.InstanceId;

@@ -1,4 +1,5 @@
 ﻿using Mycroft.App;
+using Mycroft.Cmd.Msg;
 using Mycroft.Server;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,10 @@ namespace Mycroft
 
             //insecure version
             var server = new TcpServer(IPAddress.Any, 1847);
-            var dispatcher = new Dispatcher(server, registry);
+            var MessageArchive = new MessageArchive();
+            var dispatcher = new Dispatcher(server, registry, MessageArchive);
+            
+            
             dispatcher.Run();
 
         }

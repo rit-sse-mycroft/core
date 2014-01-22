@@ -1,5 +1,6 @@
 ﻿using Mycroft.App;
 using Mycroft.Cmd;
+using Mycroft.Cmd.Msg;
 using Mycroft.Server;
 using System;
 using System.Collections.Concurrent;
@@ -16,11 +17,13 @@ namespace Mycroft
         private ConcurrentQueue<Command> DispatchQueue;
         private TcpServer Server;
         private Registry Registry;
+        private MessageArchive MessageArchive;
 
-        public Dispatcher(TcpServer server, Registry registry)
+        public Dispatcher(TcpServer server, Registry registry, MessageArchive messageArchive)
         {
             Server = server;
             Registry = registry;
+            MessageArchive = messageArchive;
             DispatchQueue = new ConcurrentQueue<Command>();
         }
 
@@ -37,6 +40,7 @@ namespace Mycroft
                     // Issue all the commands o/
                     Server.Issue(currentCmd);
                     Registry.Issue(currentCmd);
+                    MessageArchive.Issue(currentCmd);
                     this.Issue(currentCmd);
                 }
             }

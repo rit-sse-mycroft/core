@@ -8,7 +8,7 @@ using System.Runtime.Caching;
 
 namespace Mycroft.Cmd.Msg
 {
-   public class MessageArchive
+    public class MessageArchive : ICommandable
     {
         static ReaderWriterLockSlim rwl = new ReaderWriterLockSlim();
 
@@ -71,5 +71,17 @@ namespace Mycroft.Cmd.Msg
             }
             return true;
         }
+
+
+        /// <summary>
+        /// Applies a command to the Message archive
+        /// </summary>
+        /// <param name="command"></param>
+        public void Issue(Command command)
+        {
+            command.VisitMessageArchive(this);
+        }
+
+
     }
 }
