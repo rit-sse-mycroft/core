@@ -11,6 +11,7 @@ using Mycroft.Cmd.Sys;
 using Mycroft.Cmd.App;
 using Mycroft.Cmd.Msg;
 using Mycroft.Server;
+using Mycroft.Messages;
 
 namespace Mycroft.Cmd
 {
@@ -30,26 +31,33 @@ namespace Mycroft.Cmd
             // Break the message body into the type token and the JSON blob,
             // then delegate to the specific command parser (MsgCmd.Parse(), AppCmd.Parse(), etc.)
             String type = getType(input);
-            if (type != null)
+
+            try
             {
-                var startJson = input.IndexOf('{');
-                string rawData = startJson < 0 ? "" : input.Substring(startJson);
-                
-                if (type.StartsWith("MSG"))
+                if (type != null)
                 {
-                    return MsgCommand.Parse(type, rawData, instance);
+                    var startJson = input.IndexOf('{');
+                    string rawData = startJson < 0 ? "" : input.Substring(startJson);
+
+                    if (type.StartsWith("MSG"))
+                    {
+                        return MsgCommand.Parse(type, rawData, instance);
+                    }
+                    else if (type.StartsWith("APP"))
+                    {
+                        return AppCommand.Parse(type, rawData, instance);
+                    }
+                    else if (type.StartsWith("SYS"))
+                    {
+                        return SysCommand.Parse(type, rawData, instance);
+                    }
                 }
-                else if (type.StartsWith("APP"))
-                {
-                    return AppCommand.Parse(type, rawData, instance);
-                }
-                else if (type.StartsWith("SYS"))
-                {
-                    return SysCommand.Parse(type, rawData, instance);
-                }
+                throw new ParseException(input, "Unknown input");
             }
-            //TODO standardize
-            return null;
+            catch (ParseException ex)
+            {
+                return new Msg.GeneralFailure(ex, instance);
+            }
         }
 
         public static string getType(string input)

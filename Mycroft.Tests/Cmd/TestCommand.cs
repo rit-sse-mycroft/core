@@ -5,6 +5,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using Mycroft.Messages;
+using Mycroft.Cmd.Msg;
 
 namespace Mycroft.Tests.Cmd
 {
@@ -50,7 +51,9 @@ namespace Mycroft.Tests.Cmd
                 ""priority"": 30           
             }}";
             Command returned = Command.Parse(input1, null);
-            Assert.AreEqual(null, returned, "An incorrect class name should return a null value");
+            Assert.IsInstanceOfType(returned, 
+                                    typeof(GeneralFailure),
+                                    "An incorrect class name should GeneralFailure");
         }
     }
     class BaseCommand : Command
