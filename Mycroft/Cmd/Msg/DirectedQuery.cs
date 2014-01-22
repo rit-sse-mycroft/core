@@ -18,6 +18,12 @@ namespace Mycroft.Cmd.Msg
 
         public override void VisitRegistry(Registry registry)
         {
+            if (!HasValidGuid)
+            {
+                System.Diagnostics.Debug.WriteLine("Guid was invalid: " + guid);
+                return;
+            }
+
             foreach (string instanceId in this.query.InstanceId)
             {
                 AppInstance toInstance;
