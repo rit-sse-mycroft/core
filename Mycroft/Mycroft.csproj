@@ -47,7 +47,6 @@
   <ItemGroup>
     <Compile Include="App\AppInstance.cs" />
     <Compile Include="App\Capability.cs" />
-    <Compile Include="App\Dependency.cs" />
     <Compile Include="App\Registry.cs" />
     <Compile Include="App\Status.cs" />
     <Compile Include="Cmd\App\AppCommand.cs" />
