@@ -13,6 +13,7 @@ namespace Mycroft.Cmd.Msg
 
         protected MsgQuery query;
         protected AppInstance instance;
+        protected bool HasValidGuid;
 
         public Query(MsgQuery query, AppInstance instance)
         {
@@ -20,6 +21,8 @@ namespace Mycroft.Cmd.Msg
             this.query = query;
             if (instance != null)
                 this.query.FromInstanceId = instance.InstanceId;
+            this.guid = query.Id;
+            this.HasValidGuid = false;
         }
 
         /// <summary>
@@ -37,6 +40,27 @@ namespace Mycroft.Cmd.Msg
             else
                 ret = new DirectedQuery(query, instance);
             return ret;
+        }
+
+        /// <summary>
+        /// Register this query with the message archive.
+        /// If the GUID given already exists in the archive the app instance
+        /// is notified and HasValidGuid is set to false
+        /// </summary>
+        /// <param name="messageArchive">The archive to visit</param>
+        public override void VisitMessageArchive(MessageArchive messageArchive)
+        {
+            if (!messageArchive.TryPostMessage(this))
+            {
+                HasValidGuid = false;
+                var genFail = new MsgGeneralFailure();
+                genFail.Received = "";
+                genFail.Message = "The guid " + this.guid + " was already taken";
+                var msg = "MSG_GENERAL_FAILURE " + genFail.Serialize();
+                instance.Send(msg);
+            }
+            else
+                HasValidGuid = true;
         }
     
     }

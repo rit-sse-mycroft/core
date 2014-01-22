@@ -59,6 +59,7 @@
     <Compile Include="Cmd\ICommandable.cs" />
     <Compile Include="Cmd\Msg\Broadcast.cs" />
     <Compile Include="Cmd\Msg\DirectedQuery.cs" />
+    <Compile Include="Cmd\Msg\GeneralFailure.cs" />
     <Compile Include="Cmd\Msg\Query.cs" />
     <Compile Include="Cmd\Msg\MessageArchive.cs" />
     <Compile Include="Cmd\Msg\MsgCommand.cs" />
