@@ -19,6 +19,7 @@ namespace Mycroft.Cmd.App
             Fail = new AppManifestFail();
             Fail.Message = message;
             this.instance = instance;
+            instance.Issue(this);
         }
 
         /// <summary>
