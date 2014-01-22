@@ -53,6 +53,10 @@ namespace Mycroft.App
             for (int i = 0; i < smallBuf.Length; i++ ) // read until we find a newline
             {
                 smallBuf[i] = (byte)input.ReadByte();
+                if (smallBuf[i] == 255)
+                {
+                    throw new IOException("Stream closed (255 was read)");
+                }
                 try
                 {
                     soFar = Encoding.UTF8.GetString(smallBuf, 0, i+1);
