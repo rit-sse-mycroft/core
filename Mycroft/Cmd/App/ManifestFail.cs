@@ -32,6 +32,7 @@ namespace Mycroft.Cmd.App
             if (appInstance == instance)
             {
                 appInstance.Send("APP_MANIFEST_FAIL " + Fail.Serialize());
+                appInstance.Disconnect();
             }
         }
     }
