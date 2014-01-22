@@ -28,10 +28,17 @@ namespace Mycroft.Cmd.Msg
             var cap = GetCapability();
             var msg = "MSG_QUERY " + query.Serialize();
 
-            foreach (AppInstance other in registry.GetProviders(cap))
+            if (cap != null)
             {
-                other.Send(msg);
-                ShouldArchive = true;
+                foreach (AppInstance other in registry.GetProviders(cap))
+                {
+                    other.Send(msg);
+                    ShouldArchive = true;
+                }
+            }
+            else
+            {
+                Debug.WriteLine("Warning: App did not declare a " + query.Capability + " dependency, not sending message");
             }
         }
 
