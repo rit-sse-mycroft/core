@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace Mycroft.Server
 {
 
-    public delegate void HandleClientConnected(TcpConnection client);
+    public delegate void HandleClientConnected(CommandConnection client);
 
     /// <summary>
     /// Starts Mycroft's network communications and owns resources in the server
@@ -52,9 +52,11 @@ namespace Mycroft.Server
 
                 Debug.WriteLine("Accepted TCP Client");
 
+                var connection = CreateConnection(tcpClient);
+
                 //create a thread to handle communication with connected client
                 var clientThread = new Thread(new ParameterizedThreadStart(OnClientConnected));
-                clientThread.Start(PrepClient(tcpClient));
+                clientThread.Start(connection);
             }
             tcpListener.Stop();
         }
@@ -65,9 +67,14 @@ namespace Mycroft.Server
             listeningThread.Join();
         }
 
-        protected virtual TcpConnection PrepClient(TcpClient client)
+        /// <summary>
+        /// Creates a connection object from a TcpClient
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        protected virtual CommandConnection CreateConnection(TcpClient client)
         {
-            return new TcpConnection(client);
+            return new CommandConnection(client, client.GetStream());
         }
 
         /// <summary>
@@ -80,14 +87,13 @@ namespace Mycroft.Server
 
             if (ClientConnected != null)
             {
-                var tcpConnection = connection as TcpConnection;
+                var cmdConnection = connection as CommandConnection;
                 // Asynchronously run the event handler, generating the listener threads
-                ClientConnected.BeginInvoke(tcpConnection, (IAsyncResult result) =>
+                ClientConnected.BeginInvoke(cmdConnection, (IAsyncResult result) =>
                     {
                         try
                         {
-                            tcpConnection.GetStream().Close();
-                            tcpConnection.Client.Close();
+                            cmdConnection.Close();
                         }
                         catch (InvalidOperationException) { }
                     },

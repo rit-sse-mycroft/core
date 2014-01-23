@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Mycroft.App;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -23,8 +25,16 @@ namespace Mycroft.Server
         }
 
 
-        protected override TcpConnection PrepClient(TcpClient client) {
-            return new TlsConnection(client, cert);
+        /// <summary>
+        /// Creates an SSL stream that manages the connection
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        protected override CommandConnection CreateConnection(TcpClient client)
+        {
+            var sslStream = new SslStream(client.GetStream());
+            sslStream.AuthenticateAsServer(cert);
+            return new CommandConnection(client, sslStream);
         }
 
         /// <summary>

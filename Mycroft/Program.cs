@@ -19,25 +19,25 @@ namespace Mycroft
         static void Main(string[] args)
         {
             // Accessing certificates may need to be abstracted for Mono
-            X509Store store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+            X509Store store = new X509Store(StoreName.Root, StoreLocation.CurrentUser);
             store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
             Debug.WriteLine(store.Certificates.Count);
 
+            var thumbprint = TlsServer.FormatCertificateThumbprint(
+                ConfigurationManager.AppSettings["CertThumbprint"]
+            );
+
             // Use the settings file to figure out which certificate to use
-            //var collection = store.Certificates.Find(
-            //    X509FindType.FindByThumbprint,
-            //    TlsServer.FormatCertificateThumbprint(ConfigurationManager.AppSettings["CertThumbprint"]),
-            //    false
-            //);
+            var collection = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
 
-            //foreach(var c in collection)
-            //{
-            //    Debug.Write(c.Subject);
-            //    Debug.Write(" ");
-            //    Debug.WriteLine(c.Thumbprint);
-            //}
+            foreach(var c in collection)
+            {
+                Debug.Write(c.Subject);
+                Debug.Write(" ");
+                Debug.WriteLine(c.Thumbprint);
+            }
 
-            //X509Certificate2 cert = collection[0];
+            X509Certificate2 cert = collection[0];
 
             var registry = new Registry();
             
@@ -47,8 +47,6 @@ namespace Mycroft
             var server = new TcpServer(IPAddress.Any, 1847);
             var MessageArchive = new MessageArchive();
             var dispatcher = new Dispatcher(server, registry, MessageArchive);
-            
-            
             dispatcher.Run();
 
         }

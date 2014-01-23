@@ -16,7 +16,7 @@ namespace Mycroft.Tests
         [TestMethod]
         public void TestBodylessMessage(){
             var s = new MemoryStream(Encoding.UTF8.GetBytes("6\nAPP_UP"));
-            var cmd = new CommandConnection(s);
+            var cmd = new CommandConnection(null, s);
             var msg = cmd.GetCommand();
             Trace.WriteLine(msg);
             Assert.AreEqual(msg, "APP_UP");
@@ -27,7 +27,7 @@ namespace Mycroft.Tests
         {
             var input = "30\nMSG_BROADCAST {\"key\": \"value\"}";
             var s = new MemoryStream(Encoding.UTF8.GetBytes(input));
-            var cmd = new CommandConnection(s);
+            var cmd = new CommandConnection(null, s);
             var msg = cmd.GetCommand();
             Trace.WriteLine(msg);
             Trace.WriteLine(input.Substring(3));

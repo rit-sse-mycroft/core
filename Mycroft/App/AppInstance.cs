@@ -134,10 +134,10 @@ namespace Mycroft.App
         /// Set up a null AppInstance. An InstanceId is assigned to a new GUID, which
         /// will be reset if the instance sends a different ID in its manifest.
         /// </summary>
-        public AppInstance(TcpClient client, Dispatcher dispatcher)
+        public AppInstance(CommandConnection connection, Dispatcher dispatcher)
         {
             this.dispatcher = dispatcher;
-            connection = new CommandConnection(client.GetStream());
+            this.connection = connection;
             InstanceId = Guid.NewGuid().ToString();
             AppStatus = Status.connected;
             listening = false;
@@ -208,6 +208,7 @@ namespace Mycroft.App
         public void Disconnect()
         {
             Write(() => listening = false );
+            // TODO - actually disconnect
         }
 
         /// <summary>

@@ -62,9 +62,9 @@ namespace Mycroft
         /// Put a newly connected app in its own thread in the app thread pool
         /// </summary>
         /// <param name="connection"></param>
-        private void HandleNewClientConnection(TcpConnection connection)
+        private void HandleNewClientConnection(CommandConnection connection)
         {
-            var instance = new AppInstance(connection.Client, this);
+            var instance = new AppInstance(connection, this);
             instance.Listen();
         }
 
