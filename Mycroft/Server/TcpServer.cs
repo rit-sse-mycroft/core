@@ -49,14 +49,25 @@ namespace Mycroft.Server
             while (!cancelThread)
             {
                 var tcpClient = tcpListener.AcceptTcpClient();
+                var ip = ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address;
+                Console.WriteLine("Client connected from IP {0}", ip.ToString());
 
-                Debug.WriteLine("Accepted TCP Client");
+                try
+                {
+                    var connection = CreateConnection(tcpClient);
 
-                var connection = CreateConnection(tcpClient);
-
-                //create a thread to handle communication with connected client
-                var clientThread = new Thread(new ParameterizedThreadStart(OnClientConnected));
-                clientThread.Start(connection);
+                    //create a thread to handle communication with connected client
+                    var clientThread = new Thread(new ParameterizedThreadStart(OnClientConnected));
+                    clientThread.Start(connection);
+                }
+                catch (NotSupportedException e)
+                {
+                    Console.Error.WriteLine("Connection to {0} failed: {1}", ip, e.Message);
+                }
+                catch (IOException e)
+                {
+                    Console.Error.WriteLine("Connection to {0} failed: {1}", ip, e.Message);
+                }
             }
             tcpListener.Stop();
         }
