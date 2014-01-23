@@ -163,8 +163,11 @@ namespace Mycroft.App
                     Debug.WriteLine("Message received by AppInstance " + InstanceId);
                     Debug.WriteLine(message);
 
-                    // Make this command visit this instance before doing anything else
                     var command = Command.Parse(message, this);
+
+                    // Ensure we handled the command somehow
+                    Debug.Assert(command != null);
+
                     if (CanUse(command))
                     {
                         dispatcher.Enqueue(command);
