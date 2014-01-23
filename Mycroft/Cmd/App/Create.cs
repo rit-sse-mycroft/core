@@ -52,6 +52,7 @@ namespace Mycroft.Cmd.App
 
             // We have to send the message to the instance on our own
             instance.Issue(this);
+            Console.WriteLine("\"{0}\" created with instance ID {1}", instance.DisplayName, instance.InstanceId);
         }
 
         /// <summary>

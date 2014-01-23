@@ -26,6 +26,13 @@ namespace Mycroft.Cmd.App
         /// <param name="registry"></param>
         public override void VisitRegistry(Registry registry)
         {
+            Console.WriteLine(
+                "{0} {1} is now \"{2}\"",
+                instance.DisplayName,
+                instance.InstanceId,
+                instance.AppStatus.ToString()
+            );
+
             var capabilities = instance.Capabilities;
 
             // apps that depend on this, mapped to the capabilities they expect it to use
