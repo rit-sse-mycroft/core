@@ -159,5 +159,35 @@ namespace Mycroft.Messages.Test.Msg
 
             Assert.IsFalse(output.Contains("\"text to say\":{}"), "text to say should not be empty");
         }
+
+        [TestMethod]
+        public void TestMsgQueryDataNotAnObject()
+        {
+            string input1 = @"
+             {
+              ""id"" : ""uuid"",
+              ""capability"" : ""weather"",
+              ""action"" : ""get_temperature"",
+              ""data"" : ""foo"",
+              ""priority"" : 30
+            }";
+
+            string input2 = @"
+             {
+              ""id"" : ""uuid"",
+              ""capability"" : ""weather"",
+              ""action"" : ""get_temperature"",
+              ""data"" : 1,
+              ""priority"" : 30
+            }";
+
+            var msgQ = MsgQuery.Deserialize(input1) as MsgQuery;
+            var json = msgQ.Serialize();
+            Assert.IsTrue(json.Contains("\"data\":\"foo\""), "data should be foo");
+
+            msgQ = MsgQuery.Deserialize(input2) as MsgQuery;
+            json = msgQ.Serialize();
+            Assert.IsTrue(json.Contains("\"data\":1"), "data should be 1");
+        }
     }
 }

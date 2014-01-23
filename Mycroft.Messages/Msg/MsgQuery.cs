@@ -18,7 +18,7 @@ namespace Mycroft.Messages.Msg
 
         public string Action { get; set; }
 
-        public Dictionary<string, object> Data { get; set; }
+        public object Data { get; set; }
 
         public List<string> InstanceId { get; set; }
 
