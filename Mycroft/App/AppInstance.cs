@@ -208,7 +208,7 @@ namespace Mycroft.App
         public void Disconnect()
         {
             Write(() => listening = false );
-            // TODO - actually disconnect
+            connection.Close();
         }
 
         /// <summary>
