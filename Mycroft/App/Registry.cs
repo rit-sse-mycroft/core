@@ -103,6 +103,16 @@ namespace Mycroft.App
         }
 
         /// <summary>
+        /// Checks if an app with a specific instance ID exists
+        /// </summary>
+        /// <param name="instanceId"></param>
+        /// <returns>Returns true if an app instance of a particular ID exists</returns>
+        public bool HasInstance(string instanceId)
+        {
+            return instances.ContainsKey(instanceId);
+        }
+
+        /// <summary>
         /// Gets instances that depend on a capability
         /// </summary>
         /// <param name="capability"></param>

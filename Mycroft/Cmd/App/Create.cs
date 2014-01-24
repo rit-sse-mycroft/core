@@ -9,6 +9,7 @@ namespace Mycroft.Cmd.App
         private AppManifest manifest;
         private AppInstance instance;
         private AppManifestOk okMsg;
+        private ManifestFail failure;
 
         public Create(AppManifest manifest, AppInstance instance)
         {
@@ -25,8 +26,17 @@ namespace Mycroft.Cmd.App
         /// <param name="registry">the registry being visited</param>
         public override void VisitRegistry(Registry registry)
         {
+            // Drop the connection if the instance ID is a duplicate
+            if (registry.HasInstance(manifest.InstanceId))
+            {
+                failure = new ManifestFail("Instance ID " + manifest.InstanceId + " already in use", instance);
+                return;
+            }
+
             if (manifest.InstanceId != null)
+            {
                 instance.InstanceId = manifest.InstanceId;
+            }
             instance.Name = manifest.Name;
             instance.Version = new Version(manifest.Version);
             instance.ApiVersion = (uint) manifest.API;
@@ -51,21 +61,9 @@ namespace Mycroft.Cmd.App
             registry.Register(instance);
 
             // We have to send the message to the instance on our own
-            instance.Issue(this);
+            instance.AppStatus = Status.down;
+            instance.Send("APP_MANIFEST_OK " + okMsg.Serialize());
             Console.WriteLine("\"{0}\" created with instance ID {1}", instance.DisplayName, instance.InstanceId);
-        }
-
-        /// <summary>
-        /// Send a message to this AppInstance that the manifest was parsed
-        /// </summary>
-        /// <param name="appInstance">the app to notify</param>
-        public override void VisitAppInstance(AppInstance appInstance)
-        {
-            if (appInstance == instance)
-            {
-                appInstance.AppStatus = Status.down;
-                appInstance.Send("APP_MANIFEST_OK " + okMsg.Serialize());
-            }
         }
 
         /// <summary>
@@ -74,7 +72,14 @@ namespace Mycroft.Cmd.App
         /// <param name="dispatcher"></param>
         public override void VisitDispatcher(Dispatcher dispatcher)
         {
-            dispatcher.Enqueue(new DependencyList(instance));
+            if (failure != null)
+            {
+                dispatcher.Enqueue(failure);
+            }
+            else
+            {
+                dispatcher.Enqueue(new DependencyList(instance));
+            }
         }
     }
 }
