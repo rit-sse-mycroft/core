@@ -21,24 +21,24 @@ namespace Mycroft
         private StreamWriter os;
         private FileStream fs;
 
-        static private Logger instance = null;
+        static private Logger Instance = null;
 
         private Logger()
         {
-            checkFile();
+            CheckFile();
         }
 
-        public static Logger getInstance()
+        public static Logger GetInstance()
         {
-            if (instance == null)
-                instance = new Logger();
-            return instance;
+            if (Instance == null)
+                Instance = new Logger();
+            return Instance;
         }
 
         /// <summary>
         /// Checks file to confirm correct log file.
         /// </summary>
-        private void checkFile()
+        private void CheckFile()
         {
             if (!DateTime.Today.Equals(this.date))
             {
@@ -66,9 +66,9 @@ namespace Mycroft
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        private bool log(string message)
+        private bool Log(string message)
         {
-            checkFile();
+            CheckFile();
             try
             {
                 string line = DateTime.Now.ToString("[yyyy-MM-dd-HH-mm-ss-fff]");
@@ -87,9 +87,9 @@ namespace Mycroft
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public bool logMessage(string message)
+        public bool LogMessage(string message)
         {
-            return log(message);
+            return Log(message);
         }
 
         /// <summary>
@@ -98,10 +98,10 @@ namespace Mycroft
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        public bool logCommand(Command command)
+        public bool LogCommand(Command command)
         {
             ///TODO - format appropriatly
-            return log(command.ToString());
+            return Log(command.ToString());
         }
     }
 }
