@@ -26,6 +26,11 @@ namespace Mycroft
         /// </summary>
         public Level LogLevel { get; set; }
 
+        /// <summary>
+        /// A lock to ensure only one write to the stream can happen at once
+        /// </summary>
+        public object WriteLock;
+
         private string path = System.IO.Path.Combine("logs");
         private string filename;
         private DateTime date;
@@ -37,6 +42,7 @@ namespace Mycroft
         private Logger()
         {
             LogLevel = Level.Debug;
+            WriteLock = new Object();
             CheckFile();
         }
 
@@ -63,9 +69,12 @@ namespace Mycroft
                 Directory.CreateDirectory(path);
                 this.filename = System.IO.Path.Combine(path, DateTime.Now.ToString("yyyy-MM-dd") + ".log");
 
-                fs = new FileStream(filename, FileMode.Append);
-                os = new StreamWriter(fs);
-                os.AutoFlush = true;
+                lock (WriteLock)
+                {
+                    fs = new FileStream(filename, FileMode.Append);
+                    os = new StreamWriter(fs);
+                    os.AutoFlush = true;
+                }
             }
         }
 
@@ -96,18 +105,21 @@ namespace Mycroft
                 sb.Append(": ");
                 sb.Append(message);
                 message = sb.ToString();
-                
-                // write to console
-                var oldColor = Console.BackgroundColor;
-                Console.ForegroundColor = GetColor(level);
-                Console.WriteLine(message);
-                Console.ForegroundColor = oldColor;
 
-                // write to diagnostics log
-                System.Diagnostics.Debug.WriteLine(message);
+                lock (WriteLock)
+                {
+                    // write to console
+                    var oldColor = Console.BackgroundColor;
+                    Console.ForegroundColor = GetColor(level);
+                    Console.WriteLine(message);
+                    Console.ForegroundColor = oldColor;
 
-                // write to log file
-                os.WriteLine(sb.ToString());
+                    // write to diagnostics log
+                    System.Diagnostics.Debug.WriteLine(message);
+
+                    // write to log file
+                    os.WriteLine(sb.ToString());
+                }
             }
             catch
             {
@@ -144,8 +156,11 @@ namespace Mycroft
         {
             try
             {
-                os.Flush();
-                os.Close();
+                lock (WriteLock)
+                {
+                    os.Flush();
+                    os.Close();
+                }
             }
             catch
             {
@@ -159,9 +174,9 @@ namespace Mycroft
         /// </summary>
         /// <param name="message">the message to log</param>
         /// <returns>true if the message was logged</returns>
-        public bool Debug(string message)
+        public Task<bool> Debug(string message)
         {
-            return Log(Level.Debug, message);
+            return Task<bool>.Run(() => Log(Level.Debug, message));
         }
 
         /// <summary>
@@ -169,9 +184,9 @@ namespace Mycroft
         /// </summary>
         /// <param name="message">the message to log</param>
         /// <returns>true if the message was logged</returns>
-        public bool Info(string message)
+        public Task<bool> Info(string message)
         {
-            return Log(Level.Info, message);
+            return Task<bool>.Run(() => Log(Level.Info, message));
         }
 
         /// <summary>
@@ -179,9 +194,9 @@ namespace Mycroft
         /// </summary>
         /// <param name="message">the message to log</param>
         /// <returns>true if the message was logged</returns>
-        public bool Warning(string message)
+        public Task<bool> Warning(string message)
         {
-            return Log(Level.Warning, message);
+            return Task<bool>.Run(() => Log(Level.Warning, message));
         }
 
         /// <summary>
@@ -189,9 +204,9 @@ namespace Mycroft
         /// </summary>
         /// <param name="message">the message to log</param>
         /// <returns>true if the message was logged</returns>
-        public bool Error(string message)
+        public Task<bool> Error(string message)
         {
-            return Log(Level.Error, message);
+            return Task<bool>.Run(() => Log(Level.Error, message));
         }
 
         /// <summary>
@@ -199,9 +214,9 @@ namespace Mycroft
         /// </summary>
         /// <param name="message">the message to log</param>
         /// <returns>true if the message was logged</returns>
-        public bool WTF(string message)
+        public Task<bool> WTF(string message)
         {
-            return Log(Level.WTF, message);
+            return Task<bool>.Run(() => Log(Level.WTF, message));
         }
     }
 }

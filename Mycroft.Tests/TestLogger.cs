@@ -2,6 +2,7 @@
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mycroft;
+using System.Threading.Tasks;
 
 namespace Mycroft.Tests
 {
@@ -16,10 +17,10 @@ namespace Mycroft.Tests
         }
 
         [TestMethod]
-        public void TestLogging()
+        public async Task TestLogging()
         {
             var instance = Logger.GetInstance();
-            Assert.IsTrue(instance.Info("This is a log message"), "should succeed in logging");
+            Assert.IsTrue(await instance.Info("This is a log message"), "should succeed in logging");
 
             var filename = Path.Combine("logs", DateTime.Now.ToString("yyyy-MM-dd") + ".log");
 
