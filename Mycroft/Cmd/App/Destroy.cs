@@ -7,10 +7,12 @@ namespace Mycroft.Cmd.App
     class Destroy : AppCommand
     {
         private AppInstance instance;
+        private Logger Log;
 
         public Destroy(AppInstance instance)
         {
             this.instance = instance;
+            this.Log = Logger.GetInstance();
         }
 
         /// <summary>
@@ -20,7 +22,7 @@ namespace Mycroft.Cmd.App
         public override void VisitRegistry(Registry registry)
         {
             registry.Remove(instance);
-            Console.WriteLine("{0} {1} has disconnected", instance.DisplayName, instance.InstanceId);
+            Log.Info(String.Format("{0} {1} has disconnected", instance.DisplayName, instance.InstanceId));
         }
     }
 }

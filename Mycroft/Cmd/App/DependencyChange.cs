@@ -9,6 +9,7 @@ namespace Mycroft.Cmd.App
     class DependencyChange : AppCommand
     {
         private AppInstance instance;
+        private Logger Log;
 
         /// <summary>
         /// Used to notify that an app instance has gone down
@@ -18,6 +19,7 @@ namespace Mycroft.Cmd.App
         {
             this.instance = instance;
             instance.AppStatus = status;
+            Log = Logger.GetInstance();
         }
 
         /// <summary>
@@ -26,12 +28,12 @@ namespace Mycroft.Cmd.App
         /// <param name="registry"></param>
         public override void VisitRegistry(Registry registry)
         {
-            Console.WriteLine(
+            Log.Info(String.Format(
                 "{0} {1} is now \"{2}\"",
                 instance.DisplayName,
                 instance.InstanceId,
                 instance.AppStatus.ToString()
-            );
+            ));
 
             var capabilities = instance.Capabilities;
 

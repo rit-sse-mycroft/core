@@ -17,6 +17,7 @@ namespace Mycroft.Cmd
 {
     public abstract class Command
     {
+
         /// <summary>
         /// Parses a Mycroft command from a JSON object
         /// </summary>
@@ -56,6 +57,16 @@ namespace Mycroft.Cmd
             }
             catch (ParseException ex)
             {
+                if (instance != null)
+                {
+                    var log = Logger.GetInstance();
+                    log.Warning(String.Format(
+                        "Failed to parse command from {0} for reason: {1}",
+                        instance.InstanceId,
+                        ex.Message
+                    ));
+                    log.Warning("Content received: " + input);
+                }
                 return new Msg.GeneralFailure(ex, instance);
             }
         }

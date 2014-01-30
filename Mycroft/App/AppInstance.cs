@@ -152,7 +152,7 @@ namespace Mycroft.App
         /// </summary>
         public void Listen()
         {
-            Log.Info("Listening for messages from instanceID: " + InstanceId);
+            Log.Debug("Listening for commands");
 
             // Set that we're listening for commands
             Write(() => listening = true );
@@ -163,8 +163,8 @@ namespace Mycroft.App
                 {
                     var message = connection.GetCommand();
 
-                    Log.Debug("Message received by AppInstance " + InstanceId);
-                    Debug.WriteLine(message);
+                    Log.Debug("Received command from " + InstanceId);
+                    Log.Debug("Content of message: " + message);
 
                     var command = Command.Parse(message, this);
 
@@ -175,12 +175,19 @@ namespace Mycroft.App
                     {
                         dispatcher.Enqueue(command);
                     }
+                    else
+                    {
+                        Log.Warning(String.Format(
+                            "App {0} sent a command that it cannot use",
+                            InstanceId
+                        ));
+                    }
 
                 }
                 // Handle client disconnects
                 catch (IOException e)
                 {
-                    Log.Info("Disconnected? " + e.Message);
+                    Log.Warning("Disconnected? " + e.Message);
                     Write(() => listening = false);
                     if (OnDisconnect != null)
                     {

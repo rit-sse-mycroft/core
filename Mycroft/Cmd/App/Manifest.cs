@@ -26,6 +26,15 @@ namespace Mycroft.Cmd.App
             }
             catch (ParseException ex)
             {
+                if (instance != null)
+                {
+                    var log = Logger.GetInstance();
+                    log.Warning(String.Format(
+                        "Invalid manifest was sent by app {0} reason: {1}",
+                        instance.InstanceId,
+                        ex.Message
+                    ));
+                }
                 return new ManifestFail(ex.ToString(), instance);
             }
             return new Create(mfst, instance);

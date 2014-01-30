@@ -26,10 +26,12 @@ namespace Mycroft.Server
         private Thread listeningThread;
         private TcpListener tcpListener;
         private volatile bool cancelThread;
+        private Logger Log;
 
         public TcpServer(IPAddress ip, int port)
         {
             tcpListener = new TcpListener(ip, port);
+            Log = Logger.GetInstance();
         }
 
         /// <summary>
@@ -44,13 +46,16 @@ namespace Mycroft.Server
 
         private void Listen(object pars)
         {
-            Debug.WriteLine("Listening for connections...");
+            Log.Debug("Listening for connections...");
             tcpListener.Start();
             while (!cancelThread)
             {
                 var tcpClient = tcpListener.AcceptTcpClient();
                 var ip = ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address;
-                Console.WriteLine("Client connected from IP {0}", ip.ToString());
+                Log.Debug(String.Format(
+                    "Client connected from IP {0}",
+                    ip.ToString()
+                ));
 
                 try
                 {
@@ -62,11 +67,19 @@ namespace Mycroft.Server
                 }
                 catch (NotSupportedException e)
                 {
-                    Console.Error.WriteLine("Connection to {0} failed: {1}", ip, e.Message);
+                    Log.Warning(String.Format(
+                        "Connection to {0} failed: {1}",
+                        ip,
+                        e.Message
+                    ));
                 }
                 catch (IOException e)
                 {
-                    Console.Error.WriteLine("Connection to {0} failed: {1}", ip, e.Message);
+                    Log.Warning(String.Format(
+                        "Connection to {0} failed: {1}",
+                        ip,
+                        e.Message
+                    ));
                 }
             }
             tcpListener.Stop();
@@ -94,7 +107,7 @@ namespace Mycroft.Server
         /// <param name="stream">The stream over which the app is sending information</param>
         private void OnClientConnected(object connection)
         {
-            Debug.WriteLine("Client connected...");
+            Log.Debug("Client connected...");
 
             if (ClientConnected != null)
             {

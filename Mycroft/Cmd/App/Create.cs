@@ -10,6 +10,7 @@ namespace Mycroft.Cmd.App
         private AppInstance instance;
         private AppManifestOk okMsg;
         private ManifestFail failure;
+        private Logger Log;
 
         public Create(AppManifest manifest, AppInstance instance)
         {
@@ -17,6 +18,7 @@ namespace Mycroft.Cmd.App
             this.instance = instance;
             this.okMsg = new AppManifestOk();
             this.okMsg.InstanceId = manifest.InstanceId != null ? manifest.InstanceId : instance.InstanceId;
+            this.Log = Logger.GetInstance();
         }
 
         /// <summary>
@@ -63,7 +65,7 @@ namespace Mycroft.Cmd.App
             // We have to send the message to the instance on our own
             instance.AppStatus = Status.down;
             instance.Send("APP_MANIFEST_OK " + okMsg.Serialize());
-            Console.WriteLine("\"{0}\" created with instance ID {1}", instance.DisplayName, instance.InstanceId);
+            Log.Info(instance.DisplayName + " created with instance ID " + instance.InstanceId);
         }
 
         /// <summary>
