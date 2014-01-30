@@ -15,6 +15,17 @@ namespace Mycroft
     /// </summary>
     class Logger
     {
+        /// <summary>
+        /// The severity level of a message to log, in order of increasing
+        /// severity.
+        /// </summary>
+        public enum Level { Debug, Info, Warning, Error, Exception, WTF }
+
+        /// <summary>
+        /// The minimum level at which to log, inclusive
+        /// </summary>
+        public Level LogLevel { get; set; }
+
         private string path = System.IO.Path.Combine("logs");
         private string filename;
         private DateTime date;
@@ -25,6 +36,7 @@ namespace Mycroft
 
         private Logger()
         {
+            LogLevel = Level.Debug;
             CheckFile();
         }
 
@@ -44,15 +56,12 @@ namespace Mycroft
             {
                 if (os != null)
                 {
-                    os.Flush();
-                    os.Close();
-                    fs.Flush();
-                    fs.Close();
+                    Close();
                 }
                 this.date = DateTime.Today;
 
                 Directory.CreateDirectory(path);
-                this.filename = System.IO.Path.Combine(path, "log-" + DateTime.Now.ToString("yyyy-MM-dd"));
+                this.filename = System.IO.Path.Combine(path, DateTime.Now.ToString("yyyy-MM-dd") + ".log");
 
                 fs = new FileStream(filename, FileMode.Append);
                 os = new StreamWriter(fs);
@@ -61,19 +70,44 @@ namespace Mycroft
         }
 
         /// <summary>
-        /// Log given message. 
-        /// Applies timestamp, and records in file.
+        /// Log given message.
+        /// Example of a log message:
+        /// [2008-04-10 13:30:00Z] WARNING: this is the message
         /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        private bool Log(string message)
+        /// <param name="level">The level of severity of this message</param>
+        /// <param name="message">The message to log</param>
+        /// <returns>true if this message was logged</returns>
+        private bool Log(Level level, string message)
         {
             CheckFile();
+
+            if (level.CompareTo(LogLevel) < 0)
+            {
+                return false;
+            }
+
             try
             {
-                string line = DateTime.Now.ToString("[yyyy-MM-dd-HH-mm-ss-fff]");
-                line += message;
-                os.WriteLine(line);
+                // assemble message
+                var sb = new StringBuilder();
+                sb.Append(DateTime.Now.ToString("u"));
+                sb.Append(" ");
+                sb.Append(Enum.GetName(typeof(Level), level).ToUpper());
+                sb.Append(": ");
+                sb.Append(message);
+                message = sb.ToString();
+                
+                // write to console
+                var oldColor = Console.BackgroundColor;
+                Console.ForegroundColor = GetColor(level);
+                Console.WriteLine(message);
+                Console.ForegroundColor = oldColor;
+
+                // write to diagnostics log
+                System.Diagnostics.Debug.WriteLine(message);
+
+                // write to log file
+                os.WriteLine(sb.ToString());
             }
             catch
             {
@@ -83,25 +117,91 @@ namespace Mycroft
         }
 
         /// <summary>
-        /// Log String message or any format
+        /// Get the console color associated with this log level
         /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        public bool LogMessage(string message)
+        /// <param name="level">the log level</param>
+        /// <returns>the color</returns>
+        private ConsoleColor GetColor(Level level)
         {
-            return Log(message);
+            switch (level)
+            {
+                case Level.Debug:
+                    return ConsoleColor.White;
+                case Level.Info:
+                    return ConsoleColor.Cyan;
+                case Level.Warning:
+                    return ConsoleColor.Yellow;
+                default:
+                    return ConsoleColor.Red;
+            }
         }
 
         /// <summary>
-        /// Log a command object
-        /// Currently just using toString
+        /// Close the underlying connection write stream.
         /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
-        public bool LogCommand(Command command)
+        /// <returns>true when closing succeeded</returns>
+        public bool Close()
         {
-            ///TODO - format appropriatly
-            return Log(command.ToString());
+            try
+            {
+                os.Flush();
+                os.Close();
+            }
+            catch
+            {
+               // return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Log a debug-level message
+        /// </summary>
+        /// <param name="message">the message to log</param>
+        /// <returns>true if the message was logged</returns>
+        public bool Debug(string message)
+        {
+            return Log(Level.Debug, message);
+        }
+
+        /// <summary>
+        /// Log an info-level message
+        /// </summary>
+        /// <param name="message">the message to log</param>
+        /// <returns>true if the message was logged</returns>
+        public bool Info(string message)
+        {
+            return Log(Level.Info, message);
+        }
+
+        /// <summary>
+        /// Log a warning-level message
+        /// </summary>
+        /// <param name="message">the message to log</param>
+        /// <returns>true if the message was logged</returns>
+        public bool Warning(string message)
+        {
+            return Log(Level.Warning, message);
+        }
+
+        /// <summary>
+        /// Log an error-level message
+        /// </summary>
+        /// <param name="message">the message to log</param>
+        /// <returns>true if the message was logged</returns>
+        public bool Error(string message)
+        {
+            return Log(Level.Error, message);
+        }
+
+        /// <summary>
+        /// Log a WTF-level message
+        /// </summary>
+        /// <param name="message">the message to log</param>
+        /// <returns>true if the message was logged</returns>
+        public bool WTF(string message)
+        {
+            return Log(Level.WTF, message);
         }
     }
 }
