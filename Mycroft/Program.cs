@@ -23,12 +23,19 @@ namespace Mycroft
         /// </summary>
         public const int DEFAULT_PORT = 1847;
 
+        private static Logger Log;
+
         static void Main(string[] args)
         {
+            Log = Logger.GetInstance();
+
+            Log.Info("Starting up");
+
             TcpServer server = null;
 
             if(UsingTls(args))
             {
+                Log.Info("Using TLS");
                 X509Certificate2 cert = null;
                 var foundCert = TryGetX509Certificate(args, out cert);
 
@@ -40,6 +47,7 @@ namespace Mycroft
             }
             else
             {
+                Log.Warning("Not using TLS");
                 //insecure version
                 server = new TcpServer(IPAddress.Any, DEFAULT_PORT);
             }
@@ -47,6 +55,7 @@ namespace Mycroft
             // If we can't start the server, we can't run anything
             if(server == null)
             {
+                Log.Error("Could not start the server");
                 Environment.Exit(1);
             }
 

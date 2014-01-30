@@ -130,6 +130,8 @@ namespace Mycroft.App
         /// <remarks>Should always be accessed under a read/write lock</remarks>
         private volatile bool listening;
 
+        private Logger Log;
+
         /// <summary>
         /// Set up a null AppInstance. An InstanceId is assigned to a new GUID, which
         /// will be reset if the instance sends a different ID in its manifest.
@@ -142,6 +144,7 @@ namespace Mycroft.App
             AppStatus = Status.connected;
             listening = false;
             OnDisconnect += NotifyDisconnected;
+            Log = Logger.GetInstance();
         }
 
         /// <summary>
@@ -149,7 +152,7 @@ namespace Mycroft.App
         /// </summary>
         public void Listen()
         {
-            Debug.WriteLine("Listening for messages...");
+            Log.Info("Listening for messages from instanceID: " + InstanceId);
 
             // Set that we're listening for commands
             Write(() => listening = true );
@@ -160,7 +163,7 @@ namespace Mycroft.App
                 {
                     var message = connection.GetCommand();
 
-                    Debug.WriteLine("Message received by AppInstance " + InstanceId);
+                    Log.Debug("Message received by AppInstance " + InstanceId);
                     Debug.WriteLine(message);
 
                     var command = Command.Parse(message, this);
@@ -177,7 +180,7 @@ namespace Mycroft.App
                 // Handle client disconnects
                 catch (IOException e)
                 {
-                    Debug.Write("Disconnected? " + e.Message);
+                    Log.Info("Disconnected? " + e.Message);
                     Write(() => listening = false);
                     if (OnDisconnect != null)
                     {

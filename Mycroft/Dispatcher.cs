@@ -19,6 +19,7 @@ namespace Mycroft
         private TcpServer Server;
         private Registry Registry;
         private MessageArchive MessageArchive;
+        private Logger Log;
 
         public Dispatcher(TcpServer server, Registry registry, MessageArchive messageArchive)
         {
@@ -27,12 +28,15 @@ namespace Mycroft
             MessageArchive = messageArchive;
             DispatchQueue = new ConcurrentQueue<Command>();
             DispatchStack = new ConcurrentStack<Command>();
+            Log = Logger.GetInstance();
         }
 
         public void Run()
         {
             Server.ClientConnected += HandleNewClientConnection;
             Server.Start();
+
+            Log.Debug("Dispatcher running");
 
             Command currentCmd;
             while (true)
