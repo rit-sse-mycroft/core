@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Mycroft.Cmd;
 using Mycroft.App;
+using Mycroft.Messages.Msg;
 
 namespace Mycroft
 {
@@ -131,6 +132,14 @@ namespace Mycroft
 
                     // write to log file
                     os.WriteLine(sb.ToString());
+                }
+
+                foreach (AppInstance app in loggerApps)
+                {
+                    MsgBroadcast msg = new MsgBroadcast();
+                    msg.Id = Guid.NewGuid().ToString();
+                    msg.Content = new { level = Enum.GetName(typeof(Level), level).ToUpper(), message = message };
+                    app.Send("MSG_BROADCAST " + msg.Serialize());
                 }
             }
             catch
