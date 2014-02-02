@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Mycroft.Cmd;
+using Mycroft.App;
 
 namespace Mycroft
 {
@@ -36,6 +37,7 @@ namespace Mycroft
         private DateTime date;
         private StreamWriter os;
         private FileStream fs;
+        private IList<AppInstance> loggerApps = new List<AppInstance>();
 
         static private Logger Instance = null;
 
@@ -51,6 +53,16 @@ namespace Mycroft
             if (Instance == null)
                 Instance = new Logger();
             return Instance;
+        }
+
+        public static void AddLoggerApp(AppInstance loggerApp)
+        {
+            Instance.loggerApps.Add(loggerApp);
+        }
+
+        public static void RemoveLoggerApp(AppInstance loggerApp)
+        {
+            Instance.loggerApps.Remove(loggerApp);
         }
 
         /// <summary>

@@ -61,6 +61,10 @@ namespace Mycroft.Cmd.App
                 instance.AddDependency(c);
             }
             registry.Register(instance);
+            if (manifest.Capabilities.ContainsKey("log"))
+            {
+                Logger.AddLoggerApp(instance);
+            }
 
             // We have to send the message to the instance on our own
             instance.AppStatus = Status.down;

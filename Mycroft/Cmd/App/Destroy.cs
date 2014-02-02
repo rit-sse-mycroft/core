@@ -1,5 +1,6 @@
 ﻿using Mycroft.App;
 using System;
+using System.Collections.Generic;
 
 
 namespace Mycroft.Cmd.App
@@ -22,6 +23,7 @@ namespace Mycroft.Cmd.App
         public override void VisitRegistry(Registry registry)
         {
             registry.Remove(instance);
+            Logger.RemoveLoggerApp(instance);
             Log.Info(String.Format("{0} {1} has disconnected", instance.DisplayName, instance.InstanceId));
         }
     }
