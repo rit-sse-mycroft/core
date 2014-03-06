@@ -75,7 +75,14 @@ namespace Mycroft.App
                 }
                 catch (ArgumentException) { } // do nothing, it's just not valid yet
             }
-            return int.Parse(soFar.Trim());
+            try
+            {
+                return int.Parse(soFar.Trim());
+            }
+            catch (FormatException)
+            {
+                throw new IOException("Application sent non-parsable message length");
+            }
         }
 
         /// <summary>
