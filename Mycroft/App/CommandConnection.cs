@@ -35,7 +35,12 @@ namespace Mycroft.App
             int msgLen = GetMsgLen();
 
             byte[] buff = new byte[msgLen];
-            Input.Read(buff, 0, buff.Length);
+            // read until the expected number of bytes is reached
+            int read = 0;
+            do
+            {
+                read += Input.Read(buff, read, buff.Length - read);
+            } while (read < msgLen);
             string msg = Encoding.UTF8.GetString(buff, 0, buff.Length);
             System.Diagnostics.Debug.WriteLine("Got message: " + msg);
             return msg;
