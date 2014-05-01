@@ -109,7 +109,7 @@ namespace Mycroft
                 lock (WriteLock)
                 {
                     // write to console
-                    var oldColor = Console.BackgroundColor;
+                    var oldColor = Console.ForegroundColor;
                     Console.ForegroundColor = GetColor(level);
                     Console.WriteLine(message);
                     Console.ForegroundColor = oldColor;
