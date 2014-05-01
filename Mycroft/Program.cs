@@ -86,7 +86,7 @@ namespace Mycroft
                 var indexCertFile = indexCertFlag + 1;
                 if (indexCertFile >= args.Length)
                 {
-                    Console.Error.WriteLine("Error: --cert parameter must include certificate file");
+                    Log.Error("--cert parameter must include certificate file");
                     cert = null;
                     return false;
                 }
@@ -100,7 +100,13 @@ namespace Mycroft
                 }
                 catch (CryptographicException e)
                 {
-                    Console.Error.WriteLine("Error: Failed to load certificate \"{0}\" - {1}", certFile, e.Message.Trim());
+                    Log.Error(
+                        String.Format(
+                            "Failed to load certificate \"{0}\" - {1}",
+                            certFile,
+                            e.Message.Trim()
+                        )
+                    );
                     cert = null;
                     return false;
                 }
@@ -122,7 +128,12 @@ namespace Mycroft
             // Make sure the desired fingerprint exists
             if (collection.Count == 0)
             {
-                Console.Error.WriteLine("Error: Certificate with thumbprint {0} not found. Please make sure it is installed to the root CA store.", thumbprint);
+                Log.Error(
+                    String.Format(
+                        "Error: Certificate with thumbprint {0} not found. Please make sure it is installed to the root CA store.", 
+                        thumbprint
+                    )
+                );
                 cert = null;
                 return false;
             }

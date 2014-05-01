@@ -174,9 +174,9 @@ namespace Mycroft
         /// </summary>
         /// <param name="message">the message to log</param>
         /// <returns>true if the message was logged</returns>
-        public Task<bool> Debug(string message)
+        public bool Debug(string message)
         {
-            return Task<bool>.Run(() => Log(Level.Debug, message));
+            return Log(Level.Debug, message);
         }
 
         /// <summary>
@@ -184,9 +184,9 @@ namespace Mycroft
         /// </summary>
         /// <param name="message">the message to log</param>
         /// <returns>true if the message was logged</returns>
-        public Task<bool> Info(string message)
+        public bool Info(string message)
         {
-            return Task<bool>.Run(() => Log(Level.Info, message));
+            return Log(Level.Info, message);
         }
 
         /// <summary>
@@ -194,9 +194,9 @@ namespace Mycroft
         /// </summary>
         /// <param name="message">the message to log</param>
         /// <returns>true if the message was logged</returns>
-        public Task<bool> Warning(string message)
+        public bool Warning(string message)
         {
-            return Task<bool>.Run(() => Log(Level.Warning, message));
+            return Log(Level.Warning, message);
         }
 
         /// <summary>
@@ -204,9 +204,9 @@ namespace Mycroft
         /// </summary>
         /// <param name="message">the message to log</param>
         /// <returns>true if the message was logged</returns>
-        public Task<bool> Error(string message)
+        public bool Error(string message)
         {
-            return Task<bool>.Run(() => Log(Level.Error, message));
+            return Log(Level.Error, message);
         }
 
         /// <summary>
@@ -214,9 +214,9 @@ namespace Mycroft
         /// </summary>
         /// <param name="message">the message to log</param>
         /// <returns>true if the message was logged</returns>
-        public Task<bool> WTF(string message)
+        public bool WTF(string message)
         {
-            return Task<bool>.Run(() => Log(Level.WTF, message));
+            return Log(Level.WTF, message);
         }
     }
 }

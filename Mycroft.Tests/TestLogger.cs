@@ -20,7 +20,7 @@ namespace Mycroft.Tests
         public async Task TestLogging()
         {
             var instance = Logger.GetInstance();
-            Assert.IsTrue(await instance.Info("This is a log message"), "should succeed in logging");
+            Assert.IsTrue(instance.Info("This is a log message"), "should succeed in logging");
 
             var filename = Path.Combine("logs", DateTime.Now.ToString("yyyy-MM-dd") + ".log");
 
