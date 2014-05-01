@@ -14,8 +14,8 @@ namespace Mycroft
 {
     public class Dispatcher : ICommandable
     {
-        private ConcurrentQueue<Command> DispatchQueue;
-        private ConcurrentStack<Command> DispatchStack;
+        private BlockingCollection<Command> DispatchQueue;
+        private BlockingCollection<Command> DispatchPreemptStack;
         private TcpServer Server;
         private Registry Registry;
         private MessageArchive MessageArchive;
@@ -26,8 +26,8 @@ namespace Mycroft
             Server = server;
             Registry = registry;
             MessageArchive = messageArchive;
-            DispatchQueue = new ConcurrentQueue<Command>();
-            DispatchStack = new ConcurrentStack<Command>();
+            DispatchQueue = new BlockingCollection<Command>(new ConcurrentQueue<Command>());
+            DispatchPreemptStack = new BlockingCollection<Command>(new ConcurrentStack<Command>());
             Log = Logger.GetInstance();
         }
 
@@ -41,25 +41,30 @@ namespace Mycroft
             Command currentCmd;
             while (true)
             {
-                if (DispatchStack.TryPop(out currentCmd) || DispatchQueue.TryDequeue(out currentCmd))
+                // The preempt stack should only be added to
+                // from a command. Because of this, if the DispatchPreemptStack is empty
+                // then we can ignore the preempt stack and block until the
+                // next command is available through the standard queue.
+                if (!DispatchPreemptStack.TryTake(out currentCmd))
                 {
-                    // Issue all the commands o/
-                    Server.Issue(currentCmd);
-                    MessageArchive.Issue(currentCmd);
-                    Registry.Issue(currentCmd);
-                    this.Issue(currentCmd);
+                    currentCmd = DispatchQueue.Take();
                 }
+                // Issue all the commands o/
+                Server.Issue(currentCmd);
+                MessageArchive.Issue(currentCmd);
+                Registry.Issue(currentCmd);
+                this.Issue(currentCmd);
             }
         }
 
         public void Enqueue(Command cmd)
         {
-            DispatchQueue.Enqueue(cmd);
+            DispatchQueue.Add(cmd);
         }
 
         public void PreemptQueue(Command cmd)
         {
-            DispatchStack.Push(cmd);
+            DispatchPreemptStack.Add(cmd);
         }
 
         /// <summary>
